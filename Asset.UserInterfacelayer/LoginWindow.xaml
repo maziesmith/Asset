@@ -1,0 +1,21 @@
+﻿<Metro:MetroWindow
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Asset"
+        xmlns:Metro="clr-namespace:Arthas.Controls.Metro;assembly=Arthas"
+        xmlns:dxc="http://schemas.devexpress.com/winfx/2008/xaml/charts" xmlns:dxsps="http://schemas.devexpress.com/winfx/2008/xaml/spreadsheet" x:Name="loginWin" x:Class="Asset.LoginWindow"
+        mc:Ignorable="d"
+        Title="登录" d:DesignWidth="350" d:DesignHeight="500" MinWidth="1" MinHeight="1" BorderThickness="1" WindowStyle="None">
+    <Grid>
+        <StackPanel>
+            <Metro:MetroImage Source="Resources/pic.jpg" Margin="30,20,30,20" />
+            <Metro:MetroTextBox x:Name="txtAcc" Text="" Title="" InputHint="用户名" PopupHint="管理员账号是admin!" Margin="30,0,30,0" Icon="Resources/editIcon.png" />
+            <Metro:MetroTextBox x:Name="txtPwd" Text="" Title="" InputHint="密码" PopupHint="管理员密码也是admin!" Margin="30,0,30,0" Icon="Resources/editIcon.png" />
+            <Metro:MetroTextBlock x:Name="txbError" Text="用户名或密码错误" Foreground="Red" Margin="30,10,30,10" Visibility="Hidden" />
+            <Metro:MetroButton x:Name="btnLogin" MetroButtonState="None" Content="登录" Margin="30,0,30,0" Click="BtnLogin_Click" />
+        </StackPanel>
+    </Grid>
+</Metro:MetroWindow>
+
