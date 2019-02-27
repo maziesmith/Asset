@@ -777,7 +777,7 @@ namespace Asset
         #endregion
 
         #region 修改资产页面
-        #endregion
+        
         /// <summary>
         /// 当前修改资产的ID
         /// </summary>
@@ -930,15 +930,15 @@ namespace Asset
 
             //异动历史记录
             DataView dv4 = AssetsChange.QueryAssetsChanges(fixedAssetsID);
-            dgChangesHistoryRecord.ItemsSource = dv4;
+            dtgChangesHistoryRecord.ItemsSource = dv4;
 
             //维修历史记录
             DataView dv5 = RepairList.QueryRepairHistoryRecord(fixedAssetsID);
-            dgRepairHistoryRecord.ItemsSource = dv5;
+            dtgRepairHistoryRecord.ItemsSource = dv5;
 
             //报废历史记录
             DataView dv6 = AssetsScrapped.QueryAssetsScrapped(fixedAssetsID);
-            dgScrappedHistoryRecord.ItemsSource = dv6;
+            dtgScrappedHistoryRecord.ItemsSource = dv6;
         }
 
         /// <summary>
@@ -1135,6 +1135,7 @@ namespace Asset
             MessageBox.Show("修改固定资产成功！", "成功", MessageBoxButton.OK, MessageBoxImage.Information);
             InitialData();
         }
+        #endregion
 
     }
 

@@ -140,7 +140,7 @@
                                             <Metro:MetroButton x:Name="btExport" MetroButtonState="None" Content="导出到Excel" Margin="0,0,10,0" Click="BtExport_Click"/>
                                         </StackPanel>
                                         <StackPanel>
-                                            <DataGrid Name="dtgShow" Margin="3" AutoGenerateColumns="False" AlternatingRowBackground="#F4F4F4" >
+                                            <DataGrid Name="dtgShow" Margin="3" AutoGenerateColumns="False" AlternatingRowBackground="#F4F4F4" CanUserAddRows="False" >
                                                 <DataGrid.Columns>
                                                     <DataGridCheckBoxColumn>
                                                         <DataGridCheckBoxColumn.HeaderTemplate >
@@ -512,10 +512,10 @@
                                 <Metro:MetroScrollViewer>
                                     <Grid>
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="148"/>
-                                            <ColumnDefinition Width="341"/>
-                                            <ColumnDefinition Width="149"/>
-                                            <ColumnDefinition Width="430"/>
+                                            <ColumnDefinition Width="50*"/>
+                                            <ColumnDefinition Width="100*"/>
+                                            <ColumnDefinition Width="50*"/>
+                                            <ColumnDefinition Width="100*"/>
                                         </Grid.ColumnDefinitions>
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="50" />
@@ -573,7 +573,7 @@
                                         <Metro:MetroTextBlock Grid.Column="0" Grid.Row="11" Text="残值" HorizontalAlignment="Right" Margin="0,0,10,0" VerticalAlignment="Center"/>
                                         <Metro:MetroTextBlock Grid.Column="0" Grid.Row="12" Text="资产备注" HorizontalAlignment="Right" Margin="0,18,10,0"/>
                                         <Metro:MetroTextBlock Grid.Column="0" Grid.Row="15" Text="异动历史记录" HorizontalAlignment="Right" Margin="0,0,10,0" VerticalAlignment="Center"/>
-                                        <DataGrid x:Name="dgChangesHistoryRecord" Grid.Column="0" Grid.Row="16" Grid.ColumnSpan="5">
+                                        <DataGrid x:Name="dtgChangesHistoryRecord" Grid.Column="0" Grid.Row="16" Grid.ColumnSpan="5" AutoGenerateColumns="False" AlternatingRowBackground="#F4F4F4" CanUserAddRows="False" >
                                             <DataGrid.Columns>
                                                 <DataGridTextColumn Binding="{Binding AssetsChangesID}" ClipboardContentBinding="{x:Null}" Header="异动ID"/>
                                                 <DataGridTextColumn Binding="{Binding CDivisionName}" ClipboardContentBinding="{x:Null}" Header="异动后所属部门"/>
@@ -586,7 +586,7 @@
                                             </DataGrid.Columns>
                                         </DataGrid>
                                         <Metro:MetroTextBlock Grid.Column="0" Grid.Row="18" Text="维修历史记录" HorizontalAlignment="Right" Margin="0,0,10,0" VerticalAlignment="Center"/>
-                                        <DataGrid x:Name="dgRepairHistoryRecord" Grid.Column="0" Grid.Row="19" Grid.ColumnSpan="5">
+                                        <DataGrid x:Name="dtgRepairHistoryRecord" Grid.Column="0" Grid.Row="19" Grid.ColumnSpan="5" AutoGenerateColumns="False" AlternatingRowBackground="#F4F4F4">
                                             <DataGrid.Columns>
                                                 <DataGridTextColumn Binding="{Binding RepairListID}" ClipboardContentBinding="{x:Null}" Header="报修单ID"/>
                                                 <DataGridTextColumn Binding="{Binding DepartmentName}" ClipboardContentBinding="{x:Null}" Header="部门名称"/>
@@ -599,7 +599,7 @@
                                             </DataGrid.Columns>
                                         </DataGrid>
                                         <Metro:MetroTextBlock Grid.Column="0" Grid.Row="21" Text="报废历史记录" HorizontalAlignment="Right" Margin="0,0,10,0" VerticalAlignment="Center"/>
-                                        <DataGrid x:Name="dgScrappedHistoryRecord" Grid.Column="0" Grid.Row="22" Grid.ColumnSpan="5">
+                                        <DataGrid x:Name="dtgScrappedHistoryRecord" Grid.Column="0" Grid.Row="22" Grid.ColumnSpan="5" AutoGenerateColumns="False" AlternatingRowBackground="#F4F4F4">
                                             <DataGrid.Columns>
                                                 <DataGridTextColumn Binding="{Binding AssetsScrappedID}" ClipboardContentBinding="{x:Null}" Header="ID编号"/>
                                                 <DataGridTextColumn Binding="{Binding Applicant}" ClipboardContentBinding="{x:Null}" Header="申请人"/>
