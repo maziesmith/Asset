@@ -82,7 +82,8 @@ namespace Asset
             cfa.Save();
         }
 
-        //点击菜单栏登录按钮
+        #region 菜单栏
+        //点击用户菜单登录按钮
         private void MenuLogin_Click(object sender, RoutedEventArgs e)
         {
             LoginWindow win = new LoginWindow();
@@ -123,6 +124,7 @@ namespace Asset
             //导出excel按钮置灰
             btExport.IsEnabled = false;
         }
+        #endregion
 
         #region 资产管理页面
         /// <summary>
@@ -474,11 +476,35 @@ namespace Asset
         }
 
         //修改
+        private void BtModify_Click(object sender, RoutedEventArgs e)
+        {
+            FixedAssetsID = Convert.ToInt32(((System.Data.DataRowView)((System.Windows.FrameworkElement)sender).DataContext)["FixedAssetsID"]);
+            InitModifyData();
+            tabpModifyAsset.IsSelected = true;
+        }
+
+        //异动
         private void BtChange_Click(object sender, RoutedEventArgs e)
         {
             FixedAssetsID = Convert.ToInt32(((System.Data.DataRowView)((System.Windows.FrameworkElement)sender).DataContext)["FixedAssetsID"]);
             InitChangeData();
             tabpChangeAsset.IsSelected = true;
+        }
+
+        //维修
+        private void BtRepair_Click(object sender, RoutedEventArgs e)
+        {
+            FixedAssetsID = Convert.ToInt32(((System.Data.DataRowView)((System.Windows.FrameworkElement)sender).DataContext)["FixedAssetsID"]);
+            InitRepairData();
+            tabpRepairAsset.IsSelected = true;
+        }
+
+        //报废
+        private void BtScrapped_Click(object sender, RoutedEventArgs e)
+        {
+            FixedAssetsID = Convert.ToInt32(((System.Data.DataRowView)((System.Windows.FrameworkElement)sender).DataContext)["FixedAssetsID"]);
+            InitScrappedData();
+            tabpScrappedAsset.IsSelected = true;
         }
         #endregion
 
@@ -616,12 +642,12 @@ namespace Asset
         private void BtnEnter_Click(object sender, RoutedEventArgs e)
         {
             //1.验证用户输入
-            mtxtType.Visibility = Visibility.Hidden;
-            mtxtName.Visibility = Visibility.Hidden;
-            mtxtDepartment.Visibility = Visibility.Hidden;
-            mtxtLimitedYear.Visibility = Visibility.Hidden;
-            mtxtNum.Visibility = Visibility.Hidden;
-            mtxtOriginalValue.Visibility = Visibility.Hidden;
+            mtxtType.Visibility = Visibility.Collapsed;
+            mtxtName.Visibility = Visibility.Collapsed;
+            mtxtDepartment.Visibility = Visibility.Collapsed;
+            mtxtLimitedYear.Visibility = Visibility.Collapsed;
+            mtxtNum.Visibility = Visibility.Collapsed;
+            mtxtOriginalValue.Visibility = Visibility.Collapsed;
             //验证必要项
             if (cbxMajorID.SelectedItem==null || cbxSubID.SelectedItem==null)    //类别
             {
@@ -779,14 +805,14 @@ namespace Asset
         #region 修改资产页面
         
         /// <summary>
-        /// 当前修改资产的ID
+        /// 当前操作资产的ID
         /// </summary>
         int FixedAssetsID { get; set; }
 
         /// <summary>
         /// 初始化修改资产页面数据
         /// </summary>
-        private void InitChangeData()
+        private void InitModifyData()
         {
             BindDrop3();
             int fixedAssetsID = FixedAssetsID;
@@ -1070,6 +1096,51 @@ namespace Asset
         //确认修改资产
         private void BtnEnterChange_Click(object sender, RoutedEventArgs e)
         {
+            //1.验证用户输入
+            mtxtType1.Visibility = Visibility.Collapsed;
+            mtxtName1.Visibility = Visibility.Collapsed;
+            mtxtDepartment1.Visibility = Visibility.Collapsed;
+            mtxtLimitedYear1.Visibility = Visibility.Collapsed;
+            mtxtNum1.Visibility = Visibility.Collapsed;
+            mtxtOriginalValue1.Visibility = Visibility.Collapsed;
+            mtxtUserAccount1.Visibility = Visibility.Collapsed;
+            //验证必要项
+            if (cbxMajorID1.SelectedItem == null || cbxSubID1.SelectedItem == null)    //类别
+            {
+                mtxtType1.Visibility = Visibility.Visible;
+                return;
+            }
+            if (string.IsNullOrEmpty(txtAssetName1.Text)) //名称
+            {
+                mtxtName1.Visibility = Visibility.Visible;
+                return;
+            }
+            if (cbxDivisionID1.SelectedItem == null || cbxDepartmentID1.SelectedItem == null)   //部门
+            {
+                mtxtDepartment1.Visibility = Visibility.Visible;
+                return;
+            }
+            if (!int.TryParse(txtLimitedYear1.Text, out int year))  //有限年份
+            {
+                mtxtLimitedYear1.Visibility = Visibility.Visible;
+                return;
+            }
+            if (string.IsNullOrEmpty(txtAssetsCoding1.Text))  //编码
+            {
+                mtxtNum1.Visibility = Visibility.Visible;
+                return;
+            }
+            if (!double.TryParse(txtOriginalValue1.Text, out double ori))  //原值
+            {
+                mtxtOriginalValue1.Visibility = Visibility.Visible;
+                return;
+            }
+            if (cbxUserAccount1.SelectedItem == null)   //保管人员
+            {
+                mtxtUserAccount1.Visibility = Visibility.Visible;
+                return;
+            }
+
             //更新资产表信息FixedAssetsID
             FixedAsset fixedAsset = new FixedAsset();
             fixedAsset.FixedAssetsID = FixedAssetsID;
@@ -1137,8 +1208,260 @@ namespace Asset
         }
         #endregion
 
+        #region 异动资产页面
+        /// <summary>
+        /// 初始化异动资产页面数据
+        /// </summary>
+        private void InitChangeData()
+        {
+            FixedAsset fixedAsset = new FixedAsset();
+            fixedAsset.LoadData(FixedAssetsID);
+
+            this.mtxtAssetsCoding2.Text = fixedAsset.AssetsCoding;
+            this.mtxtAssetName2.Text = fixedAsset.AssetName;
+            this.mtxtAssetClasses2.Text = fixedAsset.MajorName + "  " + fixedAsset.SubName;
+            this.mtxtSpecificationsModel2.Text = fixedAsset.SpecificationsModel;
+            this.mtxtDivisionDepartment2.Text = fixedAsset.DivisionName + "  " + fixedAsset.DepartmentName;
+            this.mtxtContactor2.Text = fixedAsset.Contactor + "(" + fixedAsset.UserAccount + ")";
+            this.mtxtStorageSites2.Text = fixedAsset.StorageSites;
+
+            //将数据捆绑到下拉列表中
+            DataView dv3 = Division.QueryDivision();
+            cbxCDivisionID2.SelectedValuePath = dv3.Table.Columns[0].Caption;
+            cbxCDivisionID2.DisplayMemberPath = dv3.Table.Columns[2].Caption;
+            cbxCDivisionID2.ItemsSource = dv3;
+            cbxCDivisionID2.Text="请选择事业部";
+            cbxCDepartmentID2.Text="请选择部门";
+
+            this.txtCChangesDate2.Text = DateTime.Now.ToString();
+            //异动历史记录
+            DataView dv4 = AssetsChange.QueryAssetsChanges(FixedAssetsID);
+            dtgChangesHistoryRecord2.ItemsSource = dv4;
+        }
+
+        //选择事业部
+        private void CbxCDivisionID2_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            int cdivisionID = -1;
+            //获取事业部ID
+            if (cbxCDivisionID2.SelectedItem != null && cbxCDivisionID2.SelectedValue != null)
+                cdivisionID = Convert.ToInt32(cbxCDivisionID2.SelectedValue.ToString());
+            //绑定部门数据到下拉列表
+            DataView dv1 = Department.QueryDepartment(cdivisionID);
+            cbxCDepartmentID2.SelectedValuePath = dv1.Table.Columns[0].Caption;
+            cbxCDepartmentID2.DisplayMemberPath = dv1.Table.Columns[3].Caption;
+            cbxCDepartmentID2.ItemsSource = dv1;
+            cbxCDepartmentID2.Text = "请选择部门";
+        }
+
+        //选择部门
+        private void CbxCDepartmentID2_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            int cdepartmentID = -1;
+            if (cbxCDepartmentID2.SelectedItem != null && cbxCDepartmentID2.SelectedValue != null)
+                cdepartmentID = Convert.ToInt32(cbxCDepartmentID2.SelectedValue.ToString());
+            //加载保管人员
+            DataView dv1 = UserList.QueryUserLists(cdepartmentID);
+            cbxCUserAccount2.SelectedValuePath = dv1.Table.Columns[1].Caption;
+            cbxCUserAccount2.DisplayMemberPath = dv1.Table.Columns[5].Caption;
+            cbxCUserAccount2.ItemsSource = dv1;
+            cbxCUserAccount2.Text = "无";
+        }
+
+        //申请资产异动
+        private void BtnApplicationChange_Click(object sender, RoutedEventArgs e)
+        {
+            //1.验证用户输入
+            mtxtDepartment2.Visibility = Visibility.Collapsed;
+            mtxtTransferPeople2.Visibility = Visibility.Collapsed;
+            mtxtUserAccount2.Visibility = Visibility.Collapsed;
+            //验证必要项
+            if (cbxCDivisionID2.SelectedItem == null || cbxCDepartmentID2.SelectedItem == null)   //部门
+            {
+                mtxtDepartment2.Visibility = Visibility.Visible;
+                return;
+            }
+            if (string.IsNullOrEmpty(txtTransferPeople2.Text))  //转移人
+            {
+                mtxtTransferPeople2.Visibility = Visibility.Visible;
+                return;
+            }
+            if (cbxCUserAccount2.SelectedItem == null)   //保管人员
+            {
+                mtxtUserAccount2.Visibility = Visibility.Visible;
+                return;
+            }
+
+            //资产异动信息表
+            Hashtable ht = new Hashtable();
+
+            ht.Add("FixedAssetsID", SqlStringConstructor.GetQuotedString(FixedAssetsID.ToString()));
+            ht.Add("CDivisionID", SqlStringConstructor.GetQuotedString(cbxCDivisionID2.SelectedValue.ToString()));
+            ht.Add("CDivisionName", SqlStringConstructor.GetQuotedString(cbxCDivisionID2.Text));
+            ht.Add("CDepartmentID", SqlStringConstructor.GetQuotedString(cbxCDepartmentID2.SelectedValue.ToString()));
+            ht.Add("CDepartmentName", SqlStringConstructor.GetQuotedString(cbxCDepartmentID2.Text));
+            ht.Add("CUserAccount", SqlStringConstructor.GetQuotedString(cbxCUserAccount2.SelectedValue.ToString()));
+            ht.Add("CContactor", SqlStringConstructor.GetQuotedString(cbxCUserAccount2.Text));
+            ht.Add("CStorageSites", SqlStringConstructor.GetQuotedString(txtCStorageSites2.Text));
+            ht.Add("CChangesDate", SqlStringConstructor.GetQuotedString(txtCChangesDate2.Text));
+            ht.Add("TransferPeople", SqlStringConstructor.GetQuotedString(txtTransferPeople2.Text));
+            ht.Add("CBackup", SqlStringConstructor.GetQuotedString(mtxtCBackup2.Text));
+
+            AssetsChange assetsChange = new AssetsChange();
+            assetsChange.Add(ht);
+
+            //更新资产表信息FixedAssetsID
+            FixedAsset fixedAsset = new FixedAsset();
+            fixedAsset.FixedAssetsID = FixedAssetsID;
+
+            Hashtable ht1 = new Hashtable();
+            ht1.Add("ApplyStatus", 1);
+            ht1.Add("ApplyContactor", SqlStringConstructor.GetQuotedString(txtTransferPeople2.Text));
+            ht1.Add("ApplyDate", SqlStringConstructor.GetQuotedString(DateTime.Now.ToString()));
+
+            fixedAsset.Update(ht1);
+
+            MessageBox.Show("异动固定资产成功！", "成功", MessageBoxButton.OK, MessageBoxImage.Information);
+            InitialData();
+        }
+        #endregion
+
+        #region 维修资产页面
+        /// <summary>
+        /// 初始化维修页面数据
+        /// </summary>
+        private void InitRepairData()
+        {
+            int fixedAssetsID = FixedAssetsID;
+
+            FixedAsset fixedAsset = new FixedAsset();
+            fixedAsset.LoadData(fixedAssetsID);
+
+            this.mtxtAssetsCoding3.Text = fixedAsset.AssetsCoding;
+            this.mtxtAssetName3.Text = fixedAsset.AssetName;
+            this.mtxtAssetClasses3.Text = fixedAsset.MajorName + "  " + fixedAsset.SubName;
+            this.mtxtSpecificationsModel3.Text = fixedAsset.SpecificationsModel;
+
+            //显示送修人
+            if (ini.ExistINIFile())
+            {
+                string userAccount = ini.IniReadValue("登录详细", "UserAccount");
+                //绑定数据
+                this.mtxtShowUserAccount3.Text = ini.IniReadValue("登录详细", "Contactor") + "(" + userAccount + ")";
+            }
+
+            //维修历史记录
+            DataView dv5 = RepairList.QueryRepairHistoryRecord(fixedAssetsID);
+            dtgRepairHistoryRecord1.ItemsSource = dv5;
+        }
+
+        //申请维修单击
+        private void BtnApplyRepair_Click(object sender, RoutedEventArgs e)
+        {
+            //1.验证用户输入
+            mtxtRepaiContent3.Visibility = Visibility.Collapsed;
+            //验证必要项
+            if (string.IsNullOrEmpty(mtxtRepairContent3.Text))  //故障描述
+            {
+                mtxtRepaiContent3.Visibility = Visibility.Visible;
+                return;
+            }
+
+            //资产维修信息表
+            Hashtable ht = new Hashtable();
+            ht.Add("FixedAssetsID", SqlStringConstructor.GetQuotedString(FixedAssetsID.ToString()));
+            ht.Add("AssetsCoding", SqlStringConstructor.GetQuotedString(mtxtAssetsCoding3.Text));
+            ht.Add("AssetName", SqlStringConstructor.GetQuotedString(mtxtAssetName3.Text));
+            ht.Add("SpecificationsModel", SqlStringConstructor.GetQuotedString(mtxtSpecificationsModel3.Text));
+            ht.Add("RepairUserAccount", SqlStringConstructor.GetQuotedString(ini.IniReadValue("登录详细", "UserAccount")));
+            ht.Add("RepairContactor", SqlStringConstructor.GetQuotedString(ini.IniReadValue("登录详细", "Contactor")));
+            ht.Add("RepairDivisionID", SqlStringConstructor.GetQuotedString(ini.IniReadValue("登录详细", "DivisionID")));
+            ht.Add("RepairDepartmentID", SqlStringConstructor.GetQuotedString(Convert.ToString(ini.IniReadValue("登录详细", "DepartmentID"))));
+            ht.Add("RepairTel", SqlStringConstructor.GetQuotedString(ini.IniReadValue("登录详细", "Tel")));
+            ht.Add("RepairAddress", SqlStringConstructor.GetQuotedString(ini.IniReadValue("登录详细", "Address")));
+            ht.Add("RepairContent", SqlStringConstructor.GetQuotedString(mtxtRepairContent3.Text));
+            ht.Add("RepairIP", SqlStringConstructor.GetQuotedString("0"));
+
+            RepairList repairlist = new RepairList();
+            repairlist.Add(ht);
+
+            //更新资产表信息FixedAssetsID
+            FixedAsset fixedAsset = new FixedAsset();
+            fixedAsset.FixedAssetsID = FixedAssetsID;
+
+            Hashtable ht1 = new Hashtable();
+            ht1.Add("ApplyStatus", 2);
+            ht1.Add("ApplyContactor", SqlStringConstructor.GetQuotedString(ini.IniReadValue("登录详细", "Contactor")));
+            ht1.Add("ApplyDate", SqlStringConstructor.GetQuotedString(DateTime.Now.ToString()));
+
+            fixedAsset.Update(ht1);
+
+            MessageBox.Show("申请维修资产成功！", "成功", MessageBoxButton.OK, MessageBoxImage.Information);
+            InitialData();
+        }
+        #endregion
+
+        #region 报废资产页面
+        /// <summary>
+        /// 初始化报废页面数据
+        /// </summary>
+        private void InitScrappedData()
+        {
+            int fixedAssetsID = FixedAssetsID;
+
+            FixedAsset fixedAsset = new FixedAsset();
+            fixedAsset.LoadData(fixedAssetsID);
+
+            this.mtxtAssetsCoding4.Text = fixedAsset.AssetsCoding;
+            this.mtxtAssetName4.Text = fixedAsset.AssetName;
+            this.mtxtAssetClasses4.Text = fixedAsset.MajorName + "  " + fixedAsset.SubName;
+            this.mtxtSpecificationsModel4.Text = fixedAsset.SpecificationsModel;
+        }
+
+        //申请资产报废
+        private void BtnApplyScrapped4_Click(object sender, RoutedEventArgs e)
+        {
+            //1.验证用户输入
+            mtxtApplicant4.Visibility = Visibility.Collapsed;
+            //验证必要项
+            if (string.IsNullOrEmpty(txtApplicant4.Text))  //申请人
+            {
+                mtxtApplicant4.Visibility = Visibility.Visible;
+                return;
+            }
+
+            //资产报废信息表
+            Hashtable ht = new Hashtable();
+
+            ht.Add("FixedAssetsID", SqlStringConstructor.GetQuotedString(FixedAssetsID.ToString()));
+            ht.Add("Applicant", SqlStringConstructor.GetQuotedString(txtApplicant4.Text));
+            ht.Add("ReduceWaysID", SqlStringConstructor.GetQuotedString((cbxReduceWaysID4.SelectedIndex + 1).ToString()));
+            ht.Add("ReduceWays", SqlStringConstructor.GetQuotedString(cbxReduceWaysID4.Text));
+            ht.Add("ScrappedReason", SqlStringConstructor.GetQuotedString(mtxtScrappedReason4.Text));
+            ht.Add("ReduceDate", SqlStringConstructor.GetQuotedString(dateReduceDate4.ToString()));
+
+            AssetsScrapped assetsScrapped = new AssetsScrapped();
+            assetsScrapped.Add(ht);
+
+            //更新资产表信息FixedAssetsID
+            FixedAsset fixedAsset = new FixedAsset();
+            fixedAsset.FixedAssetsID = Convert.ToInt32(FixedAssetsID.ToString());
+
+            Hashtable ht1 = new Hashtable();
+            ht1.Add("ApplyStatus", 3);
+            ht1.Add("ApplyContactor", SqlStringConstructor.GetQuotedString(txtApplicant4.Text));
+            ht1.Add("ApplyDate", SqlStringConstructor.GetQuotedString(DateTime.Now.ToString()));
+
+            fixedAsset.Update(ht1);
+
+            MessageBox.Show("申请报废资产成功！", "成功", MessageBoxButton.OK, MessageBoxImage.Information);
+            InitialData();
+        }
+        #endregion
+        
     }
 
+    #region dtg数据转换器
     /// <summary>
     /// 使用情况转换器,在xaml中通过Converter使用
     /// </summary>
@@ -1202,4 +1525,5 @@ namespace Asset
             throw new NotImplementedException();
         }
     }
+    #endregion
 }

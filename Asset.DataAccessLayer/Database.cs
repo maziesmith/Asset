@@ -111,7 +111,6 @@ namespace Asset.DataAccessLayer
             return dataset;
         }
 
-
         /// <summary>
         /// 公有方法，获取数据，返回一个DataView。
         /// </summary>
@@ -167,8 +166,6 @@ namespace Asset.DataAccessLayer
             return dataset.Tables[0];
         }
 
-
-
         /// <summary>
         /// 公有方法，执行Sql语句。
         /// </summary>
@@ -193,7 +190,6 @@ namespace Asset.DataAccessLayer
             }
             return count;
         }
-
 
         /// <summary>
         /// 公有方法，执行一组Sql语句。
@@ -268,7 +264,6 @@ namespace Asset.DataAccessLayer
             String[] Sqls = { SqlString };
             return ExecuteSQL(Sqls);
         }
-
 
         /// <summary>
         /// 公有方法，更新一个数据表。
