@@ -7,13 +7,6 @@ namespace Asset.CommonComponent
 {
     public class PictureSlightly
     {
-        //public PictureSlightly()
-        //{
-            //
-            // TODO: Add constructor logic here
-            //
-        //}
-
         /// <summary>
         /// 生成缩略图
         /// </summary>
@@ -70,7 +63,6 @@ namespace Asset.CommonComponent
 
             //在指定位置并且按指定大小绘制原图片的指定部分
             g.DrawImage(MyImage, new Rectangle(0, 0, towidth, toheight), new Rectangle(x, y, ow, oh), GraphicsUnit.Pixel);
-
 
             try
             {

@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace Asset.CommonComponent
 {
+    /// <summary>
+    /// ini配置读写类
+    /// </summary>
     public class IniFiles
     {
         public string inipath;

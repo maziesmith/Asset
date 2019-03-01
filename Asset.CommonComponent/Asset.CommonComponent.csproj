@@ -47,7 +47,6 @@
     <Compile Include="IniFiles.cs" />
     <Compile Include="PictureSlightly.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Tree.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Asset.DataAccessLayer\Asset.DataAccessLayer.csproj">
