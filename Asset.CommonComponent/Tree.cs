@@ -118,5 +118,17 @@ namespace Asset.CommonComponent
 				}
 			}
 		}
-	}
+
+        /// <summary>
+        /// ¸ù¾İsqlÓï¾ä·µ»ØDataTable
+        /// </summary>
+        /// <param name="sql"></param>
+        /// <returns></returns>
+        public DataTable GetDataTable(string sql)
+        {
+            Database db = new Database();
+            DataTable dt = db.GetDataTable(sql);
+            return dt;
+        }
+    }
 }

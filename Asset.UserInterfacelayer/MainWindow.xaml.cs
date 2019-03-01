@@ -97,6 +97,31 @@ namespace Asset
             {
                 //登录成功
                 InitialData();
+                //构建用户菜单
+                if (ini.ExistINIFile())
+                {
+                    //如果存在配置文件就进行读取
+                    string userAccount = ini.IniReadValue("登录详细", "UserAccount");
+                    UserList userList = new UserList();
+                    userList.LoadData(userAccount);
+                    mainWindow.Title = "资产管理系统-" + "管理员：" + userAccount;
+                    //1.先隐藏用户菜单
+                    foreach (FrameworkElement fe in lists.Children)
+                    {
+                        if (fe is MetroExpander)
+                        {
+                            (fe as MetroExpander).Visibility = Visibility.Collapsed;
+                        }
+                    }
+                    //2.根据权限显示
+                    foreach (string duty in userList.Duties)
+                    {
+                        if(this.FindName("treeMenu" + duty)!=null)
+                        {
+                            (this.FindName("treeMenu" + duty) as MetroExpander).Visibility = Visibility.Visible;
+                        }
+                    }
+                }
             }
         }
 

@@ -5,9 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Asset"
         xmlns:Metro="clr-namespace:Arthas.Controls.Metro;assembly=Arthas"
-        xmlns:dxc="http://schemas.devexpress.com/winfx/2008/xaml/charts" xmlns:dxsps="http://schemas.devexpress.com/winfx/2008/xaml/spreadsheet" x:Class="Asset.MainWindow"
+        xmlns:dxc="http://schemas.devexpress.com/winfx/2008/xaml/charts" xmlns:dxsps="http://schemas.devexpress.com/winfx/2008/xaml/spreadsheet" x:Name="mainWindow" x:Class="Asset.MainWindow"
         mc:Ignorable="d"
-        Title="资产管理系统" d:DesignWidth="1600" d:DesignHeight="1200" MinWidth="1" MinHeight="1" BorderThickness="1" WindowStyle="None" Closing="MetroWindow_Closing">
+        Title="资产管理系统-未登录" d:DesignWidth="1600" d:DesignHeight="1200" MinWidth="1" MinHeight="1" BorderThickness="1" WindowStyle="None" Closing="MetroWindow_Closing">
     <Window.Resources>
         <local:GetUseSituation x:Key="GetUseSituation"></local:GetUseSituation>
         <local:GetApplyStatus x:Key="GetApplyStatus"></local:GetApplyStatus>
@@ -71,29 +71,30 @@
                     <Metro:MetroScrollViewer>
                         <Border BorderBrush="#19000000" BorderThickness="0,0,1,0">
                             <StackPanel x:Name="lists">
-
-                                <Metro:MetroExpander Header="资产管理" IsExpanded="False" >
+                                <Metro:MetroExpander Header="资产管理" IsExpanded="False">
                                     <StackPanel>
-                                        <Metro:MetroExpander Header="资产新增" Icon="Resources/tabIcon.png" />
-                                        <Metro:MetroExpander Header="打印列表" Icon="Resources/tabIcon.png" Hint="1 / 100"/>
+                                        <Metro:MetroExpander x:Name="treeMenuManageFixedAssets" Header="资产查询" Icon="Resources/tabIcon.png" Hint="1 / 100"/>
+                                        <Metro:MetroExpander x:Name="treeMenuAddFixedAssets" Header="资产新增" Icon="Resources/tabIcon.png" />
+                                        <Metro:MetroExpander x:Name="treeMenuCheckNewFixedAssets" Header="审核新增资产" Icon="Resources/tabIcon.png" />
+                                        <Metro:MetroExpander x:Name="treeMenuCheckChangeFixedAssets" Header="审核异动资产" Icon="Resources/tabIcon.png" />
+                                        <Metro:MetroExpander x:Name="treeMenuCheckRepairFixedAssets" Header="审核维修资产" Icon="Resources/tabIcon.png" />
+                                        <Metro:MetroExpander x:Name="treeMenuCheckScrappedFixedAssets" Header="审核报废资产" Icon="Resources/tabIcon.png" />
+                                        <Metro:MetroExpander x:Name="treeMenuVolumeChanges" Header="批量异动资产" Icon="Resources/tabIcon.png" />
+                                        <Metro:MetroExpander x:Name="treeMenuMyFixedAssets" Header="我管理的资产" Icon="Resources/tabIcon.png" />
+                                        <Metro:MetroExpander x:Name="treeMenuManageDivision" Header="管理事业部" Icon="Resources/tabIcon.png" />
+                                        <Metro:MetroExpander x:Name="treeMenuManageDepartment" Header="管理部门" Icon="Resources/tabIcon.png" />
+                                        <Metro:MetroExpander x:Name="treeMenuManageMajorclass" Header="管理资产一级类别" Icon="Resources/tabIcon.png" />
+                                        <Metro:MetroExpander x:Name="treeMenuManageSubclass" Header="管理资产二级类别" Icon="Resources/tabIcon.png" />
                                     </StackPanel>
                                 </Metro:MetroExpander>
-                                <Metro:MetroExpander Header="资产审核" IsExpanded="False" >
+                                <Metro:MetroExpander Header="用户管理" IsExpanded="False" >
                                     <StackPanel>
-                                        <Metro:MetroExpander Header="审核新增资产" Icon="Resources/tabIcon.png" />
-                                        <Metro:MetroExpander Header="审核异动资产" Icon="Resources/tabIcon.png" />
-                                        <Metro:MetroExpander Header="审核维修资产" Icon="Resources/tabIcon.png" />
-                                        <Metro:MetroExpander Header="审核报废资产" Icon="Resources/tabIcon.png" />
+                                        <Metro:MetroExpander x:Name="treeMenuManageUser" Header="管理用户" Icon="Resources/tabIcon.png" />
                                     </StackPanel>
                                 </Metro:MetroExpander>
-                                <Metro:MetroExpander Header="管理" IsExpanded="False" >
+                                <Metro:MetroExpander Header="个人设置" IsExpanded="False" >
                                     <StackPanel>
-                                        <Metro:MetroExpander Header="批量异动资产" Icon="Resources/tabIcon.png" />
-                                        <Metro:MetroExpander Header="我管理的资产" Icon="Resources/tabIcon.png" />
-                                        <Metro:MetroExpander Header="管理事业部" Icon="Resources/tabIcon.png" />
-                                        <Metro:MetroExpander Header="管理部门" Icon="Resources/tabIcon.png" />
-                                        <Metro:MetroExpander Header="管理资产一级类别" Icon="Resources/tabIcon.png" />
-                                        <Metro:MetroExpander Header="管理资产二级类别" Icon="Resources/tabIcon.png" />
+                                        <Metro:MetroExpander  x:Name="treeMenuModifyProfile" Header="修改我的资料" Icon="Resources/tabIcon.png" />
                                     </StackPanel>
                                 </Metro:MetroExpander>
                             </StackPanel>
