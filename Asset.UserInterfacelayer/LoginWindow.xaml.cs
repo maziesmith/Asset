@@ -31,6 +31,18 @@ namespace Asset
             //使用的框架只能在这里设置大小，xaml中设置大小无效
             this.Width = 350;
             this.Height = 500;
+            //设置密码框文本装饰
+            txtPwd.TextDecorations = new TextDecorationCollection(new TextDecoration[] {
+                new TextDecoration() {
+                     Location= TextDecorationLocation.Strikethrough,
+                      Pen= new Pen(Brushes.Black, 10f) {
+                          DashCap =  PenLineCap.Round,
+                           StartLineCap= PenLineCap.Round,
+                            EndLineCap= PenLineCap.Round,
+                             DashStyle= new DashStyle(new double[] {0.0,1.2 }, 0.6f)
+                      }
+                }
+            });
         }
         private void BtnLogin_Click(object sender, RoutedEventArgs e)
         {

@@ -11,8 +11,8 @@
     <Grid>
         <StackPanel>
             <Metro:MetroImage Source="Resources/pic.jpg" Margin="30,20,30,20" />
-            <Metro:MetroTextBox x:Name="txtAcc" Text="" Title="" InputHint="用户名" PopupHint="管理员账号是admin!" Margin="30,0,30,0" Icon="Resources/editIcon.png" />
-            <Metro:MetroTextBox x:Name="txtPwd" Text="" Title="" InputHint="密码" PopupHint="管理员密码也是admin!" Margin="30,0,30,0" Icon="Resources/editIcon.png" />
+            <Metro:MetroTextBox x:Name="txtAcc" Text="" Title="" InputHint="用户名" PopupHint="用户名即工号" Margin="30,0,30,0" Icon="Resources/account.png" />
+            <Metro:MetroTextBox x:Name="txtPwd" Text="" Title="" InputHint="密码" Margin="30,0,30,0" Icon="Resources/password.png" Foreground="Transparent" FontFamily="Courier New"/>
             <Metro:MetroTextBlock x:Name="txbError" Text="用户名或密码错误" Foreground="Red" Margin="30,10,30,10" Visibility="Hidden" />
             <Metro:MetroButton x:Name="btnLogin" MetroButtonState="None" Content="登录" Margin="30,0,30,0" Click="BtnLogin_Click" />
         </StackPanel>
