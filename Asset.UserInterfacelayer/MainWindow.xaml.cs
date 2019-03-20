@@ -3325,9 +3325,9 @@ namespace Asset
         //删除部门
         private void BtDeleteDepartment_Click(object sender, RoutedEventArgs e)
         {
-            int departmentID = DepartmentID;
+            DepartmentID = Convert.ToInt32(((System.Data.DataRowView)((System.Windows.FrameworkElement)sender).DataContext)["DepartmentID"]);
             FixedAsset fixedAsset = new FixedAsset();
-            fixedAsset.LoadDataDepartmentID(departmentID);
+            fixedAsset.LoadDataDepartmentID(DepartmentID);
             if (fixedAsset.Exist)
             {
                 MessageBox.Show("发生错误，该部门下存在固定资产，无法删除！", "提示", MessageBoxButton.OK, MessageBoxImage.Stop);
@@ -3335,32 +3335,169 @@ namespace Asset
             else
             {
                 Department department = new Department();
-                department.LoadData(departmentID);
+                department.LoadData(DepartmentID);
                 department.Delete();
                 MessageBox.Show("删除部门成功！", "成功", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
         #endregion
 
+        #region 修改部门
+        /// <summary>
+        /// 管理部门页面数据
+        /// </summary>
+        private void InitEditDepartmentData()
+        {
+            //绑定数据事业部名称
+            DataView dv = Division.QueryDivision();
+            cbxDivisionName.SelectedValuePath = dv.Table.Columns[0].Caption.ToString();
+            cbxDivisionName.DisplayMemberPath = dv.Table.Columns[2].Caption.ToString();
+            cbxDivisionName.ItemsSource = dv;
 
-        //private void InitEditDepartmentData()
-        //{
-        //    //绑定数据事业部名称
-        //    DataView dv = Division.QueryDivision();
-        //    DivisionID.SelectedValuePath = dv.Table.Columns[0].Caption.ToString();
-        //    DivisionID.DisplayMemberPath = dv.Table.Columns[2].Caption.ToString();
-        //    DivisionID.DataSource = dv;
-        //    DivisionID.DataBind();
+            int departmentID = DepartmentID;
+
+            Department department = new Department();
+            department.LoadData(departmentID);
+
+            txtEditDepartmentName.Text = department.DivisionID.ToString();
+            cbxDivisionName.Text = department.DepartmentName;
+        }
+
+        //确认修改部门
+        private void BtnEnterEditDivision_Click(object sender, RoutedEventArgs e)
+        {
+            //验证输入项
+            mtxtEditDepartmentName.Visibility = Visibility.Collapsed;
+            mtxtDivisionName.Visibility = Visibility.Collapsed;
+            if (string.IsNullOrEmpty(txtEditDepartmentName.Text))
+            {
+                mtxtEditDepartmentName.Visibility = Visibility.Visible;
+            }
+            if(cbxDivisionName.SelectedValue!=null&& cbxDivisionName.SelectedItem!=null)
+            {
+                mtxtDivisionName.Visibility = Visibility.Visible;
+            }
+            //实例化部门
+            Department department = new Department();
+            department.DepartmentID = DepartmentID;
+
+            Hashtable ht = new Hashtable();
+            ht.Add("DepartmentName", SqlStringConstructor.GetQuotedString(txtEditDepartmentName.Text));
+            ht.Add("DivisionID", SqlStringConstructor.GetQuotedString(cbxDivisionName.SelectedValue.ToString()));
+
+            department.Update(ht);
+
+            //更新固定资产表里面的信息
+            Hashtable ht1 = new Hashtable();
+            string where = "";
+
+            ht1.Add("DepartmentName", SqlStringConstructor.GetQuotedString(txtEditDepartmentName.Text));                  //固定资产查询
+
+            where = " Where DepartmentID=" + DepartmentID.ToString();
+            FixedAsset.Update(ht1, where);
+
+            MessageBox.Show("修改部门成功！", "成功", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+        #endregion
+
+        #region 管理资产一级类别
+
+        /// <summary>
+        /// 当前操作资产一级类别
+        /// </summary>
+        public int MajorID { get; set; }
+
+        /// <summary>
+        /// 管理资产一级类别页面数据
+        /// </summary>
+        void InitMajorClassData()
+        {
+            DataView dvlist = MajorClass.QueryMajorClass();
+            dtgMajorClass.ItemsSource = dvlist;
+        }
+
+        //添加资产一级类别
+        private void BtEnterAddMajorClass_Click(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(txtMajorClassName.Text))
+            {
+                MessageBox.Show("请输入资产一级类别名称！", "提示", MessageBoxButton.OK, MessageBoxImage.Stop);
+                return;
+            }
+            Hashtable ht = new Hashtable();
+            ht.Add("MajorName", SqlStringConstructor.GetQuotedString(txtMajorClassName.Text));
+
+            MajorClass majorClass = new MajorClass();
+            majorClass.Add(ht);
+
+            MessageBox.Show("添加资产一级类别成功！", "成功", MessageBoxButton.OK, MessageBoxImage.Information);
+            InitMajorClassData();
+        }
+
+        //编辑
+        private void BtEditMajorClass_Click(object sender, RoutedEventArgs e)
+        {
+            MajorID = Convert.ToInt32(((System.Data.DataRowView)((System.Windows.FrameworkElement)sender).DataContext)["MajorID"]);
+            InitEditMajorClassData();
+            tabpEditMajorClass.IsSelected = true;
+        }
+        
+        //删除
+        private void BtDeleteMajorClass_Click(object sender, RoutedEventArgs e)
+        {
+            MajorID = Convert.ToInt32(((System.Data.DataRowView)((System.Windows.FrameworkElement)sender).DataContext)["MajorID"]);
+            MajorClass majorClass = new MajorClass();
+            majorClass.LoadData(MajorID);
+            majorClass.Delete();
+            MessageBox.Show("删除资产一级类别成功！", "成功", MessageBoxButton.OK, MessageBoxImage.Information);
+            InitMajorClassData();
+        }
+        #endregion
+
+        #region 编辑资产一级类别
+        /// <summary>
+        /// 初始化资产一级类编辑页面数据
+        /// </summary>
+        private void InitEditMajorClassData()
+        {
+            int majorID = MajorID;
+            MajorClass majorClass = new MajorClass();
+            majorClass.LoadData(majorID);
+            txtMajorName.Text = majorClass.MajorName;
+        }
+
+        //确认修改
+        private void BtnEnterEditMajorName_Click(object sender, RoutedEventArgs e)
+        {
+            mtxtMajorName.Visibility = Visibility.Collapsed;
+            if (string.IsNullOrEmpty(txtMajorName.Text))
+            {
+                mtxtMajorName.Visibility = Visibility.Visible;
+            }
+
+            MajorClass majorClass = new MajorClass();
+            majorClass.MajorID = MajorID;
+
+            Hashtable ht = new Hashtable();
+            ht.Add("MajorName", SqlStringConstructor.GetQuotedString(txtMajorName.Text));
+
+            majorClass.Update(ht);
 
 
-        //    int departmentID = Convert.ToInt32(Request.QueryString["DepartmentID"]);
+            //更新固定资产表里面的信息
+            Hashtable ht1 = new Hashtable();
+            string where = "";
 
-        //    Department department = new Department();
-        //    department.LoadData(departmentID);
+            ht1.Add("MajorName", SqlStringConstructor.GetQuotedString(txtMajorName.Text));                  //固定资产查询
 
-        //    DivisionID.Text = department.DivisionID.ToString();
-        //    DepartmentName.Text = department.DepartmentName;
-        //}
+            where = " Where MajorID=" + MajorID;
+            FixedAsset.Update(ht1, where);
+
+
+            MessageBox.Show("修改资产一级类别成功！", "成功", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+        #endregion
+
 
     }
 

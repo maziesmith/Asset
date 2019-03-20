@@ -2140,14 +2140,217 @@
                                         <Metro:MetroTextBlock Grid.Column="0" Grid.Row="1" Text="所属事业部" HorizontalAlignment="Right" Margin="0,0,10,0" VerticalAlignment="Center"/>
 
                                         <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Horizontal">
-                                            <TextBox x:Name="txtDivisionName1" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0" Width="200" />
-                                            <Metro:MetroTextBlock x:Name="mtxtDivisionName1" VerticalAlignment="Center" Text="部门名称" HorizontalAlignment="Left" Margin="10,0,0,0" Foreground="Red" Visibility="Collapsed"/>
+                                            <TextBox x:Name="txtEditDepartmentName" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0" Width="200" />
+                                            <Metro:MetroTextBlock x:Name="mtxtEditDepartmentName" VerticalAlignment="Center" Text="请输入部门名称" HorizontalAlignment="Left" Margin="10,0,0,0" Foreground="Red" Visibility="Collapsed"/>
                                         </StackPanel>
                                         <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal">
                                             <ComboBox x:Name="cbxDivisionName" IsEditable="True" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0" Width="200" />
-                                            <Metro:MetroTextBlock VerticalAlignment="Center" Text="部门名称" HorizontalAlignment="Left" Margin="10,0,0,0" Foreground="Red" Visibility="Collapsed"/>
+                                            <Metro:MetroTextBlock x:Name="mtxtDivisionName" VerticalAlignment="Center" Text="请选择事业部" HorizontalAlignment="Left" Margin="10,0,0,0" Foreground="Red" Visibility="Collapsed"/>
                                         </StackPanel>
-                                        <Metro:MetroButton x:Name="btnEnterEditDivisionName1" Grid.Column="1" Grid.Row="2" MetroButtonState="None" Content="确认修改" Margin="5,10,10,0" HorizontalAlignment="Left" VerticalAlignment="Top" Click="BtnEnterEditDivisionName_Click"/>
+                                        <Metro:MetroButton x:Name="btnEnterEditDivision" Grid.Column="1" Grid.Row="2" MetroButtonState="None" Content="确认修改" Margin="5,10,10,0" HorizontalAlignment="Left" VerticalAlignment="Top" Click="BtnEnterEditDivision_Click"/>
+
+                                    </Grid>
+                                </Metro:MetroScrollViewer>
+                            </Grid>
+                        </Metro:MetroTabItem>
+                        <Metro:MetroTabItem x:Name="tabpManageMajorClass" Header="管理资产一级类别" Margin="-1,0,-14,0">
+                            <Grid>
+                                <Metro:MetroScrollViewer>
+                                    <StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Metro:MetroTextBox x:Name="txtMajorClassName" Text="" Title="资产一级类别名称" InputHint="请输入资产一级类别名称" Margin="30,0,40,0" VerticalAlignment="Center" Width="400"/>
+                                            <Metro:MetroButton x:Name="btEnterAddMajorClass" MetroButtonState="None" Content="确认添加" Margin="0,0,10,0" Click="BtEnterAddMajorClass_Click" />
+                                        </StackPanel>
+                                        <StackPanel>
+                                            <DataGrid x:Name="dtgMajorClass" Margin="3" AutoGenerateColumns="False" AlternatingRowBackground="#F4F4F4" CanUserAddRows="False" HeadersVisibility="Column">
+                                                <DataGrid.Columns>
+                                                    <DataGridTextColumn Binding="{Binding MajorID}" ClipboardContentBinding="{x:Null}" Header="资产一级类别ID" Width="200"/>
+                                                    <DataGridTextColumn Binding="{Binding MajorName}" ClipboardContentBinding="{x:Null}" Header="资产一级类别名称" Width="200"/>
+                                                    <DataGridTextColumn Binding="{Binding AddTime}" ClipboardContentBinding="{x:Null}" Header="增加时间" Width="200"/>
+                                                    <DataGridTemplateColumn Header="操作"  Width="200">
+                                                        <DataGridTemplateColumn.CellTemplate>
+                                                            <DataTemplate>
+                                                                <StackPanel Orientation="Horizontal">
+                                                                    <Button x:Name="btEditMajorClass" Content="编辑" Margin="10,0,5,0" Click="BtEditMajorClass_Click" >
+                                                                        <Button.Template>
+                                                                            <ControlTemplate TargetType="{x:Type Button}">
+                                                                                <TextBlock TextDecorations="Underline" x:Name="btnInput" ><InlineUIContainer>  
+                                                                                        <ContentPresenter />
+                                                                                    </InlineUIContainer></TextBlock>
+                                                                            </ControlTemplate>
+                                                                        </Button.Template>
+                                                                        <Button.Style>
+                                                                            <Style TargetType="{x:Type Button}">
+                                                                                <Setter Property="Foreground" Value="Blue" />
+                                                                                <Style.Triggers>
+                                                                                    <Trigger Property="IsMouseOver" Value="true">
+                                                                                        <Setter Property="Foreground" Value="Red" />
+                                                                                    </Trigger>
+                                                                                </Style.Triggers>
+                                                                            </Style>
+                                                                        </Button.Style>
+                                                                    </Button>
+                                                                    <Button x:Name="btDeleteMajorClass" Content="删除" Margin="10,0,5,0" Click="BtDeleteMajorClass_Click">
+                                                                        <Button.Template>
+                                                                            <ControlTemplate TargetType="{x:Type Button}">
+                                                                                <TextBlock TextDecorations="Underline"><InlineUIContainer>  
+                                                                                        <ContentPresenter />
+                                                                                    </InlineUIContainer></TextBlock>
+                                                                            </ControlTemplate>
+                                                                        </Button.Template>
+                                                                        <Button.Style>
+                                                                            <Style TargetType="{x:Type Button}">
+                                                                                <Setter Property="Foreground" Value="Blue" />
+                                                                                <Style.Triggers>
+                                                                                    <Trigger Property="IsMouseOver" Value="true">
+                                                                                        <Setter Property="Foreground" Value="Red" />
+                                                                                    </Trigger>
+                                                                                </Style.Triggers>
+                                                                            </Style>
+                                                                        </Button.Style>
+                                                                    </Button>
+                                                                </StackPanel>
+                                                            </DataTemplate>
+                                                        </DataGridTemplateColumn.CellTemplate>
+                                                    </DataGridTemplateColumn>
+                                                </DataGrid.Columns>
+                                            </DataGrid>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </Metro:MetroScrollViewer>
+                            </Grid>
+                        </Metro:MetroTabItem>
+                        <Metro:MetroTabItem x:Name="tabpEditMajorClass" Header="修改资产一级类别">
+                            <Grid>
+                                <Metro:MetroScrollViewer>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="50*"/>
+                                            <ColumnDefinition Width="100*"/>
+                                            <ColumnDefinition Width="100*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="50" />
+                                            <RowDefinition Height="50" />
+                                        </Grid.RowDefinitions>
+                                        <Metro:MetroCanvasGrid  Grid.Column="0" Grid.Row="0" Margin="5" GridOpacity="0.5" IsApplyTheme="True" Viewport="0 0 20 20" CornerRadius="10" />
+
+                                        <Metro:MetroTextBlock Grid.Column="0" Grid.Row="0" Text="资产一级类别名称" HorizontalAlignment="Right" Margin="0,0,10,0" VerticalAlignment="Center"/>
+
+                                        <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Horizontal">
+                                            <TextBox x:Name="txtMajorName" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0" Width="200" />
+                                            <Metro:MetroTextBlock x:Name="mtxtMajorName" VerticalAlignment="Center" Text="请输入资产一级类别名称" HorizontalAlignment="Left" Margin="10,0,0,0" Foreground="Red" Visibility="Collapsed"/>
+                                        </StackPanel>
+
+                                        <Metro:MetroButton x:Name="btnEnterEditMajorName" Grid.Column="1" Grid.Row="1" MetroButtonState="None" Content="确认修改" Margin="5,10,10,0" HorizontalAlignment="Left" VerticalAlignment="Top" Click="BtnEnterEditMajorName_Click"/>
+
+                                    </Grid>
+                                </Metro:MetroScrollViewer>
+                            </Grid>
+                        </Metro:MetroTabItem>
+                        <Metro:MetroTabItem x:Name="tabpManageSubClass" Header="管理资产二级类别">
+                            <Grid>
+                                <Metro:MetroScrollViewer>
+                                    <StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Metro:MetroTextBlock Text="所属资产一级类别" Opacity="0.65" VerticalAlignment="Center" Margin="30,0,10,0"/>
+                                            <ComboBox VerticalAlignment="Center" IsEditable="True" Width="100" HorizontalAlignment="Left" Margin="0,0,20,0" Text="请选择一级类别"/>
+                                            <Metro:MetroTextBox x:Name="txtDepartmentName1" Text="" Title="资产二级类别名称" InputHint="请输入事业部名称" Margin="0,0,20,0" VerticalAlignment="Center" Width="400"/>
+                                            <Metro:MetroTextBlock Text="单位" Opacity="0.65" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                                            <ComboBox VerticalAlignment="Center" IsEditable="True" Width="50" HorizontalAlignment="Left" Margin="0,0,10,0" Text="请选择单位"/>
+                                            <Metro:MetroTextBox Text="" Title="使用年限" InputHint="请输入事业部名称" Margin="0,0,20,0" VerticalAlignment="Center" Width="150"/>
+                                            <Metro:MetroTextBox Text="" Title="折旧率" InputHint="请输入事业部名称" Margin="0,0,20,0" VerticalAlignment="Center" Width="150"/>
+                                            <Metro:MetroButton x:Name="btEnterAddDepartment1" MetroButtonState="None" Content="确认添加" Margin="0,0,10,0" Click="BtEnterAddDepartment_Click"/>
+                                        </StackPanel>
+                                        <StackPanel>
+                                            <DataGrid x:Name="dtgDepartment1" Margin="3" AutoGenerateColumns="False" AlternatingRowBackground="#F4F4F4" CanUserAddRows="False" HeadersVisibility="Column">
+                                                <DataGrid.Columns>
+                                                    <DataGridTextColumn Binding="{Binding DepartmentID}" ClipboardContentBinding="{x:Null}" Header="部门ID" Width="200"/>
+                                                    <DataGridTextColumn Binding="{Binding DepartmentID}" ClipboardContentBinding="{x:Null}" Header="部门名称" Width="200"/>
+                                                    <DataGridTextColumn Binding="{Binding DivisionName}" ClipboardContentBinding="{x:Null}" Header="所属事业部" Width="200"/>
+                                                    <DataGridTextColumn Binding="{Binding AddTime}" ClipboardContentBinding="{x:Null}" Header="增加时间" Width="200"/>
+                                                    <DataGridTemplateColumn Header="操作"  Width="200">
+                                                        <DataGridTemplateColumn.CellTemplate>
+                                                            <DataTemplate>
+                                                                <StackPanel Orientation="Horizontal">
+                                                                    <Button x:Name="btEditDepartment" Content="编辑" Margin="10,0,5,0" Click="BtEditDepartment_Click" >
+                                                                        <Button.Template>
+                                                                            <ControlTemplate TargetType="{x:Type Button}">
+                                                                                <TextBlock TextDecorations="Underline" x:Name="btnInput" ><InlineUIContainer>  
+                                                                                        <ContentPresenter />
+                                                                                    </InlineUIContainer></TextBlock>
+                                                                            </ControlTemplate>
+                                                                        </Button.Template>
+                                                                        <Button.Style>
+                                                                            <Style TargetType="{x:Type Button}">
+                                                                                <Setter Property="Foreground" Value="Blue" />
+                                                                                <Style.Triggers>
+                                                                                    <Trigger Property="IsMouseOver" Value="true">
+                                                                                        <Setter Property="Foreground" Value="Red" />
+                                                                                    </Trigger>
+                                                                                </Style.Triggers>
+                                                                            </Style>
+                                                                        </Button.Style>
+                                                                    </Button>
+                                                                    <Button x:Name="btDeleteDepartment" Content="删除" Margin="10,0,5,0" Click="BtDeleteDepartment_Click" >
+                                                                        <Button.Template>
+                                                                            <ControlTemplate TargetType="{x:Type Button}">
+                                                                                <TextBlock TextDecorations="Underline"><InlineUIContainer>  
+                                                                                        <ContentPresenter />
+                                                                                    </InlineUIContainer></TextBlock>
+                                                                            </ControlTemplate>
+                                                                        </Button.Template>
+                                                                        <Button.Style>
+                                                                            <Style TargetType="{x:Type Button}">
+                                                                                <Setter Property="Foreground" Value="Blue" />
+                                                                                <Style.Triggers>
+                                                                                    <Trigger Property="IsMouseOver" Value="true">
+                                                                                        <Setter Property="Foreground" Value="Red" />
+                                                                                    </Trigger>
+                                                                                </Style.Triggers>
+                                                                            </Style>
+                                                                        </Button.Style>
+                                                                    </Button>
+                                                                </StackPanel>
+                                                            </DataTemplate>
+                                                        </DataGridTemplateColumn.CellTemplate>
+                                                    </DataGridTemplateColumn>
+                                                </DataGrid.Columns>
+                                            </DataGrid>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </Metro:MetroScrollViewer>
+                            </Grid>
+                        </Metro:MetroTabItem>
+                        <Metro:MetroTabItem x:Name="tabpEditDepartment_Copy" Header="修改资产二级类别">
+                            <Grid>
+                                <Metro:MetroScrollViewer>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="50*"/>
+                                            <ColumnDefinition Width="100*"/>
+                                            <ColumnDefinition Width="100*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="50" />
+                                            <RowDefinition Height="50" />
+                                            <RowDefinition Height="50" />
+                                        </Grid.RowDefinitions>
+                                        <Metro:MetroCanvasGrid  Grid.Column="0" Grid.Row="0" Margin="5" GridOpacity="0.5" IsApplyTheme="True" Viewport="0 0 20 20" CornerRadius="10" />
+                                        <Metro:MetroCanvasGrid  Grid.Column="0" Grid.Row="1" Margin="5" GridOpacity="0.5" IsApplyTheme="True" Viewport="0 0 20 20" CornerRadius="10" />
+
+                                        <Metro:MetroTextBlock Grid.Column="0" Grid.Row="0" Text="部门名称" HorizontalAlignment="Right" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                        <Metro:MetroTextBlock Grid.Column="0" Grid.Row="1" Text="所属事业部" HorizontalAlignment="Right" Margin="0,0,10,0" VerticalAlignment="Center"/>
+
+                                        <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Horizontal">
+                                            <TextBox x:Name="txtEditDepartmentName1" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0" Width="200" />
+                                            <Metro:MetroTextBlock x:Name="mtxtEditDepartmentName1" VerticalAlignment="Center" Text="请输入部门名称" HorizontalAlignment="Left" Margin="10,0,0,0" Foreground="Red" Visibility="Collapsed"/>
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal">
+                                            <ComboBox x:Name="cbxDivisionName1" IsEditable="True" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0" Width="200" />
+                                            <Metro:MetroTextBlock x:Name="mtxtDivisionName1" VerticalAlignment="Center" Text="请选择事业部" HorizontalAlignment="Left" Margin="10,0,0,0" Foreground="Red" Visibility="Collapsed"/>
+                                        </StackPanel>
+                                        <Metro:MetroButton x:Name="btnEnterEditDivision1" Grid.Column="1" Grid.Row="2" MetroButtonState="None" Content="确认修改" Margin="5,10,10,0" HorizontalAlignment="Left" VerticalAlignment="Top" Click="BtnEnterEditDivision_Click"/>
 
                                     </Grid>
                                 </Metro:MetroScrollViewer>
