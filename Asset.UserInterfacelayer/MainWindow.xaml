@@ -2263,11 +2263,14 @@
                                             <Metro:MetroButton x:Name="btEnterAddDepartment1" MetroButtonState="None" Content="确认添加" Margin="0,0,10,0" Click="BtEnterAddDepartment_Click"/>
                                         </StackPanel>
                                         <StackPanel>
-                                            <DataGrid x:Name="dtgDepartment1" Margin="3" AutoGenerateColumns="False" AlternatingRowBackground="#F4F4F4" CanUserAddRows="False" HeadersVisibility="Column">
+                                            <DataGrid x:Name="dtgDepartment1" Margin="3" AutoGenerateColumns="True" AlternatingRowBackground="#F4F4F4" CanUserAddRows="False" HeadersVisibility="Column"  ColumnWidth="*">
                                                 <DataGrid.Columns>
-                                                    <DataGridTextColumn Binding="{Binding DepartmentID}" ClipboardContentBinding="{x:Null}" Header="部门ID" Width="200"/>
-                                                    <DataGridTextColumn Binding="{Binding DepartmentID}" ClipboardContentBinding="{x:Null}" Header="部门名称" Width="200"/>
-                                                    <DataGridTextColumn Binding="{Binding DivisionName}" ClipboardContentBinding="{x:Null}" Header="所属事业部" Width="200"/>
+                                                    <DataGridTextColumn Binding="{Binding SubID}" ClipboardContentBinding="{x:Null}" Header="二级类别ID" Width="200"/>
+                                                    <DataGridTextColumn Binding="{Binding SubName}" ClipboardContentBinding="{x:Null}" Header="二级类别名称" Width="200"/>
+                                                    <DataGridTextColumn Binding="{Binding MajorName}" ClipboardContentBinding="{x:Null}" Header="所属一级类别" Width="200"/>
+                                                    <DataGridTextColumn Binding="{Binding Units}" ClipboardContentBinding="{x:Null}" Header="单位" Width="200"/>
+                                                    <DataGridTextColumn Binding="{Binding UsefulLife}" ClipboardContentBinding="{x:Null}" Header="使用年限" Width="200"/>
+                                                    <DataGridTextColumn Binding="{Binding DepreciationRate}" ClipboardContentBinding="{x:Null}" Header="折旧率" Width="200"/>
                                                     <DataGridTextColumn Binding="{Binding AddTime}" ClipboardContentBinding="{x:Null}" Header="增加时间" Width="200"/>
                                                     <DataGridTemplateColumn Header="操作"  Width="200">
                                                         <DataGridTemplateColumn.CellTemplate>
