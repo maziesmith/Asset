@@ -5,7 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Asset"
         xmlns:Metro="clr-namespace:Arthas.Controls.Metro;assembly=Arthas"
-        xmlns:dxc="http://schemas.devexpress.com/winfx/2008/xaml/charts" xmlns:dxsps="http://schemas.devexpress.com/winfx/2008/xaml/spreadsheet" x:Name="mainWindow" x:Class="Asset.MainWindow"
+        xmlns:dxc="http://schemas.devexpress.com/winfx/2008/xaml/charts" 
+        xmlns:dxsps="http://schemas.devexpress.com/winfx/2008/xaml/spreadsheet" 
+        x:Name="mainWindow" 
+        x:Class="Asset.MainWindow"
         mc:Ignorable="d"
         Title="资产管理系统--未登录" d:DesignWidth="1600" d:DesignHeight="1200" MinWidth="1" MinHeight="1" BorderThickness="1" WindowStyle="None" Closing="MetroWindow_Closing">
     <Window.Resources>
@@ -75,26 +78,24 @@
                                     <StackPanel>
                                         <Metro:MetroExpander x:Name="treeMenuManageFixedAssets" Header="资产查询" Icon="Resources/tabIcon.png" Hint="1 / 100" Click="TreeMenuManageFixedAssets_Click"/>
                                         <Metro:MetroExpander x:Name="treeMenuAddFixedAssets" Header="资产新增" Icon="Resources/tabIcon.png" Click="TreeMenuAddFixedAssets_Click" />
-                                        <Metro:MetroExpander x:Name="treeMenuCheckNewFixedAssets" Header="审核新增资产" Icon="Resources/tabIcon.png" />
-                                        <Metro:MetroExpander x:Name="treeMenuCheckChangeFixedAssets" Header="审核异动资产" Icon="Resources/tabIcon.png" />
-                                        <Metro:MetroExpander x:Name="treeMenuCheckRepairFixedAssets" Header="审核维修资产" Icon="Resources/tabIcon.png" />
-                                        <Metro:MetroExpander x:Name="treeMenuCheckScrappedFixedAssets" Header="审核报废资产" Icon="Resources/tabIcon.png" />
-                                        <Metro:MetroExpander x:Name="treeMenuVolumeChanges" Header="批量异动资产" Icon="Resources/tabIcon.png" />
-                                        <Metro:MetroExpander x:Name="treeMenuMyFixedAssets" Header="我管理的资产" Icon="Resources/tabIcon.png" />
-                                        <Metro:MetroExpander x:Name="treeMenuManageDivision" Header="管理事业部" Icon="Resources/tabIcon.png" />
-                                        <Metro:MetroExpander x:Name="treeMenuManageDepartment" Header="管理部门" Icon="Resources/tabIcon.png" />
-                                        <Metro:MetroExpander x:Name="treeMenuManageMajorclass" Header="管理资产一级类别" Icon="Resources/tabIcon.png" />
-                                        <Metro:MetroExpander x:Name="treeMenuManageSubclass" Header="管理资产二级类别" Icon="Resources/tabIcon.png" />
+                                        <Metro:MetroExpander x:Name="treeMenuVolumeChanges" Header="批量异动资产" Icon="Resources/tabIcon.png" Click="TreeMenuVolumeChanges_Click" />
+                                        <Metro:MetroExpander x:Name="treeMenuMyFixedAssets" Header="我管理的资产" Icon="Resources/tabIcon.png" Click="TreeMenuMyFixedAssets_Click" />
+                                        <Metro:MetroExpander x:Name="treeMenuManageMajorclass" Header="管理资产一级类别" Icon="Resources/tabIcon.png" Click="TreeMenuManageMajorclass_Click" />
+                                        <Metro:MetroExpander x:Name="treeMenuManageSubclass" Header="管理资产二级类别" Icon="Resources/tabIcon.png" Click="TreeMenuManageSubclass_Click" />
                                     </StackPanel>
                                 </Metro:MetroExpander>
-                                <Metro:MetroExpander Header="用户管理" IsExpanded="False" >
+                                <Metro:MetroExpander Header="审核资产" IsExpanded="False" >
                                     <StackPanel>
-                                        <Metro:MetroExpander x:Name="treeMenuManageUser" Header="管理用户" Icon="Resources/tabIcon.png" />
+                                        <Metro:MetroExpander x:Name="treeMenuCheckNewFixedAssets" Header="审核新增资产" Icon="Resources/tabIcon.png" Click="TreeMenuCheckNewFixedAssets_Click" />
+                                        <Metro:MetroExpander x:Name="treeMenuCheckChangeFixedAssets" Header="审核异动资产" Icon="Resources/tabIcon.png" Click="TreeMenuCheckChangeFixedAssets_Click" />
+                                        <Metro:MetroExpander x:Name="treeMenuCheckRepairFixedAssets" Header="审核维修资产" Icon="Resources/tabIcon.png" Click="TreeMenuCheckRepairFixedAssets_Click" />
+                                        <Metro:MetroExpander x:Name="treeMenuCheckScrappedFixedAssets" Header="审核报废资产" Icon="Resources/tabIcon.png" Click="TreeMenuCheckScrappedFixedAssets_Click" />
                                     </StackPanel>
                                 </Metro:MetroExpander>
-                                <Metro:MetroExpander Header="个人设置" IsExpanded="False" >
+                                <Metro:MetroExpander Header="管理部门" IsExpanded="False" >
                                     <StackPanel>
-                                        <Metro:MetroExpander  x:Name="treeMenuModifyProfile" Header="修改我的资料" Icon="Resources/tabIcon.png" />
+                                        <Metro:MetroExpander x:Name="treeMenuManageDivision" Header="管理事业部" Icon="Resources/tabIcon.png" Click="TreeMenuManageDivision_Click" />
+                                        <Metro:MetroExpander x:Name="treeMenuManageDepartment" Header="管理部门" Icon="Resources/tabIcon.png" Click="TreeMenuManageDepartment_Click" />
                                     </StackPanel>
                                 </Metro:MetroExpander>
                             </StackPanel>
@@ -2049,7 +2050,7 @@
                                 </Metro:MetroScrollViewer>
                             </Grid>
                         </Metro:MetroTabItem>
-                        <Metro:MetroTabItem x:Name="tabpManageDepartment" Header="管理部门" Margin="-1,0,-17,0">
+                        <Metro:MetroTabItem x:Name="tabpManageDepartment" Header="管理部门">
                             <Grid>
                                 <Metro:MetroScrollViewer>
                                     <StackPanel>
@@ -2254,16 +2255,16 @@
                                     <StackPanel>
                                         <StackPanel Orientation="Horizontal">
                                             <Metro:MetroTextBlock Text="所属资产一级类别" Opacity="0.65" VerticalAlignment="Center" Margin="30,0,10,0"/>
-                                            <ComboBox VerticalAlignment="Center" IsEditable="True" Width="100" HorizontalAlignment="Left" Margin="0,0,20,0" Text="请选择一级类别"/>
-                                            <Metro:MetroTextBox x:Name="txtDepartmentName1" Text="" Title="资产二级类别名称" InputHint="请输入事业部名称" Margin="0,0,20,0" VerticalAlignment="Center" Width="400"/>
+                                            <ComboBox x:Name="cbxMajor" VerticalAlignment="Center" IsEditable="True" Width="100" HorizontalAlignment="Left" Margin="0,0,20,0" Text="请选择一级类别"/>
+                                            <Metro:MetroTextBox x:Name="txtSubClassName" Text="" Title="资产二级类别名称" InputHint="请输入事业部名称" Margin="0,0,20,0" VerticalAlignment="Center" Width="400"/>
                                             <Metro:MetroTextBlock Text="单位" Opacity="0.65" VerticalAlignment="Center" Margin="0,0,10,0"/>
-                                            <ComboBox VerticalAlignment="Center" IsEditable="True" Width="50" HorizontalAlignment="Left" Margin="0,0,10,0" Text="请选择单位"/>
-                                            <Metro:MetroTextBox Text="" Title="使用年限" InputHint="请输入事业部名称" Margin="0,0,20,0" VerticalAlignment="Center" Width="150"/>
-                                            <Metro:MetroTextBox Text="" Title="折旧率" InputHint="请输入事业部名称" Margin="0,0,20,0" VerticalAlignment="Center" Width="150"/>
-                                            <Metro:MetroButton x:Name="btEnterAddDepartment1" MetroButtonState="None" Content="确认添加" Margin="0,0,10,0" Click="BtEnterAddDepartment_Click"/>
+                                            <ComboBox x:Name="cbxUnits" VerticalAlignment="Center" IsEditable="True" Width="50" HorizontalAlignment="Left" Margin="0,0,10,0" Text="请选择单位"/>
+                                            <Metro:MetroTextBox x:Name="txtUsefulLife" Text="" Title="使用年限" InputHint="请输入事业部名称" Margin="0,0,20,0" VerticalAlignment="Center" Width="150"/>
+                                            <Metro:MetroTextBox x:Name="txtDepreciationRate" Text="" Title="折旧率" InputHint="请输入事业部名称" Margin="0,0,20,0" VerticalAlignment="Center" Width="150"/>
+                                            <Metro:MetroButton x:Name="btEnterAddSunClass" MetroButtonState="None" Content="确认添加" Margin="0,0,10,0" Click="BtEnterAddSunClass_Click"/>
                                         </StackPanel>
                                         <StackPanel>
-                                            <DataGrid x:Name="dtgDepartment1" Margin="3" AutoGenerateColumns="True" AlternatingRowBackground="#F4F4F4" CanUserAddRows="False" HeadersVisibility="Column"  ColumnWidth="*">
+                                            <DataGrid x:Name="dtgSubClass" Margin="3" AutoGenerateColumns="True" AlternatingRowBackground="#F4F4F4" CanUserAddRows="False" HeadersVisibility="Column"  ColumnWidth="*">
                                                 <DataGrid.Columns>
                                                     <DataGridTextColumn Binding="{Binding SubID}" ClipboardContentBinding="{x:Null}" Header="二级类别ID" Width="200"/>
                                                     <DataGridTextColumn Binding="{Binding SubName}" ClipboardContentBinding="{x:Null}" Header="二级类别名称" Width="200"/>
@@ -2276,7 +2277,7 @@
                                                         <DataGridTemplateColumn.CellTemplate>
                                                             <DataTemplate>
                                                                 <StackPanel Orientation="Horizontal">
-                                                                    <Button x:Name="btEditDepartment" Content="编辑" Margin="10,0,5,0" Click="BtEditDepartment_Click" >
+                                                                    <Button x:Name="btEditSubClass" Content="编辑" Margin="10,0,5,0" Click="BtEditSubClass_Click" >
                                                                         <Button.Template>
                                                                             <ControlTemplate TargetType="{x:Type Button}">
                                                                                 <TextBlock TextDecorations="Underline" x:Name="btnInput" ><InlineUIContainer>  
@@ -2295,7 +2296,7 @@
                                                                             </Style>
                                                                         </Button.Style>
                                                                     </Button>
-                                                                    <Button x:Name="btDeleteDepartment" Content="删除" Margin="10,0,5,0" Click="BtDeleteDepartment_Click" >
+                                                                    <Button x:Name="btDeleteSubClass" Content="删除" Margin="10,0,5,0" Click="BtDeleteSubClass_Click" >
                                                                         <Button.Template>
                                                                             <ControlTemplate TargetType="{x:Type Button}">
                                                                                 <TextBlock TextDecorations="Underline"><InlineUIContainer>  
@@ -2325,7 +2326,7 @@
                                 </Metro:MetroScrollViewer>
                             </Grid>
                         </Metro:MetroTabItem>
-                        <Metro:MetroTabItem x:Name="tabpEditDepartment_Copy" Header="修改资产二级类别">
+                        <Metro:MetroTabItem x:Name="tabpEditSubClass" Header="修改资产二级类别">
                             <Grid>
                                 <Metro:MetroScrollViewer>
                                     <Grid>
@@ -2338,23 +2339,45 @@
                                             <RowDefinition Height="50" />
                                             <RowDefinition Height="50" />
                                             <RowDefinition Height="50" />
+                                            <RowDefinition Height="50" />
+                                            <RowDefinition Height="50" />
+                                            <RowDefinition Height="50" />
                                         </Grid.RowDefinitions>
                                         <Metro:MetroCanvasGrid  Grid.Column="0" Grid.Row="0" Margin="5" GridOpacity="0.5" IsApplyTheme="True" Viewport="0 0 20 20" CornerRadius="10" />
                                         <Metro:MetroCanvasGrid  Grid.Column="0" Grid.Row="1" Margin="5" GridOpacity="0.5" IsApplyTheme="True" Viewport="0 0 20 20" CornerRadius="10" />
+                                        <Metro:MetroCanvasGrid  Grid.Column="0" Grid.Row="2" Margin="5" GridOpacity="0.5" IsApplyTheme="True" Viewport="0 0 20 20" CornerRadius="10" />
+                                        <Metro:MetroCanvasGrid  Grid.Column="0" Grid.Row="3" Margin="5" GridOpacity="0.5" IsApplyTheme="True" Viewport="0 0 20 20" CornerRadius="10" />
+                                        <Metro:MetroCanvasGrid  Grid.Column="0" Grid.Row="4" Margin="5" GridOpacity="0.5" IsApplyTheme="True" Viewport="0 0 20 20" CornerRadius="10" />
 
-                                        <Metro:MetroTextBlock Grid.Column="0" Grid.Row="0" Text="部门名称" HorizontalAlignment="Right" Margin="0,0,10,0" VerticalAlignment="Center"/>
-                                        <Metro:MetroTextBlock Grid.Column="0" Grid.Row="1" Text="所属事业部" HorizontalAlignment="Right" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                        <Metro:MetroTextBlock Grid.Column="0" Grid.Row="0" Text="所属资产一级类别" HorizontalAlignment="Right" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                        <Metro:MetroTextBlock Grid.Column="0" Grid.Row="1" Text="资产二级类别名称" HorizontalAlignment="Right" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                        <Metro:MetroTextBlock Grid.Column="0" Grid.Row="2" Text="单位" HorizontalAlignment="Right" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                        <Metro:MetroTextBlock Grid.Column="0" Grid.Row="3" Text="使用年限" HorizontalAlignment="Right" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                        <Metro:MetroTextBlock Grid.Column="0" Grid.Row="4" Text="折旧率" HorizontalAlignment="Right" Margin="0,0,10,0" VerticalAlignment="Center"/>
 
                                         <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Horizontal">
-                                            <TextBox x:Name="txtEditDepartmentName1" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0" Width="200" />
-                                            <Metro:MetroTextBlock x:Name="mtxtEditDepartmentName1" VerticalAlignment="Center" Text="请输入部门名称" HorizontalAlignment="Left" Margin="10,0,0,0" Foreground="Red" Visibility="Collapsed"/>
-                                        </StackPanel>
-                                        <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal">
-                                            <ComboBox x:Name="cbxDivisionName1" IsEditable="True" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0" Width="200" />
+                                            <ComboBox x:Name="cbxEditMajorID" IsEditable="True" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0" Width="200" />
                                             <Metro:MetroTextBlock x:Name="mtxtDivisionName1" VerticalAlignment="Center" Text="请选择事业部" HorizontalAlignment="Left" Margin="10,0,0,0" Foreground="Red" Visibility="Collapsed"/>
                                         </StackPanel>
-                                        <Metro:MetroButton x:Name="btnEnterEditDivision1" Grid.Column="1" Grid.Row="2" MetroButtonState="None" Content="确认修改" Margin="5,10,10,0" HorizontalAlignment="Left" VerticalAlignment="Top" Click="BtnEnterEditDivision_Click"/>
-
+                                        <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal">
+                                            <TextBox x:Name="txtEditSubName" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0" Width="200" />
+                                            <Metro:MetroTextBlock x:Name="mtxtEditDepartmentName1" VerticalAlignment="Center" Text="请输入部门名称" HorizontalAlignment="Left" Margin="10,0,0,0" Foreground="Red" Visibility="Collapsed"/>
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="1" Grid.Row="2" Orientation="Horizontal">
+                                            <ComboBox x:Name="cbxEditUnits" IsEditable="True" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0" Width="200" />
+                                            <Metro:MetroTextBlock VerticalAlignment="Center" Text="请选择事业部" HorizontalAlignment="Left" Margin="10,0,0,0" Foreground="Red" Visibility="Collapsed"/>
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="1" Grid.Row="3" Orientation="Horizontal">
+                                            <TextBox x:Name="txtEditUsefulLife" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0" Width="200" />
+                                            <Metro:MetroTextBlock VerticalAlignment="Center" Text=" 例：3" HorizontalAlignment="Left" Margin="10,0,0,0" Opacity="0.65"/>
+                                            <Metro:MetroTextBlock VerticalAlignment="Center" Text="请输入部门名称" HorizontalAlignment="Left" Margin="10,0,0,0" Foreground="Red" Visibility="Collapsed"/>
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="1" Grid.Row="4" Orientation="Horizontal">
+                                            <TextBox x:Name="txtEditDepreciationRate" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0" Width="200" />
+                                            <Metro:MetroTextBlock VerticalAlignment="Center" Text=" 例：0.03" HorizontalAlignment="Left" Margin="10,0,0,0" Opacity="0.65"/>
+                                            <Metro:MetroTextBlock VerticalAlignment="Center" Text="请输入部门名称" HorizontalAlignment="Left" Margin="10,0,0,0" Foreground="Red" Visibility="Collapsed"/>
+                                        </StackPanel>
+                                        <Metro:MetroButton x:Name="btnEnterEditSubClass" Grid.Column="1" Grid.Row="5" MetroButtonState="None" Content="确认修改" Margin="5,10,10,0" HorizontalAlignment="Left" VerticalAlignment="Top" Click="BtnEnterEditSubClass_Click"/>
                                     </Grid>
                                 </Metro:MetroScrollViewer>
                             </Grid>
@@ -2362,35 +2385,298 @@
                     </Metro:MetroTabControl>
                 </Grid>
             </Metro:MetroMenuTabItem>
-            <Metro:MetroMenuTabItem Header="用户管理" Icon="Resources/icon.png" IconMove="Resources/iconMove.png">
-                <Grid>
-                    <Metro:MetroWebBrowser x:Name="web1" Grid.Row="0" />
-                </Grid>
-            </Metro:MetroMenuTabItem>
-            <Metro:MetroMenuTabItem Header="个人设置" Icon="Resources/icon.png" IconMove="Resources/iconMove.png">
+            <Metro:MetroMenuTabItem x:Name="treeMenuManageUser" Header="用户管理" Icon="Resources/icon.png" IconMove="Resources/iconMove.png" >
                 <Grid>
                     <Metro:MetroScrollViewer>
                         <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="50*"/>
-                                <ColumnDefinition Width="100*"/>
-                                <ColumnDefinition Width="50*"/>
-                                <ColumnDefinition Width="100*"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="50" />
-                                <RowDefinition Height="50" />
-                                <RowDefinition Height="50" />
-                                <RowDefinition Height="50" />
-                                <RowDefinition Height="50" />
-                                <RowDefinition Height="50" />
-                                <RowDefinition Height="50" />
-                                <RowDefinition Height="50" />
-                                <RowDefinition Height="50" />
-                                <RowDefinition Height="100" />
-                                <RowDefinition Height="50" />
-                            </Grid.RowDefinitions>
+                            <Metro:MetroTabControl x:Name="metroTabControl1">
+                                <Metro:MetroTabItem x:Name="tabpManageUser" Header="管理用户">
+                                    <Grid>
+                                        <Metro:MetroScrollViewer>
+                                            <StackPanel>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Metro:MetroTextBox x:Name="txtKeyWord" Text="" Title="关键字" InputHint="请输入用户名或联系人或联系电话" PopupHint="请输入用户名或联系人或联系电话" Icon="Resources/editIcon.png" Margin="0,0,20,0" VerticalAlignment="Center"/>
+                                                    <Metro:MetroButton x:Name="btFindUser" MetroButtonState="None" Content="开始查询" Margin="0,0,10,0" Width="50" Height="20" VerticalAlignment="Center" Click="BtFindUser_Click" />
+                                                </StackPanel>
+                                                <StackPanel>
+                                                    <DataGrid x:Name="dtgUser" Margin="3" AutoGenerateColumns="False" AlternatingRowBackground="#F4F4F4" CanUserAddRows="False" HeadersVisibility="Column">
+                                                        <DataGrid.Columns>
+                                                            <DataGridTextColumn Binding="{Binding UserListID}" ClipboardContentBinding="{x:Null}" Header="用户ID"/>
+                                                            <DataGridTextColumn Binding="{Binding UserAccount}" ClipboardContentBinding="{x:Null}" Header="工号"/>
+                                                            <DataGridTextColumn Binding="{Binding UserPassword}" ClipboardContentBinding="{x:Null}" Header="密码"/>
+                                                            <DataGridTextColumn Binding="{Binding DivisionName}" ClipboardContentBinding="{x:Null}" Header="事业部"/>
+                                                            <DataGridTextColumn Binding="{Binding DepartmentName}" ClipboardContentBinding="{x:Null}" Header="部门名称"/>
+                                                            <DataGridTextColumn Binding="{Binding Contactor}" ClipboardContentBinding="{x:Null}" Header="联系人"/>
+                                                            <DataGridTextColumn Binding="{Binding JobPosition}" ClipboardContentBinding="{x:Null}" Header="职称"/>
+                                                            <DataGridTextColumn Binding="{Binding Tel}" ClipboardContentBinding="{x:Null}" Header="联系电话"/>
+                                                            <DataGridTextColumn Binding="{Binding lblIsAllowed}" ClipboardContentBinding="{x:Null}" Header="状态"/>
+                                                            <DataGridTemplateColumn Header="操作" >
+                                                                <DataGridTemplateColumn.CellTemplate>
+                                                                    <DataTemplate>
+                                                                        <StackPanel Orientation="Horizontal">
+                                                                            <Button x:Name="btPermission" Content="权限" Margin="10,0,5,0" Click="BtPermission_Click" >
+                                                                                <Button.Template>
+                                                                                    <ControlTemplate TargetType="{x:Type Button}">
+                                                                                        <TextBlock TextDecorations="Underline" x:Name="btnInput" ><InlineUIContainer>  
+                                                                                                <ContentPresenter />
+                                                                                            </InlineUIContainer></TextBlock>
+                                                                                    </ControlTemplate>
+                                                                                </Button.Template>
+                                                                                <Button.Style>
+                                                                                    <Style TargetType="{x:Type Button}">
+                                                                                        <Setter Property="Foreground" Value="Blue" />
+                                                                                        <Style.Triggers>
+                                                                                            <Trigger Property="IsMouseOver" Value="true">
+                                                                                                <Setter Property="Foreground" Value="Red" />
+                                                                                            </Trigger>
+                                                                                        </Style.Triggers>
+                                                                                    </Style>
+                                                                                </Button.Style>
+                                                                            </Button>
+                                                                            <Button x:Name="btEditUser" Content="修改" Margin="10,0,5,0" Click="BtEditUser_Click" >
+                                                                                <Button.Template>
+                                                                                    <ControlTemplate TargetType="{x:Type Button}">
+                                                                                        <TextBlock TextDecorations="Underline"><InlineUIContainer>  
+                                                                                                <ContentPresenter />
+                                                                                            </InlineUIContainer></TextBlock>
+                                                                                    </ControlTemplate>
+                                                                                </Button.Template>
+                                                                                <Button.Style>
+                                                                                    <Style TargetType="{x:Type Button}">
+                                                                                        <Setter Property="Foreground" Value="Blue" />
+                                                                                        <Style.Triggers>
+                                                                                            <Trigger Property="IsMouseOver" Value="true">
+                                                                                                <Setter Property="Foreground" Value="Red" />
+                                                                                            </Trigger>
+                                                                                        </Style.Triggers>
+                                                                                    </Style>
+                                                                                </Button.Style>
+                                                                            </Button>
+                                                                            <Button x:Name="btEnable" Content="启用" Margin="10,0,5,0" Click="BtEnable_Click" >
+                                                                                <Button.Template>
+                                                                                    <ControlTemplate TargetType="{x:Type Button}">
+                                                                                        <TextBlock TextDecorations="Underline"><InlineUIContainer>  
+                                                                                                <ContentPresenter />
+                                                                                            </InlineUIContainer></TextBlock>
+                                                                                    </ControlTemplate>
+                                                                                </Button.Template>
+                                                                                <Button.Style>
+                                                                                    <Style TargetType="{x:Type Button}">
+                                                                                        <Setter Property="Foreground" Value="Blue" />
+                                                                                        <Style.Triggers>
+                                                                                            <Trigger Property="IsMouseOver" Value="true">
+                                                                                                <Setter Property="Foreground" Value="Red" />
+                                                                                            </Trigger>
+                                                                                        </Style.Triggers>
+                                                                                    </Style>
+                                                                                </Button.Style>
+                                                                            </Button>
+                                                                            <Button x:Name="btDisable" Content="禁用" Margin="10,0,5,0" Click="BtDisable_Click" >
+                                                                                <Button.Template>
+                                                                                    <ControlTemplate TargetType="{x:Type Button}">
+                                                                                        <TextBlock TextDecorations="Underline"><InlineUIContainer>  
+                                                                                                <ContentPresenter />
+                                                                                            </InlineUIContainer></TextBlock>
+                                                                                    </ControlTemplate>
+                                                                                </Button.Template>
+                                                                                <Button.Style>
+                                                                                    <Style TargetType="{x:Type Button}">
+                                                                                        <Setter Property="Foreground" Value="Blue" />
+                                                                                        <Style.Triggers>
+                                                                                            <Trigger Property="IsMouseOver" Value="true">
+                                                                                                <Setter Property="Foreground" Value="Red" />
+                                                                                            </Trigger>
+                                                                                        </Style.Triggers>
+                                                                                    </Style>
+                                                                                </Button.Style>
+                                                                            </Button>
+                                                                        </StackPanel>
+                                                                    </DataTemplate>
+                                                                </DataGridTemplateColumn.CellTemplate>
+                                                            </DataGridTemplateColumn>
+                                                        </DataGrid.Columns>
+                                                    </DataGrid>
+                                                </StackPanel>
+                                            </StackPanel>
+                                        </Metro:MetroScrollViewer>
+                                    </Grid>
+                                </Metro:MetroTabItem>
+                                <Metro:MetroTabItem x:Name="tabpUserPermission" Header="用户权限" Visibility="Collapsed">
+                                    <Grid>
+                                        <Metro:MetroScrollViewer>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="25*"/>
+                                                    <ColumnDefinition Width="100*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="50" />
+                                                    <RowDefinition Height="50" />
+                                                    <RowDefinition Height="50" />
+                                                    <RowDefinition Height="50" />
+                                                </Grid.RowDefinitions>
+                                                <Metro:MetroCanvasGrid  Grid.Column="0" Grid.Row="0" Margin="5" GridOpacity="0.5" IsApplyTheme="True" Viewport="0 0 20 20" CornerRadius="10" />
+                                                <Metro:MetroCanvasGrid  Grid.Column="0" Grid.Row="1" Margin="5" GridOpacity="0.5" IsApplyTheme="True" Viewport="0 0 20 20" CornerRadius="10" />
+                                                <Metro:MetroCanvasGrid  Grid.Column="0" Grid.Row="2" Margin="5" GridOpacity="0.5" IsApplyTheme="True" Viewport="0 0 20 20" CornerRadius="10" />
 
+                                                <Metro:MetroTextBlock Grid.Column="0" Grid.Row="0" Text="资产管理" HorizontalAlignment="Right" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                                <Metro:MetroTextBlock Grid.Column="0" Grid.Row="1" Text="用户管理" HorizontalAlignment="Right" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                                <Metro:MetroTextBlock Grid.Column="0" Grid.Row="2" Text="个人设置" HorizontalAlignment="Right" Margin="0,0,10,0" VerticalAlignment="Center"/>
+
+                                                <StackPanel Grid.Column="1" Grid.Row="0">
+                                                    <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Horizontal">
+                                                        <Metro:MetroSwitch x:Name="chkManageFixedAssets" Content="资产查询" IsChecked="False" Margin="0,0,20,0" TextHorizontalAlignment="Right" />
+                                                        <Metro:MetroSwitch x:Name="chkAddFixedAssets" Content="资产新增" IsChecked="False" Margin="0,0,20,0" TextHorizontalAlignment="Right" />
+                                                        <Metro:MetroSwitch x:Name="chkCheckNewFixedAssets" Content="审核新增资产" IsChecked="False" Margin="0,0,20,0" TextHorizontalAlignment="Right" />
+                                                        <Metro:MetroSwitch x:Name="chkCheckChangeFixedAssets" Content="审核异动资产" IsChecked="False" Margin="0,0,20,0" TextHorizontalAlignment="Right" />
+                                                        <Metro:MetroSwitch x:Name="chkCheckRepairFixedAssets" Content="审核维修资产" IsChecked="False" Margin="0,0,20,0" TextHorizontalAlignment="Right" />
+                                                        <Metro:MetroSwitch x:Name="chkCheckScrappedFixedAssets" Content="审核报废资产" IsChecked="False" Margin="0,0,20,0" TextHorizontalAlignment="Right" />
+                                                    </StackPanel>
+                                                    <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Horizontal">
+                                                        <Metro:MetroSwitch x:Name="chkVolumeChanges" Content="批量异动资产" IsChecked="False" Margin="0,0,20,0" TextHorizontalAlignment="Right" />
+                                                        <Metro:MetroSwitch x:Name="chkMyFixedAssets" Content="我管理的资产" IsChecked="False" Margin="0,0,20,0" TextHorizontalAlignment="Right" />
+                                                        <Metro:MetroSwitch x:Name="chkManageDivision" Content="管理事业部" IsChecked="False" Margin="0,0,20,0" TextHorizontalAlignment="Right" />
+                                                        <Metro:MetroSwitch x:Name="chkManageDepartment" Content="管理部门" IsChecked="False" Margin="0,0,20,0" TextHorizontalAlignment="Right" />
+                                                        <Metro:MetroSwitch x:Name="chkManageMajorclass" Content="管理一级类别" IsChecked="False" Margin="0,0,20,0" TextHorizontalAlignment="Right" />
+                                                        <Metro:MetroSwitch x:Name="chkManageSubclass" Content="管理二级类别" IsChecked="False" Margin="0,0,20,0" TextHorizontalAlignment="Right" />
+                                                    </StackPanel>
+                                                </StackPanel>
+                                                <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal">
+                                                    <Metro:MetroSwitch x:Name="chkManageUser" Content="管理用户" IsChecked="False" Margin="0,0,20,0" TextHorizontalAlignment="Right" />
+                                                </StackPanel>
+                                                <StackPanel Grid.Column="1" Grid.Row="2" Orientation="Horizontal">
+                                                    <Metro:MetroSwitch x:Name="chkModifyProfile" Content="修改资料" IsChecked="False" Margin="0,0,20,0" TextHorizontalAlignment="Right" />
+                                                </StackPanel>
+                                                <Metro:MetroButton x:Name="btnEnterUserPermission" Grid.Column="1" Grid.Row="3" MetroButtonState="None" Content="确认修改" Margin="5,10,10,0" HorizontalAlignment="Left" VerticalAlignment="Top" Click="BtnEnterUserPermission_Click"/>
+                                            </Grid>
+                                        </Metro:MetroScrollViewer>
+                                    </Grid>
+                                </Metro:MetroTabItem>
+                                <Metro:MetroTabItem x:Name="tabpEditUser" Header="修改用户资料" Visibility="Collapsed">
+                                    <Grid>
+                                        <Metro:MetroScrollViewer>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="50*"/>
+                                                    <ColumnDefinition Width="100*"/>
+                                                    <ColumnDefinition Width="100*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="50" />
+                                                    <RowDefinition Height="50" />
+                                                    <RowDefinition Height="50" />
+                                                    <RowDefinition Height="50" />
+                                                    <RowDefinition Height="50" />
+                                                    <RowDefinition Height="50" />
+                                                    <RowDefinition Height="50" />
+                                                </Grid.RowDefinitions>
+                                                <Metro:MetroCanvasGrid  Grid.Column="0" Grid.Row="0" Margin="5" GridOpacity="0.5" IsApplyTheme="True" Viewport="0 0 20 20" CornerRadius="10" />
+                                                <Metro:MetroCanvasGrid  Grid.Column="0" Grid.Row="1" Margin="5" GridOpacity="0.5" IsApplyTheme="True" Viewport="0 0 20 20" CornerRadius="10" />
+                                                <Metro:MetroCanvasGrid  Grid.Column="0" Grid.Row="2" Margin="5" GridOpacity="0.5" IsApplyTheme="True" Viewport="0 0 20 20" CornerRadius="10" />
+                                                <Metro:MetroCanvasGrid  Grid.Column="0" Grid.Row="3" Margin="5" GridOpacity="0.5" IsApplyTheme="True" Viewport="0 0 20 20" CornerRadius="10" />
+                                                <Metro:MetroCanvasGrid  Grid.Column="0" Grid.Row="4" Margin="5" GridOpacity="0.5" IsApplyTheme="True" Viewport="0 0 20 20" CornerRadius="10" />
+                                                <Metro:MetroCanvasGrid  Grid.Column="0" Grid.Row="5" Margin="5" GridOpacity="0.5" IsApplyTheme="True" Viewport="0 0 20 20" CornerRadius="10" />
+
+                                                <Metro:MetroTextBlock Grid.Column="0" Grid.Row="0" Text="工号" HorizontalAlignment="Right" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                                <Metro:MetroTextBlock Grid.Column="0" Grid.Row="1" Text="密码" HorizontalAlignment="Right" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                                <Metro:MetroTextBlock Grid.Column="0" Grid.Row="2" Text="真实姓名" HorizontalAlignment="Right" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                                <Metro:MetroTextBlock Grid.Column="0" Grid.Row="3" Text="所属部门" HorizontalAlignment="Right" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                                <Metro:MetroTextBlock Grid.Column="0" Grid.Row="4" Text="职称" HorizontalAlignment="Right" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                                <Metro:MetroTextBlock Grid.Column="0" Grid.Row="5" Text="联系电话" HorizontalAlignment="Right" Margin="0,0,10,0" VerticalAlignment="Center"/>
+
+                                                <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Horizontal">
+                                                    <Metro:MetroTextBlock x:Name="mtxtShowUserAccount" VerticalAlignment="Center" Text="" HorizontalAlignment="Left" Margin="10,0,0,0" />
+                                                </StackPanel>
+                                                <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal">
+                                                    <TextBox x:Name="txtUserPassword" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0" Width="200" />
+                                                    <Metro:MetroTextBlock x:Name="mtxtEditDepartmentName2" VerticalAlignment="Center" Text="密码输入错误。密码长度为4-20位，可使用的字符为（A-Z a-z 0-9 ）以及下划线（_），注意不要使用空格。" HorizontalAlignment="Left" Margin="10,0,0,0" Foreground="Red" Visibility="Collapsed"/>
+                                                </StackPanel>
+                                                <StackPanel Grid.Column="1" Grid.Row="2" Orientation="Horizontal">
+                                                    <TextBox x:Name="txtContactor" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0" Width="200" />
+                                                    <Metro:MetroTextBlock VerticalAlignment="Center" Text="请输入联系人" HorizontalAlignment="Left" Margin="10,0,0,0" Foreground="Red" Visibility="Collapsed"/>
+                                                </StackPanel>
+                                                <StackPanel Grid.Column="1" Grid.Row="3" Orientation="Horizontal">
+                                                    <ComboBox x:Name="cbxDivision" IsEditable="True" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0" Width="100" SelectionChanged="CbxDivision_SelectionChanged" />
+                                                    <ComboBox x:Name="cbDepartment" IsEditable="True" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0" Width="100" />
+                                                    <Metro:MetroTextBlock VerticalAlignment="Center" Text="请选择部门" HorizontalAlignment="Left" Margin="10,0,0,0" Foreground="Red" Visibility="Collapsed"/>
+                                                </StackPanel>
+                                                <StackPanel Grid.Column="1" Grid.Row="4" Orientation="Horizontal">
+                                                    <TextBox x:Name="txtJobPosition" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0" Width="200" />
+                                                    <Metro:MetroTextBlock VerticalAlignment="Center" Text="请输入职称" HorizontalAlignment="Left" Margin="10,0,0,0" Foreground="Red" Visibility="Collapsed"/>
+                                                </StackPanel>
+                                                <StackPanel Grid.Column="1" Grid.Row="5" Orientation="Horizontal">
+                                                    <TextBox x:Name="txtTel" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0" Width="200" />
+                                                    <Metro:MetroTextBlock VerticalAlignment="Center" Text="请输入联系电话" HorizontalAlignment="Left" Margin="10,0,0,0" Foreground="Red" Visibility="Collapsed"/>
+                                                </StackPanel>
+                                                <Metro:MetroButton x:Name="btnEnterEditUser" Grid.Column="1" Grid.Row="6" MetroButtonState="None" Content="确认修改" Margin="5,10,10,0" HorizontalAlignment="Left" VerticalAlignment="Top" Click="BtnEnterEditUser_Click"/>
+                                            </Grid>
+                                        </Metro:MetroScrollViewer>
+                                    </Grid>
+                                </Metro:MetroTabItem>
+                            </Metro:MetroTabControl>
+                        </Grid>
+                    </Metro:MetroScrollViewer>
+                    <!--<Metro:MetroWebBrowser x:Name="web1" Grid.Row="0" />-->
+                </Grid>
+            </Metro:MetroMenuTabItem>
+            <Metro:MetroMenuTabItem x:Name="treeMenuModifyProfile" Header="个人设置" Icon="Resources/icon.png" IconMove="Resources/iconMove.png">
+                <Grid>
+                    <Metro:MetroScrollViewer>
+                        <Grid>
+                            <Metro:MetroTabControl x:Name="metroTabControl">
+                                <Metro:MetroTabItem x:Name="tabpEditMyUser" Header="修改我的资料">
+                                    <Grid>
+                                        <Metro:MetroScrollViewer>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="25*"/>
+                                                    <ColumnDefinition Width="100*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="50" />
+                                                    <RowDefinition Height="50" />
+                                                    <RowDefinition Height="50" />
+                                                    <RowDefinition Height="50" />
+                                                    <RowDefinition Height="50" />
+                                                    <RowDefinition Height="50" />
+                                                </Grid.RowDefinitions>
+                                                <Metro:MetroCanvasGrid  Grid.Column="0" Grid.Row="0" Margin="5" GridOpacity="0.5" IsApplyTheme="True" Viewport="0 0 20 20" CornerRadius="10" />
+                                                <Metro:MetroCanvasGrid  Grid.Column="0" Grid.Row="1" Margin="5" GridOpacity="0.5" IsApplyTheme="True" Viewport="0 0 20 20" CornerRadius="10" />
+                                                <Metro:MetroCanvasGrid  Grid.Column="0" Grid.Row="2" Margin="5" GridOpacity="0.5" IsApplyTheme="True" Viewport="0 0 20 20" CornerRadius="10" />
+                                                <Metro:MetroCanvasGrid  Grid.Column="0" Grid.Row="3" Margin="5" GridOpacity="0.5" IsApplyTheme="True" Viewport="0 0 20 20" CornerRadius="10" />
+                                                <Metro:MetroCanvasGrid  Grid.Column="0" Grid.Row="4" Margin="5" GridOpacity="0.5" IsApplyTheme="True" Viewport="0 0 20 20" CornerRadius="10" />
+                                                
+                                                <Metro:MetroTextBlock Grid.Column="0" Grid.Row="0" Text="工号" HorizontalAlignment="Right" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                                <Metro:MetroTextBlock Grid.Column="0" Grid.Row="1" Text="密码" HorizontalAlignment="Right" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                                <Metro:MetroTextBlock Grid.Column="0" Grid.Row="2" Text="真实姓名" HorizontalAlignment="Right" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                                <Metro:MetroTextBlock Grid.Column="0" Grid.Row="3" Text="职称" HorizontalAlignment="Right" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                                <Metro:MetroTextBlock Grid.Column="0" Grid.Row="4" Text="联系电话" HorizontalAlignment="Right" Margin="0,0,10,0" VerticalAlignment="Center"/>
+
+                                                <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Horizontal">
+                                                    <Metro:MetroTextBlock x:Name="mtxtShowMyUserAccount" VerticalAlignment="Center" Text="" HorizontalAlignment="Left" Margin="10,0,0,0" />
+                                                </StackPanel>
+                                                <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal">
+                                                    <TextBox x:Name="txtMyUserPassword" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0" Width="200" />
+                                                    <Metro:MetroTextBlock x:Name="mtxtEditMyDepartmentName3" VerticalAlignment="Center" Text="密码输入错误。密码长度为4-20位，可使用的字符为（A-Z a-z 0-9 ）以及下划线（_），注意不要使用空格。" HorizontalAlignment="Left" Margin="10,0,0,0" Foreground="Red" Visibility="Collapsed"/>
+                                                </StackPanel>
+                                                <StackPanel Grid.Column="1" Grid.Row="2" Orientation="Horizontal">
+                                                    <TextBox x:Name="txtMyContactor" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0" Width="200" />
+                                                    <Metro:MetroTextBlock VerticalAlignment="Center" Text="请输入联系人" HorizontalAlignment="Left" Margin="10,0,0,0" Foreground="Red" Visibility="Collapsed"/>
+                                                </StackPanel>
+                                                <StackPanel Grid.Column="1" Grid.Row="3" Orientation="Horizontal">
+                                                    <TextBox x:Name="txtMyJobPosition" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0" Width="200" />
+                                                    <Metro:MetroTextBlock VerticalAlignment="Center" Text="请输入职称" HorizontalAlignment="Left" Margin="10,0,0,0" Foreground="Red" Visibility="Collapsed"/>
+                                                </StackPanel>
+                                                <StackPanel Grid.Column="1" Grid.Row="4" Orientation="Horizontal">
+                                                    <TextBox x:Name="txtMyTel" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0" Width="200" />
+                                                    <Metro:MetroTextBlock VerticalAlignment="Center" Text="请输入联系电话" HorizontalAlignment="Left" Margin="10,0,0,0" Foreground="Red" Visibility="Collapsed"/>
+                                                </StackPanel>
+                                                <Metro:MetroButton x:Name="btnEnterEditMyUser" Grid.Column="1" Grid.Row="5" MetroButtonState="None" Content="确认修改" Margin="5,10,10,0" HorizontalAlignment="Left" VerticalAlignment="Top" Click="BtnEnterEditMyUser_Click"/>
+                                            </Grid>
+                                        </Metro:MetroScrollViewer>
+                                    </Grid>
+                                </Metro:MetroTabItem>
+                            </Metro:MetroTabControl>
                         </Grid>
                     </Metro:MetroScrollViewer>
                 </Grid>

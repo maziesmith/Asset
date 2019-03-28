@@ -66,7 +66,7 @@ namespace Asset
                     ini.IniWriteValue("登录详细", "Contactor", userlist.Contactor.ToString());
                     ini.IniWriteValue("登录详细", "Tel", userlist.Tel.ToString());
                     ini.IniWriteValue("登录详细", "Address", userlist.Address.ToString());
-                    ini.IniWriteValue("登录详细", "UserLevel", userlist.UserLevel.ToString());;
+                    ini.IniWriteValue("登录详细", "UserLevel", userlist.UserLevel.ToString());
                     //判断当前用权值
                     switch (userlist.UserLevel.ToString())
                     {

@@ -40,8 +40,8 @@ namespace Asset.CommonComponent
         /// <param name="Value">值</param> 
         public void IniWriteValue(string Section, string Key, string Value)
         {
-            string value= Encrypt.EncryptString(Value,"asdfghjkl");//加密
-            WritePrivateProfileString(Section, Key, value, this.inipath);
+            //string value= Encrypt.EncryptString(Value,"asdfghjkl");//加密
+            WritePrivateProfileString(Section, Key, Value, this.inipath);
         }
 
         /// <summary> 
@@ -53,8 +53,8 @@ namespace Asset.CommonComponent
         {
             StringBuilder temp = new StringBuilder(500);
             int i = GetPrivateProfileString(Section, Key, "", temp, 500, this.inipath);
-            string value = Encrypt.DecryptString(temp.ToString(), "asdfghjkl");//解密
-            return value;
+            //string value = Encrypt.DecryptString(temp.ToString(), "asdfghjkl");//解密
+            return temp.ToString();
         }
 
         /// <summary> 

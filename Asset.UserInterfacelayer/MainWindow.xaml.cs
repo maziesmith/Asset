@@ -45,7 +45,7 @@ namespace Asset
             ContentRendered += delegate
             {
                 // 手动加载指定HTML
-                web1.Document = ResObj.GetString(Assembly.GetExecutingAssembly(), "Resources.about.html");
+                //web1.Document = ResObj.GetString(Assembly.GetExecutingAssembly(), "Resources.about.html");
 
                 // 导航到指定网页
                 //web2.Source = new Uri("http://ie.icoa.cn/");
@@ -71,6 +71,7 @@ namespace Asset
                     };
                 }
             }
+
         }
 
         //关闭主窗口
@@ -87,37 +88,42 @@ namespace Asset
         /// </summary>
         private void InitialData()
         {
-            //1.验证是否登录
+            //数据初始化
+            //资产查询页面
+            InitManageFixedAssetsData();
 
-            //2.数据初始化
-            //绑定资产数据
-            DataView dvlist = FixedAsset.Query_V_FixedAssets();
-            dtgShow.ItemsSource = dvlist;
-
-            //打印列表
-            string userAccount = ini.IniReadValue("登录详细", "UserAccount");
-            DataView dvlist2 = PrintList.Query_V_PrintList(userAccount);
-            dtgPrintList.ItemsSource = dvlist2;
+            //新增页面
+            InitAddAssetData();
 
             //审核新增
-            DataView dvlist3 = FixedAsset.QueryFixedAssets(4);
-            dtgCheckAddAssets.ItemsSource = dvlist3;
+            InitChkAddData();
 
             //审核异动
-            DataView dvlist4 = FixedAsset.QueryFixedAssets(1);
-            dtgCheckChangeAssets.ItemsSource = dvlist4;
+            InitChkChangeData();
 
             //审核维修
-            DataView dvlist5 = FixedAsset.QueryFixedAssets(2);
-            dtgCheckRepairAssets.ItemsSource = dvlist5;
+            InitChkRepair();
 
-            //绑定下拉框数据
-            BindDrop();//资产管理页事业部和部门
-            BindDrop2();//新增页下拉框
+            //审核报废
+            InitChkScrappedData();
 
-            //3.界面元素初始化
-            //导出excel按钮置灰
-            btExport.IsEnabled = false;
+            //管理事业部
+            InitDivisionData();
+
+            //管理部门
+            InitDepartmentData();
+
+            //管理资产一级类别
+            InitMajorClassData();
+
+            //管理资产二级类别
+            InitSubClassData();
+
+            //用户管理
+            InitManageUserData();
+
+            //修改我的资料
+            InitMyUser();
         }
 
         #region 菜单栏
@@ -163,7 +169,7 @@ namespace Asset
                     {
                         if (this.FindName("treeMenu" + duty) != null)
                         {
-                            (this.FindName("treeMenu" + duty) as MetroExpander).Visibility = Visibility.Visible;
+                            (this.FindName("treeMenu" + duty) as ContentControl).Visibility = Visibility.Visible;
                         }
                     }
                 }
@@ -191,9 +197,81 @@ namespace Asset
         {
             tabpAddAsset.IsSelected = true;
         }
+
+        //审核新增
+        private void TreeMenuCheckNewFixedAssets_Click(object sender, EventArgs e)
+        {
+            tabpCheckAddAssets.IsSelected = true;
+        }
+
+        //审核异动
+        private void TreeMenuCheckChangeFixedAssets_Click(object sender, EventArgs e)
+        {
+            tabpChkChangeAsset.IsSelected = true;
+        }
+
+        //审核维修
+        private void TreeMenuCheckRepairFixedAssets_Click(object sender, EventArgs e)
+        {
+            tabpChkRepairAsset.IsSelected = true;
+        }
+
+        //审核报废
+        private void TreeMenuCheckScrappedFixedAssets_Click(object sender, EventArgs e)
+        {
+            tabpChkScrappedAsset.IsSelected = true;
+        }
+
+        //批量异动资产
+        private void TreeMenuVolumeChanges_Click(object sender, EventArgs e)
+        {
+            //tabpAddAsset.IsSelected = true;
+        }
+
+        //我管理的资产
+        private void TreeMenuMyFixedAssets_Click(object sender, EventArgs e)
+        {
+            //tabpAddAsset.IsSelected = true;
+        }
+
+        //管理事业部
+        private void TreeMenuManageDivision_Click(object sender, EventArgs e)
+        {
+            tabpManageDivision.IsSelected = true;
+        }
+
+        //管理部门
+        private void TreeMenuManageDepartment_Click(object sender, EventArgs e)
+        {
+            tabpManageDepartment.IsSelected = true;
+        }
+
+        //管理资产一级类别
+        private void TreeMenuManageMajorclass_Click(object sender, EventArgs e)
+        {
+            tabpManageMajorClass.IsSelected = true;
+        }
+
+        //管理资产二级类别
+        private void TreeMenuManageSubclass_Click(object sender, EventArgs e)
+        {
+            tabpManageSubClass.IsSelected = true;
+        }
         #endregion
 
-        #region 资产管理页面
+        #region 资产查询页面
+
+        /// <summary>
+        /// 资产查询页面数据初始化
+        /// </summary>
+        private void InitManageFixedAssetsData()
+        {
+            BindDrop();
+            DataView dvlist = FixedAsset.Query_V_FixedAssets();
+            dtgShow.ItemsSource = dvlist;
+            btExport.IsEnabled = false;
+        }
+
         /// <summary>
         /// 绑定事业部下拉列表
         /// </summary>
@@ -539,6 +617,7 @@ namespace Asset
         //查看打印列表
         private void BtViewPrint_Click(object sender, RoutedEventArgs e)
         {
+            InitPrintData();
             tabiPrint.IsSelected = true;
         }
 
@@ -576,6 +655,15 @@ namespace Asset
         #endregion
 
         #region 新增资产页面
+
+        /// <summary>
+        /// 新增资产页面数据初始化
+        /// </summary>
+        private void InitAddAssetData()
+        {
+            BindDrop2();
+        }
+
         //绑定新增资产页面下拉列表数据
         private void BindDrop2()
         {
@@ -839,6 +927,16 @@ namespace Asset
         #endregion
 
         #region 打印列表页面
+
+        /// <summary>
+        /// 打印列表页面数据初始化
+        /// </summary>
+        private void InitPrintData()
+        {
+            string userAccount = ini.IniReadValue("登录详细", "UserAccount");
+            DataView dvlist2 = PrintList.Query_V_PrintList(userAccount);
+            dtgPrintList.ItemsSource = dvlist2;
+        }
 
         //删除打印列表
         private void BtDelPrint_Click(object sender, RoutedEventArgs e)
@@ -1539,7 +1637,20 @@ namespace Asset
         #endregion
 
         #region 审核新增资产
-        //全选
+        /// <summary>
+        /// 审核新增资产页面数据初始化
+        /// </summary>
+        private void InitChkAddData()
+        {
+            DataView dvlist3 = FixedAsset.QueryFixedAssets(4);
+            dtgCheckAddAssets.ItemsSource = dvlist3;
+        }
+
+        /// <summary>
+        /// 全选
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ChkAll_Click(object sender, RoutedEventArgs e)
         {
             CheckBox headercb = (CheckBox)sender;
@@ -2020,6 +2131,15 @@ namespace Asset
         #endregion
 
         #region 审核异动资产
+        /// <summary>
+        /// 审核异动资产页面数据初始化
+        /// </summary>
+        private void InitChkChangeData()
+        {
+            DataView dvlist4 = FixedAsset.QueryFixedAssets(1);
+            dtgCheckChangeAssets.ItemsSource = dvlist4;
+        }
+
         //审核单项异动资产
         private void BtCheckChangeItem_Click(object sender, RoutedEventArgs e)
         {
@@ -2498,6 +2618,15 @@ namespace Asset
         #endregion
 
         #region 审核维修资产
+        /// <summary>
+        /// 审核维修资产页面数据初始化
+        /// </summary>
+        private void InitChkRepair()
+        {
+            DataView dvlist5 = FixedAsset.QueryFixedAssets(2);
+            dtgCheckRepairAssets.ItemsSource = dvlist5;
+        }
+
         private void BtCheckRepairItem_Click(object sender, RoutedEventArgs e)
         {
             FixedAssetsID = Convert.ToInt32(((System.Data.DataRowView)((System.Windows.FrameworkElement)sender).DataContext)["FixedAssetsID"]);
@@ -2810,12 +2939,19 @@ namespace Asset
         #endregion
 
         #region 审核报废资产
-        //审核报废资产
-        private void BtCheckScrappedItem_Click(object sender, RoutedEventArgs e)
+
+        private void InitChkScrappedData()
         {
             DataView dvlist = FixedAsset.QueryFixedAssets(3);           //报废固定资产
             dtgCheckScrappedAssets.ItemsSource = dvlist;
+        }
+
+        //审核报废资产
+        private void BtCheckScrappedItem_Click(object sender, RoutedEventArgs e)
+        {
+            AssetsScrappedID = Convert.ToInt32(((System.Data.DataRowView)((System.Windows.FrameworkElement)sender).DataContext)["AssetsScrappedID"]);
             tabpCheckScrappedAsset.IsSelected = true;
+            InitCheckScrappedData();
         }
         #endregion
 
@@ -3499,32 +3635,437 @@ namespace Asset
         #endregion
 
         #region 管理资产二级类别
-        #endregion
+        public int SubID { get; set; }
+
+        /// <summary>
+        /// 加载资产二级类别页面数据
+        /// </summary>
         void InitSubClassData()
         {
             //绑定数据
             DataView dvlist = SubClass.QuerySubClass();
-            AspNetPager1.RecordCount = dvlist.Table.Rows.Count;
-            Session["dvlist"] = dvlist;
-            bindData();
+            dtgSubClass.ItemsSource = dvlist;
 
             //绑定资产一级类别
             DataView dv = MajorClass.QueryMajorClass();
-            MajorID.DataValueField = dv.Table.Columns[0].Caption.ToString();
-            MajorID.DataTextField = dv.Table.Columns[2].Caption.ToString();
-            MajorID.DataSource = dv;
-            MajorID.DataBind();
-
-            MajorID.Text = Request.QueryString["MajorID"];
+            cbxMajor.SelectedValuePath = dv.Table.Columns[0].Caption.ToString();
+            cbxMajor.DisplayMemberPath = dv.Table.Columns[2].Caption.ToString();
+            cbxMajor.ItemsSource = dv;
 
             //绑定单位
             DataView dv1 = UnitList.QueryUnits();
-            Units.DataValueField = dv1.Table.Columns[0].Caption.ToString();
-            Units.DataTextField = dv1.Table.Columns[2].Caption.ToString();
-            Units.DataSource = dv1;
-            Units.DataBind();
+            cbxUnits.SelectedValuePath = dv1.Table.Columns[0].Caption.ToString();
+            cbxUnits.DisplayMemberPath = dv1.Table.Columns[2].Caption.ToString();
+            cbxUnits.ItemsSource = dv1;
         }
 
+        //确认添加资产二级类别
+        private void BtEnterAddSunClass_Click(object sender, RoutedEventArgs e)
+        {
+            //获取用户在页面上的输入
+            int majorID = Convert.ToInt32(cbxMajor.SelectedValue);
+            string subName = txtSubClassName.Text;
+
+            SubClass subClass = new SubClass();
+            subClass.LoadData1(majorID, subName);
+
+
+            if (subClass.Exist)
+            {
+                MessageBox.Show("对不起，您输入的资产二级类别名称已经存在！", "提示", MessageBoxButton.OK, MessageBoxImage.Stop);
+            }
+            else
+            {
+                Hashtable ht = new Hashtable();
+                ht.Add("MajorID", SqlStringConstructor.GetQuotedString(cbxMajor.SelectedValue.ToString()));
+                ht.Add("SubName", SqlStringConstructor.GetQuotedString(txtSubClassName.Text));
+                ht.Add("UnitsID", SqlStringConstructor.GetQuotedString(cbxUnits.SelectedValue.ToString()));
+                ht.Add("Units", SqlStringConstructor.GetQuotedString(cbxUnits.Text));
+                ht.Add("UsefulLife", SqlStringConstructor.GetQuotedString(txtUsefulLife.Text));
+                ht.Add("DepreciationRate", SqlStringConstructor.GetQuotedString(txtDepreciationRate.Text));
+
+                SubClass subClass1 = new SubClass();
+                subClass1.Add(ht);
+
+                MessageBox.Show("添加资产二级类别成功！", "成功", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+        }
+
+        //编辑
+        private void BtEditSubClass_Click(object sender, RoutedEventArgs e)
+        {
+            SubID = Convert.ToInt32(((System.Data.DataRowView)((System.Windows.FrameworkElement)sender).DataContext)["SubID"]);
+            InitEditSubClassData();
+        }
+
+        //删除
+        private void BtDeleteSubClass_Click(object sender, RoutedEventArgs e)
+        {
+            int subID = Convert.ToInt32(((System.Data.DataRowView)((System.Windows.FrameworkElement)sender).DataContext)["SubID"]);
+            SubClass subClass = new SubClass();
+            subClass.LoadData(subID);
+            subClass.Delete();
+        }
+        #endregion
+
+        #region 编辑资产二级类别
+
+        /// <summary>
+        /// 当前用户ID
+        /// </summary>
+        public int UserListID { get; set; }
+
+        /// <summary>
+        /// 初始化编辑资产二级类别页面数据
+        /// </summary>
+        private void InitEditSubClassData()
+        {
+            //绑定资产一级类别
+            DataView dv = MajorClass.QueryMajorClass();
+            cbxEditMajorID.SelectedValue = dv.Table.Columns[0].Caption.ToString();
+            cbxEditMajorID.DisplayMemberPath = dv.Table.Columns[2].Caption.ToString();
+            cbxEditMajorID.ItemsSource = dv;
+
+            //绑定单位
+            DataView dv1 = UnitList.QueryUnits();
+            cbxEditUnits.SelectedValue = dv1.Table.Columns[0].Caption.ToString();
+            cbxEditUnits.DisplayMemberPath = dv1.Table.Columns[2].Caption.ToString();
+            cbxEditUnits.ItemsSource = dv1;
+
+            SubClass subClass = new SubClass();
+            subClass.LoadData(SubID);
+
+            cbxEditMajorID.Text = subClass.MajorID.ToString();
+            txtEditSubName.Text = subClass.SubName;
+            cbxEditUnits.Text = subClass.UnitsID.ToString();
+            txtEditUsefulLife.Text = subClass.UsefulLife;
+            txtEditDepreciationRate.Text = subClass.DepreciationRate;
+        }
+
+        //确认编辑
+        private void BtnEnterEditSubClass_Click(object sender, RoutedEventArgs e)
+        {
+            SubClass subClass = new SubClass();
+            subClass.SubID = SubID;
+
+            Hashtable ht = new Hashtable();
+            ht.Add("SubName", SqlStringConstructor.GetQuotedString(txtEditSubName.Text));
+            ht.Add("MajorID", SqlStringConstructor.GetQuotedString(cbxEditMajorID.SelectedValue.ToString()));
+            ht.Add("UnitsID", SqlStringConstructor.GetQuotedString(cbxEditUnits.SelectedValue.ToString()));
+            ht.Add("Units", SqlStringConstructor.GetQuotedString(cbxEditUnits.Text));
+            ht.Add("UsefulLife", SqlStringConstructor.GetQuotedString(txtEditUsefulLife.Text));
+            ht.Add("DepreciationRate", SqlStringConstructor.GetQuotedString(txtEditDepreciationRate.Text));
+
+            subClass.Update(ht);
+
+            //更新固定资产表里面的信息
+            Hashtable ht1 = new Hashtable();
+            string where = "";
+
+            ht1.Add("SubName", SqlStringConstructor.GetQuotedString(txtEditSubName.Text));                  //固定资产查询
+
+            where = " Where SubID=" + SubID;
+            FixedAsset.Update(ht1, where);
+
+            MessageBox.Show("修改资产二级类别成功！", "成功", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        
+        #endregion
+
+        #region 用户管理
+        void InitManageUserData()
+        {
+            DataView dvlist = UserList.QueryAllUserLists();
+            dtgUser.ItemsSource = dvlist;
+        }
+
+        //开始查找
+        private void BtFindUser_Click(object sender, RoutedEventArgs e)
+        {
+            string keywords = Convert.ToString(txtKeyWord.Text);
+            string strSql = "";
+            strSql = "Select a.UserListID,a.UserAccount,a.UserPassword,a.Contactor,a.JobPosition,a.Tel,a.Email,a.Address,a.UserLevel,a.IsAllowed,b.DepartmentName,c.DivisionName From UserLists a left outer join Departments b on a.DepartmentID=b.DepartmentID left outer join Divisions c on b.DivisionID=c.DivisionID where a.UserAccount like \'%" + keywords + "%\' or a.Contactor like \'%" + keywords + "%\' or a.DepartmentName like \'%" + keywords + "%\' or a.Tel like \'%" + keywords + "%\' or a.Email like \'%" + keywords + "%\'  or a.Address like \'%" + keywords + "%\' order by a.UserListID desc";
+
+            //绑定数据
+            DataView dvlist = UserList.QueryUserLists(strSql);
+            dtgUser.ItemsSource = dvlist;
+        }
+
+        //权限
+        private void BtPermission_Click(object sender, RoutedEventArgs e)
+        {
+            UserListID = Convert.ToInt32(((System.Data.DataRowView)((System.Windows.FrameworkElement)sender).DataContext)["UserListID"]);
+            InitUserPermissionData();
+            tabpUserPermission.IsSelected = true;
+        }
+
+        //编辑
+        private void BtEditUser_Click(object sender, RoutedEventArgs e)
+        {
+            UserListID = Convert.ToInt32(((System.Data.DataRowView)((System.Windows.FrameworkElement)sender).DataContext)["UserListID"]);
+            tabpEditUser.IsSelected = true;
+            InitEditUserData();
+        }
+
+        //启用
+        private void BtEnable_Click(object sender, RoutedEventArgs e)
+        {
+            UserList userlist = new UserList();
+            userlist.UserListID = Convert.ToInt32(((System.Data.DataRowView)((System.Windows.FrameworkElement)sender).DataContext)["UserListID"]);
+            Hashtable ht = new Hashtable();
+            ht.Add("IsAllowed", "0");
+            userlist.Update(ht);
+            InitEditSubClassData();
+        }
+
+        //禁用
+        private void BtDisable_Click(object sender, RoutedEventArgs e)
+        {
+            UserList userlist = new UserList();
+            userlist.UserListID = Convert.ToInt32(((System.Data.DataRowView)((System.Windows.FrameworkElement)sender).DataContext)["UserListID"]);
+            Hashtable ht = new Hashtable();
+            ht.Add("IsAllowed", "1");
+            userlist.Update(ht);
+            InitEditSubClassData();
+        }
+        #endregion
+
+        #region 用户权限
+        /// <summary>
+        /// 初始化权限页面数据
+        /// </summary>
+        private void InitUserPermissionData()
+        {
+            //this.lblShowUser.Text = userAccount;
+
+            //构造查询Hash对象
+            Hashtable queryItems = new Hashtable();
+            queryItems.Add("UserListID", UserListID);
+            DataTable dt = UserList.Query(queryItems);
+
+            //固定资产查询
+            if (GetSafeData.ValidateDataRow_N(dt.Rows[0], "HasDuty_ManageFixedAssets") == 1)
+                chkManageFixedAssets.IsChecked = true;
+            else
+                chkManageFixedAssets.IsChecked = false;
+
+            //固定资产新增
+            if (GetSafeData.ValidateDataRow_N(dt.Rows[0], "HasDuty_AddFixedAssets") == 1)
+                chkAddFixedAssets.IsChecked = true;
+            else
+                chkAddFixedAssets.IsChecked = false;
+
+            //审核新增固定资产
+            if (GetSafeData.ValidateDataRow_N(dt.Rows[0], "HasDuty_CheckNewFixedAssets") == 1)
+                chkCheckNewFixedAssets.IsChecked = true;
+            else
+                chkCheckNewFixedAssets.IsChecked = false;
+
+            //审核异动固定资产
+            if (GetSafeData.ValidateDataRow_N(dt.Rows[0], "HasDuty_CheckChangeFixedAssets") == 1)
+                chkCheckChangeFixedAssets.IsChecked = true;
+            else
+                chkCheckChangeFixedAssets.IsChecked = false;
+
+            //审核维修固定资产
+            if (GetSafeData.ValidateDataRow_N(dt.Rows[0], "HasDuty_CheckRepairFixedAssets") == 1)
+                chkCheckRepairFixedAssets.IsChecked = true;
+            else
+                chkCheckRepairFixedAssets.IsChecked = false;
+
+            //审核报废固定资产
+            if (GetSafeData.ValidateDataRow_N(dt.Rows[0], "HasDuty_CheckScrappedFixedAssets") == 1)
+                chkCheckScrappedFixedAssets.IsChecked = true;
+            else
+                chkCheckScrappedFixedAssets.IsChecked = false;
+
+            //批量异动固定资产
+            if (GetSafeData.ValidateDataRow_N(dt.Rows[0], "HasDuty_VolumeChanges") == 1)
+                chkVolumeChanges.IsChecked = true;
+            else
+                chkVolumeChanges.IsChecked = false;
+
+            //我管理的固定资产
+            if (GetSafeData.ValidateDataRow_N(dt.Rows[0], "HasDuty_MyFixedAssets") == 1)
+                chkMyFixedAssets.IsChecked = true;
+            else
+                chkMyFixedAssets.IsChecked = false;
+
+            //管理事业部
+            if (GetSafeData.ValidateDataRow_N(dt.Rows[0], "HasDuty_ManageDivision") == 1)
+                chkManageDivision.IsChecked = true;
+            else
+                chkManageDivision.IsChecked = false;
+
+            //管理部门
+            if (GetSafeData.ValidateDataRow_N(dt.Rows[0], "HasDuty_ManageDepartment") == 1)
+                chkManageDepartment.IsChecked = true;
+            else
+                chkManageDepartment.IsChecked = false;
+
+            //管理资产一级类别
+            if (GetSafeData.ValidateDataRow_N(dt.Rows[0], "HasDuty_ManageMajorclass") == 1)
+                chkManageMajorclass.IsChecked = true;
+            else
+                chkManageMajorclass.IsChecked = false;
+
+            //管理资产二级类别
+            if (GetSafeData.ValidateDataRow_N(dt.Rows[0], "HasDuty_ManageSubclass") == 1)
+                chkManageSubclass.IsChecked = true;
+            else
+                chkManageSubclass.IsChecked = false;
+
+            //用户管理
+            if (GetSafeData.ValidateDataRow_N(dt.Rows[0], "HasDuty_ManageUser") == 1)
+                chkManageUser.IsChecked = true;
+            else
+                chkManageUser.IsChecked = false;
+
+            //修改我的资料
+            if (GetSafeData.ValidateDataRow_N(dt.Rows[0], "HasDuty_ModifyProfile") == 1)
+                chkModifyProfile.IsChecked = true;
+            else
+                chkModifyProfile.IsChecked = false;
+        }
+
+        //确认编辑
+        private void BtnEnterUserPermission_Click(object sender, RoutedEventArgs e)
+        {
+            Hashtable ht = new Hashtable();
+            string where = "";
+
+            ht.Add("HasDuty_ManageFixedAssets", chkManageFixedAssets.IsChecked == true ? 1 : 0);                  //固定资产查询
+            ht.Add("HasDuty_AddFixedAssets", chkAddFixedAssets.IsChecked == true ? 1 : 0);                        //固定资产新增
+            ht.Add("HasDuty_CheckNewFixedAssets", chkCheckNewFixedAssets.IsChecked == true ? 1 : 0);              //审核新增固定资产
+            ht.Add("HasDuty_CheckChangeFixedAssets", chkCheckChangeFixedAssets.IsChecked == true ? 1 : 0);        //审核异动固定资产
+            ht.Add("HasDuty_CheckRepairFixedAssets", chkCheckRepairFixedAssets.IsChecked == true ? 1 : 0);        //审核维修固定资产
+            ht.Add("HasDuty_CheckScrappedFixedAssets", chkCheckScrappedFixedAssets.IsChecked == true ? 1 : 0);    //审核报废固定资产
+            ht.Add("HasDuty_VolumeChanges", chkVolumeChanges.IsChecked == true ? 1 : 0);                          //批量异动固定资产
+            ht.Add("HasDuty_MyFixedAssets", chkMyFixedAssets.IsChecked == true ? 1 : 0);                          //我管理的固定资产
+            ht.Add("HasDuty_ManageDivision", chkManageDivision.IsChecked == true ? 1 : 0);                        //管理事业部
+            ht.Add("HasDuty_ManageDepartment", chkManageDepartment.IsChecked == true ? 1 : 0);                    //管理部门
+            ht.Add("HasDuty_ManageMajorclass", chkManageMajorclass.IsChecked == true ? 1 : 0);                    //管理资产一级类别
+            ht.Add("HasDuty_ManageSubclass", chkManageSubclass.IsChecked == true ? 1 : 0);                        //管理资产二级类别
+            ht.Add("HasDuty_ManageUser", chkManageUser.IsChecked == true ? 1 : 0);                                //管理用户
+            ht.Add("HasDuty_ModifyProfile", chkModifyProfile.IsChecked == true ? 1 : 0);                          //修改我的资料
+
+            where = " Where UserListID=" + UserListID;
+            UserList.Update(ht, where);
+
+            MessageBox.Show("设置用户权限成功！", "成功", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+        #endregion
+
+        #region 用户编辑
+        /// <summary>
+        /// 初始化编辑页面数据
+        /// </summary>
+        private void InitEditUserData()
+        {
+            //将数据捆绑到下拉列表中
+            DataView dv = Division.QueryDivision();
+            cbxDivision.SelectedValuePath = dv.Table.Columns[0].Caption;
+            cbxDivision.DisplayMemberPath = dv.Table.Columns[2].Caption;
+            cbxDivision.ItemsSource = dv;
+
+            int userListID = Convert.ToInt32(UserListID);
+
+            UserList userlist = new UserList();
+            userlist.LoadData(userListID);
+
+            if (userlist.Exist)
+            {
+                this.mtxtShowUserAccount.Text = userlist.UserAccount;
+                this.txtUserPassword.Text = userlist.UserPassword;
+                this.txtContactor.Text = userlist.Contactor;
+                this.cbxDivision.SelectedValue = userlist.DivisionID.ToString();
+                this.txtJobPosition.Text = userlist.JobPosition;
+                this.txtTel.Text = userlist.Tel;
+            }
+
+            int divisionID = -1;
+            if (userlist.DivisionID.ToString() != "")
+                divisionID = Convert.ToInt32(userlist.DivisionID.ToString());
+
+            DataView dv1 = Department.QueryDepartment(divisionID);
+            cbDepartment.SelectedValuePath = dv1.Table.Columns[0].Caption;
+            cbDepartment.DisplayMemberPath = dv1.Table.Columns[3].Caption;
+            cbDepartment.ItemsSource = dv1;
+
+            cbDepartment.SelectedValue = userlist.DepartmentID.ToString();
+        }
+
+        //选择事业部
+        private void CbxDivision_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            int divisionID = -1;
+
+            if (cbxDivision.SelectedValue != null&&cbxDivision.SelectedItem!=null)
+                divisionID = Convert.ToInt32(cbxDivision.SelectedValue);
+
+            DataView dv1 = Department.QueryDepartment(divisionID);
+            cbDepartment.SelectedValuePath = dv1.Table.Columns[0].Caption;
+            cbDepartment.DisplayMemberPath = dv1.Table.Columns[3].Caption;
+            cbDepartment.ItemsSource = dv1;
+        }
+
+        //确认修改
+        private void BtnEnterEditUser_Click(object sender, RoutedEventArgs e)
+        {
+            int userListID = Convert.ToInt32("UserListID");
+
+            UserList userlist = new UserList();
+            userlist.UserListID = userListID;
+
+            Hashtable ht = new Hashtable();
+            ht.Add("UserPassword", SqlStringConstructor.GetQuotedString(txtUserPassword.Text));
+            ht.Add("Contactor", SqlStringConstructor.GetQuotedString(txtContactor.Text));
+            ht.Add("DivisionID", SqlStringConstructor.GetQuotedString(cbxDivision.SelectedValue.ToString()));
+            ht.Add("DepartmentID", SqlStringConstructor.GetQuotedString(cbDepartment.SelectedValue.ToString()));
+            ht.Add("JobPosition", SqlStringConstructor.GetQuotedString(txtJobPosition.Text));
+            ht.Add("Tel", SqlStringConstructor.GetQuotedString(txtTel.Text));
+            userlist.Update(ht);
+            MessageBox.Show("修改会员资料成功！", "成功", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        #endregion
+
+        #region 修改我的资料
+        private void InitMyUser()
+        {
+            string userAccount = string.Empty;
+            if (ini.ExistINIFile())
+            {
+                //如果存在配置文件就进行读取
+                userAccount = ini.IniReadValue("登录详细", "UserAccount");
+            }
+            UserList userlist = new UserList();
+            userlist.LoadData(userAccount);
+            if (userlist.Exist)
+            {
+                this.mtxtShowMyUserAccount.Text = userlist.UserAccount;
+                this.txtMyUserPassword.Text = userlist.UserPassword;
+                this.txtMyContactor.Text = userlist.Contactor;
+                this.txtMyJobPosition.Text = userlist.JobPosition;
+                this.txtMyTel.Text = userlist.Tel;
+            }
+        }
+
+        //确认修改
+        private void BtnEnterEditMyUser_Click(object sender, RoutedEventArgs e)
+        {
+            UserList userlist = new UserList();
+            userlist.UserListID = Convert.ToInt32(ini.IniReadValue("登录详细", "UserListID"));
+            Hashtable ht = new Hashtable();
+            ht.Add("UserPassword", SqlStringConstructor.GetQuotedString(txtMyUserPassword.Text));
+            ht.Add("Contactor", SqlStringConstructor.GetQuotedString(txtMyContactor.Text));
+            ht.Add("JobPosition", SqlStringConstructor.GetQuotedString(txtMyJobPosition.Text));
+            ht.Add("Tel", SqlStringConstructor.GetQuotedString(txtMyTel.Text));
+            userlist.Update(ht);
+            MessageBox.Show("修改我的资料成功！", "成功", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+        #endregion
 
     }
 
