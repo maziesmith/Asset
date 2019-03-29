@@ -2641,6 +2641,7 @@ namespace Asset
         /// </summary>
         private void InitCheckRepairData()
         {
+            BindDrop6();
             FixedAsset fixedAsset = new FixedAsset();
             fixedAsset.LoadData(FixedAssetsID);
 
@@ -2794,7 +2795,9 @@ namespace Asset
             dtgRepairHistoryRecord7.ItemsSource = dv6;
         }
 
-        //绑定下拉列表
+        /// <summary>
+        /// 绑定下拉列表
+        /// </summary>
         private void BindDrop6()
         {
             //将数据捆绑到下拉列表中
@@ -2891,6 +2894,8 @@ namespace Asset
 
             if (cbxSubID7.SelectedItem != null && cbxSubID7.SelectedValue != null)
                 subID = Convert.ToInt32(cbxSubID7.SelectedValue);
+            else
+                return;
             SubClass subClass = new SubClass();
             subClass.LoadData(subID);
             if (subClass.Exist)
@@ -2949,7 +2954,7 @@ namespace Asset
         //审核报废资产
         private void BtCheckScrappedItem_Click(object sender, RoutedEventArgs e)
         {
-            AssetsScrappedID = Convert.ToInt32(((System.Data.DataRowView)((System.Windows.FrameworkElement)sender).DataContext)["AssetsScrappedID"]);
+            FixedAssetsID = Convert.ToInt32(((System.Data.DataRowView)((System.Windows.FrameworkElement)sender).DataContext)["FixedAssetsID"]);
             tabpCheckScrappedAsset.IsSelected = true;
             InitCheckScrappedData();
         }
@@ -3401,7 +3406,7 @@ namespace Asset
         void InitDepartmentData()
         {
             DataView dvlist = Department.QueryDepartment();
-            dtgDivision.ItemsSource = dvlist;
+            dtgDepartment.ItemsSource = dvlist;
             //绑定数据事业部名称
             DataView dv = Division.QueryDivision();
             cbxDepartment.SelectedValuePath = dv.Table.Columns[0].Caption.ToString();
@@ -3696,6 +3701,7 @@ namespace Asset
         {
             SubID = Convert.ToInt32(((System.Data.DataRowView)((System.Windows.FrameworkElement)sender).DataContext)["SubID"]);
             InitEditSubClassData();
+            tabpEditSubClass.IsSelected = true;
         }
 
         //删除
@@ -3722,22 +3728,22 @@ namespace Asset
         {
             //绑定资产一级类别
             DataView dv = MajorClass.QueryMajorClass();
-            cbxEditMajorID.SelectedValue = dv.Table.Columns[0].Caption.ToString();
+            cbxEditMajorID.SelectedValuePath = dv.Table.Columns[0].Caption.ToString();
             cbxEditMajorID.DisplayMemberPath = dv.Table.Columns[2].Caption.ToString();
             cbxEditMajorID.ItemsSource = dv;
 
             //绑定单位
             DataView dv1 = UnitList.QueryUnits();
-            cbxEditUnits.SelectedValue = dv1.Table.Columns[0].Caption.ToString();
+            cbxEditUnits.SelectedValuePath = dv1.Table.Columns[0].Caption.ToString();
             cbxEditUnits.DisplayMemberPath = dv1.Table.Columns[2].Caption.ToString();
             cbxEditUnits.ItemsSource = dv1;
 
             SubClass subClass = new SubClass();
             subClass.LoadData(SubID);
 
-            cbxEditMajorID.Text = subClass.MajorID.ToString();
+            cbxEditMajorID.SelectedValue = subClass.MajorID;
             txtEditSubName.Text = subClass.SubName;
-            cbxEditUnits.Text = subClass.UnitsID.ToString();
+            cbxEditUnits.SelectedValue = subClass.UnitsID;
             txtEditUsefulLife.Text = subClass.UsefulLife;
             txtEditDepreciationRate.Text = subClass.DepreciationRate;
         }
@@ -4067,6 +4073,34 @@ namespace Asset
         }
         #endregion
 
+        #region 我管理的资产
+        #endregion
+        /// <summary>
+        /// 我管理的资产页面数据
+        /// </summary>
+        private void InitMyManageFixedAssetsData()
+        {
+            string userAccount = string.Empty;
+            if (ini.ExistINIFile())
+            {
+                //如果存在配置文件就进行读取
+                userAccount = ini.IniReadValue("登录详细", "UserAccount");
+            }
+            //绑定数据
+            DataView dvlist = FixedAsset.Query_V_FixedAssets(userAccount);
+            dtgMyShow.ItemsSource = dvlist;
+        }
+
+        //
+        private void BtFind_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void BtExp_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 
     #region dtg数据转换器
