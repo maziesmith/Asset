@@ -95,6 +95,12 @@ namespace Asset
             //新增页面
             InitAddAssetData();
 
+            //我管理的资产
+            InitMyManageFixedAssetsData();
+
+            //批量异动资产
+            InitVolumeChangesFixedAssets();
+
             //审核新增
             InitChkAddData();
 
@@ -176,6 +182,12 @@ namespace Asset
             }
         }
 
+        //注册
+        private void MenuRegistered_Click(object sender, RoutedEventArgs e)
+        {
+            
+        }
+
         //退出登录
         private void MenuExitLogin_Click(object sender, RoutedEventArgs e)
         {
@@ -189,72 +201,84 @@ namespace Asset
         //资产查询
         private void TreeMenuManageFixedAssets_Click(object sender, EventArgs e)
         {
+            InitManageFixedAssetsData(); 
             tabpManageFixedAssets.IsSelected = true;
         }
 
         //资产新增
         private void TreeMenuAddFixedAssets_Click(object sender, EventArgs e)
         {
+            InitAddAssetData();
             tabpAddAsset.IsSelected = true;
         }
 
         //审核新增
         private void TreeMenuCheckNewFixedAssets_Click(object sender, EventArgs e)
         {
+            InitChkAddData();
             tabpCheckAddAssets.IsSelected = true;
         }
 
         //审核异动
         private void TreeMenuCheckChangeFixedAssets_Click(object sender, EventArgs e)
         {
+            InitChkChangeData();
             tabpChkChangeAsset.IsSelected = true;
         }
 
         //审核维修
         private void TreeMenuCheckRepairFixedAssets_Click(object sender, EventArgs e)
         {
+            InitChkRepair();
             tabpChkRepairAsset.IsSelected = true;
         }
 
         //审核报废
         private void TreeMenuCheckScrappedFixedAssets_Click(object sender, EventArgs e)
         {
+            InitChkScrappedData();
             tabpChkScrappedAsset.IsSelected = true;
         }
 
         //批量异动资产
         private void TreeMenuVolumeChanges_Click(object sender, EventArgs e)
         {
-            //tabpAddAsset.IsSelected = true;
+            InitVolumeChangesFixedAssets();
+            tabpVolumeChangesFixedAssets.IsSelected = true;
         }
 
         //我管理的资产
         private void TreeMenuMyFixedAssets_Click(object sender, EventArgs e)
         {
-            //tabpAddAsset.IsSelected = true;
+            InitMyManageFixedAssetsData();
+            tabpMyManageFixedAssets.IsSelected = true;
         }
 
         //管理事业部
         private void TreeMenuManageDivision_Click(object sender, EventArgs e)
         {
+            InitDivisionData();
             tabpManageDivision.IsSelected = true;
         }
 
         //管理部门
         private void TreeMenuManageDepartment_Click(object sender, EventArgs e)
         {
+            InitDepartmentData();
             tabpManageDepartment.IsSelected = true;
         }
 
         //管理资产一级类别
         private void TreeMenuManageMajorclass_Click(object sender, EventArgs e)
         {
+            InitMajorClassData();
             tabpManageMajorClass.IsSelected = true;
         }
 
         //管理资产二级类别
         private void TreeMenuManageSubclass_Click(object sender, EventArgs e)
         {
+            InitSubClassData();
             tabpManageSubClass.IsSelected = true;
         }
         #endregion
@@ -1636,6 +1660,315 @@ namespace Asset
 
         #endregion
 
+        #region 我管理的资产
+        /// <summary>
+        /// 我管理的资产页面数据
+        /// </summary>
+        private void InitMyManageFixedAssetsData()
+        {
+            string userAccount = string.Empty;
+            if (ini.ExistINIFile())
+            {
+                //如果存在配置文件就进行读取
+                userAccount = ini.IniReadValue("登录详细", "UserAccount");
+            }
+            //绑定数据
+            DataView dvlist = FixedAsset.Query_V_FixedAssets(userAccount);
+            dtgMyShow.ItemsSource = dvlist;
+        }
+
+        //查询
+        private void BtFind_Click(object sender, RoutedEventArgs e)
+        {
+            string keywords = Convert.ToString(tbKeyWords.Text);
+            string strSql = "";
+            string userAccount = string.Empty;
+            if (ini.ExistINIFile())
+            {
+                //如果存在配置文件就进行读取
+                userAccount = ini.IniReadValue("登录详细", "UserAccount");
+            }
+
+            //获取使用情况
+            string showAllUseSituationID = string.Empty;
+            foreach (UIElement element in panelUseSituation.Children)
+            {
+                if (element is CheckBox)
+                {
+                    if ((element as CheckBox).IsChecked.Value)
+                        showAllUseSituationID += (element as CheckBox).Tag + ",";
+                }
+            }
+            showAllUseSituationID = showAllUseSituationID.TrimEnd(',');
+            //绑定数据
+            DataView dvlist = new DataView();
+            if (showAllUseSituationID == "")
+            {
+                strSql = "select * from Web_V_FixedAssets where UserAccount='" + userAccount + "' and (AssetsCoding like \'%" + keywords + "%\' or AssetName like \'%" + keywords + "%\') order by FixedAssetsID desc";
+            }
+            else
+            {
+                strSql = "select * from Web_V_FixedAssets where UserAccount='" + userAccount + "' and UseSituationID in(" + showAllUseSituationID + ") and (AssetsCoding like \'%" + keywords + "%\' or AssetName like \'%" + keywords + "%\') order by FixedAssetsID desc";
+            }
+
+            dvlist = FixedAsset.QueryFixedAssets1(strSql);
+            dtgMyShow.ItemsSource = dvlist;
+        }
+
+        //导出
+        private void BtExp_Click(object sender, RoutedEventArgs e)
+        {
+            string keywords = Convert.ToString(tbKeyWords.Text);
+            string strSql = "";
+            int useSituationID;
+
+            string userAccount = string.Empty;
+            if (ini.ExistINIFile())
+            {
+                //如果存在配置文件就进行读取
+                userAccount = ini.IniReadValue("登录详细", "UserAccount");
+            }
+
+            //获取使用情况
+            string showAllUseSituationID = string.Empty;
+            foreach (UIElement element in panelUseSituation.Children)
+            {
+                if (element is CheckBox)
+                {
+                    if ((element as CheckBox).IsChecked.Value)
+                        showAllUseSituationID += (element as CheckBox).Tag + ",";
+                }
+            }
+
+            //绑定数据
+            DataView dvlist = new DataView();
+            if (showAllUseSituationID == "")
+            {
+                strSql = "select * from Web_V_FixedAssets where UserAccount='" + userAccount + "' and (AssetsCoding like \'%" + keywords + "%\' or AssetName like \'%" + keywords + "%\') order by FixedAssetsID desc";
+            }
+            else
+            {
+                strSql = "select * from Web_V_FixedAssets where UserAccount='" + userAccount + "' and UseSituationID in(" + showAllUseSituationID + ") and (AssetsCoding like \'%" + keywords + "%\' or AssetName like \'%" + keywords + "%\') order by FixedAssetsID desc";
+            }
+
+            dvlist = FixedAsset.QueryFixedAssets1(strSql);
+
+            string showFileName = Guid.NewGuid().ToString() + ".xls";
+            string showNewFileName = "\\xls\\" + showFileName;
+            string sNewFullFile = Environment.CurrentDirectory + showNewFileName;
+            try
+            {
+                File.Copy(Environment.CurrentDirectory + "\\xls\\template.xls", sNewFullFile);
+            }
+            catch (Exception er)
+            {
+                MessageBox.Show(er.Message, "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            string strConn = "Provider=Microsoft.Jet.OLEDB.4.0;Persist Security Info=True;Data Source=" + sNewFullFile + ";Extended Properties=Excel 8.0;";
+            System.Data.OleDb.OleDbConnection conn = new System.Data.OleDb.OleDbConnection(strConn);
+            OleDbCommand cmd = null;
+
+            bool bRet = false;
+
+            try
+            {
+                conn.Open();
+
+                //cmd = new OleDbCommand("create table [sheet4]([姓名] Text,[年龄] Text,[电话] int)", conn);
+                //cmd.ExecuteNonQuery();
+
+                string strSQL = "INSERT INTO [Sheet1$] ([资产编码],[资产名称],[资产大类ID],[资产大类],[资产小类ID],[资产小类],[购置日期],[建立日期],[型号规格],[生产厂家],[品牌],[保管员工号],[保管员姓名],[存放地点],[事业部ID],[事业部名称],[部门ID],[部门名称],[使用情况ID],[使用情况],[申请状态ID],[增加方式ID],[增加方式],[计量单位ID],[计量单位],[原值],[有限年份],[残值率],[剩余月份],[残值],[月折旧],[累计折旧],[净值],[备注],[低值易耗品]) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+                cmd = new OleDbCommand(strSQL, conn);
+
+                for (int i = 0; i < 35; i++)
+                {
+                    cmd.Parameters.Add(i.ToString(), OleDbType.VarChar);
+                }
+
+                DataView dv = dvlist;
+                foreach (DataRowView row in dv)
+                {
+
+                    cmd.Parameters[0].Value = row["AssetsCoding"].ToString();
+                    cmd.Parameters[1].Value = row["AssetName"].ToString();
+                    cmd.Parameters[2].Value = (int)row["MajorID"];
+                    cmd.Parameters[3].Value = row["MajorName"].ToString();
+                    cmd.Parameters[4].Value = (int)row["SubID"];
+                    cmd.Parameters[5].Value = row["SubName"].ToString();
+
+                    cmd.Parameters[6].Value = row["PurchaseDate"].ToString();
+                    cmd.Parameters[7].Value = row["RecordedDate"].ToString();
+                    cmd.Parameters[8].Value = row["SpecificationsModel"].ToString();
+                    cmd.Parameters[9].Value = row["Manufacturer"].ToString();
+                    cmd.Parameters[10].Value = row["Brand"].ToString();
+                    cmd.Parameters[11].Value = row["UserAccount"].ToString();
+
+                    cmd.Parameters[12].Value = row["Contactor"].ToString();
+                    cmd.Parameters[13].Value = row["StorageSites"].ToString();
+                    cmd.Parameters[14].Value = (int)row["DivisionID"];
+                    cmd.Parameters[15].Value = row["DivisionName"].ToString();
+                    cmd.Parameters[16].Value = (int)row["DepartmentID"];
+                    cmd.Parameters[17].Value = row["DepartmentName"].ToString();
+
+                    cmd.Parameters[18].Value = (int)row["UseSituationID"];
+                    cmd.Parameters[19].Value = row["ShowUseSituationID"].ToString();
+                    cmd.Parameters[20].Value = (int)row["ApplyStatus"];
+                    cmd.Parameters[21].Value = (int)row["AddWaysID"];
+                    cmd.Parameters[22].Value = row["AddWaysName"].ToString();
+                    cmd.Parameters[23].Value = (int)row["UnitsID"];
+
+                    cmd.Parameters[24].Value = row["UnitsName"].ToString();
+                    cmd.Parameters[25].Value = row["OriginalValue"].ToString();
+                    cmd.Parameters[26].Value = row["LimitedYear"].ToString();
+                    cmd.Parameters[27].Value = row["ResidualValueRate"].ToString();
+                    cmd.Parameters[28].Value = row["ShowRemainderMonth"].ToString();
+                    cmd.Parameters[29].Value = row["ShowResiduals"].ToString();
+
+                    cmd.Parameters[30].Value = row["ShowMonthDepreciation"].ToString();
+                    cmd.Parameters[31].Value = row["ShowAccumulatedDepreciation"].ToString();
+                    cmd.Parameters[32].Value = row["ShowNetValue"].ToString();
+                    cmd.Parameters[33].Value = row["AssetsBackup"].ToString();
+                    cmd.Parameters[34].Value = (int)row["LowConsumables"];
+
+                    cmd.ExecuteNonQuery();
+                }
+                bRet = true;
+            }
+            catch (Exception er)
+            {
+                MessageBox.Show(er.Message, "错误", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            finally
+            {
+                if (cmd != null)
+                {
+                    cmd.Dispose();
+                }
+                conn.Dispose();
+
+            }
+            if (bRet)
+                //Response.Redirect(FileName);
+                System.Diagnostics.Process.Start(sNewFullFile);
+
+        }
+        #endregion
+
+        #region 批量异动资产
+        /// <summary>
+        /// 批量异动页面数据初始化
+        /// </summary>
+        private void InitVolumeChangesFixedAssets()
+        {
+            //将数据捆绑到下拉列表中
+            DataView dv1 = Division.QueryDivision();
+            cbxVolumeChangesDivisionID.SelectedValuePath = dv1.Table.Columns[0].Caption;
+            cbxVolumeChangesDivisionID.DisplayMemberPath = dv1.Table.Columns[2].Caption;
+            cbxVolumeChangesDivisionID.ItemsSource = dv1;
+
+            cbxVolumeChangesDivisionID.Text = "请选择事业部";
+            cbxVolumeChangesDepartmentID.Text = "请选择部门";
+            cbxVolumeChangesUserAccount.Text = "无";
+
+            //将数据捆绑到下拉列表中
+            DataView dv2 = Division.QueryDivision();
+            cbxCVolumeChangesDivisionID.SelectedValuePath = dv1.Table.Columns[0].Caption;
+            cbxCVolumeChangesDivisionID.DisplayMemberPath = dv1.Table.Columns[2].Caption;
+            cbxCVolumeChangesDivisionID.ItemsSource = dv1;
+
+            cbxCVolumeChangesDivisionID.Text = "请选择事业部";
+            cbxCVolumeChangesDepartmentID.Text = "请选择部门";
+            cbxCVolumeChangesUserAccount.Text = "无";
+        }
+
+        //选择事业部
+        private void CbxVolumeChangesDivisionID_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            int cDivisionID = -1;
+
+            if (cbxVolumeChangesDivisionID.SelectedItem != null && cbxVolumeChangesDivisionID.SelectedValue != null)
+                cDivisionID = Convert.ToInt32(cbxVolumeChangesDivisionID.SelectedValue.ToString());
+
+            DataView dv1 = Department.QueryDepartment(cDivisionID);
+            cbxVolumeChangesDepartmentID.SelectedValuePath = dv1.Table.Columns[0].Caption;
+            cbxVolumeChangesDepartmentID.DisplayMemberPath = dv1.Table.Columns[3].Caption;
+            cbxVolumeChangesDepartmentID.ItemsSource = dv1;
+
+            cbxVolumeChangesDepartmentID.Text = "请选择部门";
+        }
+
+        //选择部门
+        private void CbxVolumeChangesDepartmentID_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            int cDepartmentID = -1;
+
+            if (cbxVolumeChangesDepartmentID.SelectedItem != null && cbxVolumeChangesDepartmentID.SelectedValue != null)
+                cDepartmentID = Convert.ToInt32(cbxVolumeChangesDepartmentID.SelectedValue.ToString());
+
+            DataView dv1 = UserList.QueryUserLists(cDepartmentID);
+            cbxVolumeChangesUserAccount.SelectedValuePath = dv1.Table.Columns[1].Caption;
+            cbxVolumeChangesUserAccount.DisplayMemberPath = dv1.Table.Columns[5].Caption;
+            cbxVolumeChangesUserAccount.ItemsSource = dv1;
+
+            cbxVolumeChangesUserAccount.Text = "无";
+        }
+
+        //选择异动前事业部
+        private void CbxCVolumeChangesDivisionID_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            int divisionID = -1;
+
+            if (cbxCVolumeChangesDivisionID.SelectedItem != null && cbxCVolumeChangesDivisionID.SelectedValue != null)
+                divisionID = Convert.ToInt32(cbxCVolumeChangesDivisionID.SelectedValue.ToString());
+
+            DataView dv1 = Department.QueryDepartment(divisionID);
+            cbxCVolumeChangesDepartmentID.SelectedValuePath = dv1.Table.Columns[0].Caption;
+            cbxCVolumeChangesDepartmentID.DisplayMemberPath = dv1.Table.Columns[3].Caption;
+            cbxCVolumeChangesDepartmentID.ItemsSource = dv1;
+
+            cbxCVolumeChangesDepartmentID.Text = "请选择部门";          //第一项中加入内容,重点是绑定后添加
+        }
+
+        //选择异动后事业部
+        private void CbxCVolumeChangesDepartmentID_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            int departmentID = -1;
+
+            if (cbxCVolumeChangesDepartmentID.SelectedItem != null && cbxCVolumeChangesDepartmentID.SelectedValue != null)
+                departmentID = Convert.ToInt32(cbxCVolumeChangesDepartmentID.SelectedValue.ToString());
+
+            DataView dv1 = UserList.QueryUserLists(departmentID);
+            cbxCVolumeChangesUserAccount.SelectedValuePath = dv1.Table.Columns[1].Caption;
+            cbxCVolumeChangesUserAccount.DisplayMemberPath = dv1.Table.Columns[5].Caption;
+            cbxCVolumeChangesUserAccount.ItemsSource = dv1;
+
+            cbxCVolumeChangesUserAccount.Text = "无";
+        }
+
+        //确认批量异动
+        private void BtnVolumeChangesFixedAssets_Click(object sender, RoutedEventArgs e)
+        {
+            //更新固定资产表里面的信息
+            Hashtable ht1 = new Hashtable();
+            string where = "";
+
+            ht1.Add("DivisionID", SqlStringConstructor.GetQuotedString(cbxCVolumeChangesDivisionID.SelectedValue.ToString()));                  //固定资产信息更新
+            ht1.Add("DivisionName", SqlStringConstructor.GetQuotedString(cbxCVolumeChangesDivisionID.Text));
+            ht1.Add("DepartmentID", SqlStringConstructor.GetQuotedString(cbxVolumeChangesDepartmentID.SelectedValue.ToString()));
+            ht1.Add("DepartmentName", SqlStringConstructor.GetQuotedString(cbxVolumeChangesDepartmentID.Text));
+            ht1.Add("UserAccount", SqlStringConstructor.GetQuotedString(cbxCVolumeChangesUserAccount.SelectedValue.ToString()));
+            ht1.Add("Contactor", SqlStringConstructor.GetQuotedString(cbxCVolumeChangesUserAccount.Text));
+
+            where = " Where UserAccount=" + SqlStringConstructor.GetQuotedString(cbxVolumeChangesUserAccount.SelectedValue.ToString());
+            FixedAsset.Update(ht1, where);
+
+            MessageBox.Show("批量异动固定资产成功！", "成功", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+        #endregion
+
         #region 审核新增资产
         /// <summary>
         /// 审核新增资产页面数据初始化
@@ -2611,10 +2944,6 @@ namespace Asset
             MessageBox.Show("审核异动资产成功！", "成功", MessageBoxButton.OK, MessageBoxImage.Information);
             InitialData();
         }
-
-
-
-
         #endregion
 
         #region 审核维修资产
@@ -4071,36 +4400,10 @@ namespace Asset
             userlist.Update(ht);
             MessageBox.Show("修改我的资料成功！", "成功", MessageBoxButton.OK, MessageBoxImage.Information);
         }
+
+
         #endregion
 
-        #region 我管理的资产
-        #endregion
-        /// <summary>
-        /// 我管理的资产页面数据
-        /// </summary>
-        private void InitMyManageFixedAssetsData()
-        {
-            string userAccount = string.Empty;
-            if (ini.ExistINIFile())
-            {
-                //如果存在配置文件就进行读取
-                userAccount = ini.IniReadValue("登录详细", "UserAccount");
-            }
-            //绑定数据
-            DataView dvlist = FixedAsset.Query_V_FixedAssets(userAccount);
-            dtgMyShow.ItemsSource = dvlist;
-        }
-
-        //
-        private void BtFind_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void BtExp_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
     }
 
     #region dtg数据转换器

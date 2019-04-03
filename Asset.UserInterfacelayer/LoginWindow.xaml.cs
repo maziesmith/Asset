@@ -1,9 +1,12 @@
 ﻿using Arthas.Controls.Metro;
 using Asset.BusinessLogicLayer;
 using Asset.CommonComponent;
+using Asset.DataAccessHelper;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,9 +31,6 @@ namespace Asset
         public LoginWindow()
         {
             InitializeComponent();
-            //使用的框架只能在这里设置大小，xaml中设置大小无效
-            this.Width = 350;
-            this.Height = 500;
             //设置密码框文本装饰
             txtPwd.TextDecorations = new TextDecorationCollection(new TextDecoration[] {
                 new TextDecoration() {
@@ -44,6 +44,20 @@ namespace Asset
                 }
             });
         }
+
+        //登录跳转
+        private void LinkLogin_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            tabiLogin.IsSelected = true;
+        }
+
+        //注册跳转
+        private void LinkRegistered_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            tabiRegistered.IsSelected = true;
+        }
+
+        //登录
         private void BtnLogin_Click(object sender, RoutedEventArgs e)
         {
             txbError.Visibility = Visibility.Hidden;
@@ -103,5 +117,97 @@ namespace Asset
             }
         }
 
+        //绑定下拉列表数据
+        private void BindDrop()
+        {
+            //将数据捆绑到下拉列表中
+            DataView dv = Division.QueryDivision();
+            cbxDivisionID.SelectedValuePath = dv.Table.Columns[0].Caption;
+            cbxDivisionID.DisplayMemberPath = dv.Table.Columns[2].Caption;
+            cbxDivisionID.ItemsSource = dv;
+
+            cbxDivisionID.Text="请选择事业部";        //第一项中加入内容,重点是绑定后添加
+            cbxDepartmentID.Text="请选择部门名称";          //第一项中加入内容,重点是绑定后添加
+        }
+
+        //选择事业部
+        private void CbxDivisionID_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            int divisionID = -1;
+            if (cbxDivisionID.SelectedItem != null && cbxDivisionID.SelectedValue != null)
+                divisionID = Convert.ToInt32(cbxDivisionID.SelectedValue.ToString());
+            DataView dv1 = Department.QueryDepartment(divisionID);
+            cbxDepartmentID.SelectedValuePath = dv1.Table.Columns[0].Caption;
+            cbxDepartmentID.DisplayMemberPath = dv1.Table.Columns[3].Caption;
+            cbxDepartmentID.ItemsSource = dv1;
+        }
+
+        //注册
+        private void BtnRegistered_Click(object sender, RoutedEventArgs e)
+        {
+            txbErr.Visibility = Visibility.Collapsed;
+            if (cbxDivisionID.SelectedItem ==null || cbxDivisionID.SelectedValue == null|| cbxDepartmentID.SelectedItem == null || cbxDepartmentID.SelectedValue == null)
+            {
+                txbErr.Text = "请选择部门";
+                txbErr.Visibility = Visibility.Visible;
+                return;
+            }
+            if(string.IsNullOrEmpty(mtbUserAccount.Text))
+            {
+                txbErr.Text = "请输入用户名";
+                txbErr.Visibility = Visibility.Visible;
+                return;
+            }
+            if (string.IsNullOrEmpty(mtbUserPassword.Text))
+            {
+                txbErr.Text = "请输入密码";
+                txbErr.Visibility = Visibility.Visible;
+                return;
+            }
+            if (string.IsNullOrEmpty(mtbJobPosition.Text))
+            {
+                txbErr.Text = "请输入职称";
+                txbErr.Visibility = Visibility.Visible;
+                return;
+            }
+            if (string.IsNullOrEmpty(mtbContactor.Text))
+            {
+                txbErr.Text = "请输入真实姓名";
+                txbErr.Visibility = Visibility.Visible;
+                return;
+            }
+            if (string.IsNullOrEmpty(mtbTel.Text))
+            {
+                txbErr.Text = "请输入联系电话";
+                txbErr.Visibility = Visibility.Visible;
+                return;
+            }
+
+            UserList userlist = new UserList();
+            userlist.LoadData(mtbUserAccount.Text);
+
+            if (userlist.Exist)
+            {
+                txbErr.Text = "您登记的用户名已经存在!";
+                txbErr.Visibility = Visibility.Visible;
+                return;
+            }
+            else
+            {
+                Hashtable ht = new Hashtable();
+                ht.Add("UserAccount", SqlStringConstructor.GetQuotedString(mtbUserAccount.Text));
+                ht.Add("UserPassword", SqlStringConstructor.GetQuotedString(mtbUserPassword.Text));
+                ht.Add("DivisionID", SqlStringConstructor.GetQuotedString(cbxDivisionID.SelectedValue.ToString()));
+                ht.Add("DepartmentID", SqlStringConstructor.GetQuotedString(cbxDepartmentID.SelectedValue.ToString()));
+                ht.Add("Contactor", SqlStringConstructor.GetQuotedString(mtbContactor.Text));
+                ht.Add("JobPosition", SqlStringConstructor.GetQuotedString(mtbJobPosition.Text));
+                ht.Add("Tel", SqlStringConstructor.GetQuotedString(mtbTel.Text));
+
+                UserList adduserlist = new UserList();
+                adduserlist.Add(ht);
+                MessageBox.Show("用户登记成功！", "成功", MessageBoxButton.OK, MessageBoxImage.Information);
+                tabiLogin.IsSelected = true;
+            }
+        }
     }
 }

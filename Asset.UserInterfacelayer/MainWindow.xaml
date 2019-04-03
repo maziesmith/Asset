@@ -19,7 +19,7 @@
         <Metro:MetroTitleMenu>
             <Metro:MetroTitleMenuItem Header="用户" Icon="Resources/titleMuenIcon.png">
                 <Metro:MetroMenuItem x:Name="menuLogin" Header="登录" Click="MenuLogin_Click" />
-                <Metro:MetroMenuItem x:Name="menuRegistered" Header="注册"/>
+                <Metro:MetroMenuItem x:Name="menuRegistered" Header="注册" Click="MenuRegistered_Click"/>
                 <Metro:MetroMenuSeparator />
                 <Metro:MetroMenuItem x:Name="menuExitLogin" Header="退出登录" Click="MenuExitLogin_Click"/>
             </Metro:MetroTitleMenuItem>
@@ -937,7 +937,7 @@
                                 <Metro:MetroScrollViewer>
                                     <StackPanel>
                                         <StackPanel Orientation="Horizontal">
-                                            <Metro:MetroTextBox x:Name="txtKeyWords1" Text="" Title="关键字" InputHint="请输入固定资产编码或资产名称，支持模糊查询" PopupHint="请输入固定资产编码或资产名称，支持模糊查询" Icon="Resources/editIcon.png" Margin="0,0,20,0" VerticalAlignment="Center"/>
+                                            <Metro:MetroTextBox x:Name="tbKeyWords" Text="" Title="关键字" InputHint="请输入固定资产编码或资产名称，支持模糊查询" PopupHint="请输入固定资产编码或资产名称，支持模糊查询" Icon="Resources/editIcon.png" Margin="0,0,20,0" VerticalAlignment="Center"/>
                                             <StackPanel Orientation="Horizontal" Margin="0,0,20,0">
                                                 <Metro:MetroTextBlock Text="使用情况" Opacity="0.65" VerticalAlignment="Center" Margin="0,0,10,0"/>
                                                 <StackPanel x:Name="panelUseSituation1" Orientation="Horizontal">
@@ -947,7 +947,7 @@
                                                     <CheckBox Tag="4" Content="维修中" VerticalAlignment="Center" />
                                                 </StackPanel>
                                             </StackPanel>
-                                            <StackPanel Orientation="Horizontal" Margin="0,0,20,0">
+                                            <StackPanel Orientation="Horizontal" Margin="0,0,20,0" Visibility="Collapsed">
                                                 <Metro:MetroTextBlock Text="所属部门" Opacity="0.65" VerticalAlignment="Center" Margin="0,0,10,0"/>
                                                 <ComboBox x:Name="cbxDivisionID2" VerticalAlignment="Center" Margin="0,0,5,0" MinWidth="50" IsEditable="True" SelectionChanged="CbxDivisionID_SelectionChanged"/>
                                                 <ComboBox x:Name="cbxDepartmentID2" VerticalAlignment="Center" Margin="0,0,5,0" MinWidth="50" IsEditable="True"/>
@@ -1117,6 +1117,65 @@
                                             <Metro:MetroButton x:Name="btViewPrint1" MetroButtonState="None" Content="查看打印列表" Margin="0,0,10,0" Click="BtViewPrint_Click" />
                                         </StackPanel>
                                     </StackPanel>
+                                </Metro:MetroScrollViewer>
+                            </Grid>
+                        </Metro:MetroTabItem>
+                        <Metro:MetroTabItem x:Name="tabpVolumeChangesFixedAssets" Header="批量异动资产">
+                            <Grid>
+                                <Metro:MetroScrollViewer>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="50*"/>
+                                            <ColumnDefinition Width="100*"/>
+                                            <ColumnDefinition Width="50*"/>
+                                            <ColumnDefinition Width="100*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="50" />
+                                            <RowDefinition Height="50" />
+                                            <RowDefinition Height="50" />
+                                            <RowDefinition Height="50" />
+                                        </Grid.RowDefinitions>
+                                        <Metro:MetroCanvasGrid  Grid.Column="0" Grid.Row="0" Margin="5" GridOpacity="0.5" IsApplyTheme="True" Viewport="0 0 20 20" CornerRadius="10" />
+                                        <Metro:MetroCanvasGrid  Grid.Column="0" Grid.Row="1" Margin="5" GridOpacity="0.5" IsApplyTheme="True" Viewport="0 0 20 20" CornerRadius="10" />
+                                        <Metro:MetroCanvasGrid  Grid.Column="0" Grid.Row="2" Margin="5" GridOpacity="0.5" IsApplyTheme="True" Viewport="0 0 20 20" CornerRadius="10" />
+
+                                        <Metro:MetroTextBlock Grid.Column="0" Grid.Row="0" Text="异动前" HorizontalAlignment="Right" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                        <Metro:MetroTextBlock Grid.Column="0" Grid.Row="1" Text="所属部门*" HorizontalAlignment="Right" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                        <Metro:MetroTextBlock Grid.Column="0" Grid.Row="2" Text="保管人员*" HorizontalAlignment="Right" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                      
+                                        <Metro:MetroTextBlock x:Name="mtxtAssetClasses1" Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" Text="⇓" HorizontalAlignment="Left" Margin="10,0,0,0" />
+                                        <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal">
+                                            <ComboBox x:Name="cbxVolumeChangesDivisionID" VerticalAlignment="Center" IsEditable="True" Width="100" HorizontalAlignment="Left" Margin="5,0,5,0" Text="请选择事业部" SelectionChanged="CbxVolumeChangesDivisionID_SelectionChanged"/>
+                                            <ComboBox x:Name="cbxVolumeChangesDepartmentID" VerticalAlignment="Center" IsEditable="True" Width="100" HorizontalAlignment="Left" Margin="5,0,5,0" Text="请选择部门" SelectionChanged="CbxVolumeChangesDepartmentID_SelectionChanged"/>
+                                            <Metro:MetroTextBlock VerticalAlignment="Center" Text="请选择部门" HorizontalAlignment="Left" Margin="10,0,0,0" Foreground="Red" Visibility="Collapsed"/>
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="1" Grid.Row="2" Orientation="Horizontal">
+                                            <ComboBox x:Name="cbxVolumeChangesUserAccount" VerticalAlignment="Center" IsEditable="True" Width="50" HorizontalAlignment="Left" Margin="5,0,5,0" Text="请选择保管人员"/>
+                                            <Metro:MetroTextBlock VerticalAlignment="Center" Text="请选择保管人员" HorizontalAlignment="Left" Margin="10,0,0,0" Foreground="Red" Visibility="Collapsed" />
+                                        </StackPanel>
+                                        <Metro:MetroButton x:Name="btnVolumeChangesFixedAssets" Grid.Column="1" Grid.Row="3" MetroButtonState="None" Content="确认异动" Margin="5,10,10,0" HorizontalAlignment="Left" VerticalAlignment="Top" Click="BtnVolumeChangesFixedAssets_Click"/>
+
+                                        <Metro:MetroCanvasGrid  Grid.Column="2" Grid.Row="0" Margin="5" GridOpacity="0.5" IsApplyTheme="True" Viewport="0 0 20 20" CornerRadius="10" />
+                                        <Metro:MetroCanvasGrid  Grid.Column="2" Grid.Row="1" Margin="5" GridOpacity="0.5" IsApplyTheme="True" Viewport="0 0 20 20" CornerRadius="10" />
+                                        <Metro:MetroCanvasGrid  Grid.Column="2" Grid.Row="2" Margin="5" GridOpacity="0.5" IsApplyTheme="True" Viewport="0 0 20 20" CornerRadius="10" />
+
+
+                                        <Metro:MetroTextBlock Grid.Column="2" Grid.Row="0" Text="异动后" HorizontalAlignment="Right" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                        <Metro:MetroTextBlock Grid.Column="2" Grid.Row="1" Text="所属部门*" HorizontalAlignment="Right" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                        <Metro:MetroTextBlock Grid.Column="2" Grid.Row="2" Text="保管人员*" HorizontalAlignment="Right" Margin="0,0,10,0" VerticalAlignment="Center"/>
+
+                                        <Metro:MetroTextBlock x:Name="mtxtAssetsCoding1" Grid.Column="3" Grid.Row="0" VerticalAlignment="Center" Text="⇓" HorizontalAlignment="Left" Margin="10,0,0,0" />
+                                        <StackPanel Grid.Column="3" Grid.Row="1" Orientation="Horizontal">
+                                            <ComboBox x:Name="cbxCVolumeChangesDivisionID" VerticalAlignment="Center" IsEditable="True" Width="100" HorizontalAlignment="Left" Margin="5,0,5,0" Text="请选择事业部" SelectionChanged="CbxCVolumeChangesDivisionID_SelectionChanged"/>
+                                            <ComboBox x:Name="cbxCVolumeChangesDepartmentID" VerticalAlignment="Center" IsEditable="True" Width="100" HorizontalAlignment="Left" Margin="5,0,5,0" Text="请选择部门" SelectionChanged="CbxCVolumeChangesDepartmentID_SelectionChanged"/>
+                                            <Metro:MetroTextBlock VerticalAlignment="Center" Text="请选择部门" HorizontalAlignment="Left" Margin="10,0,0,0" Foreground="Red" Visibility="Collapsed"/>
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="3" Grid.Row="2" Orientation="Horizontal">
+                                            <ComboBox x:Name="cbxCVolumeChangesUserAccount" VerticalAlignment="Center" IsEditable="True" Width="50" HorizontalAlignment="Left" Margin="5,0,5,0" Text="请选择保管人员"/>
+                                            <Metro:MetroTextBlock VerticalAlignment="Center" Text="请选择保管人员" HorizontalAlignment="Left" Margin="10,0,0,0" Foreground="Red" Visibility="Collapsed" />
+                                        </StackPanel>
+                                    </Grid>
                                 </Metro:MetroScrollViewer>
                             </Grid>
                         </Metro:MetroTabItem>
@@ -2571,6 +2630,7 @@
                             </Grid>
                         </Metro:MetroTabItem>
                         
+
                     </Metro:MetroTabControl>
                 </Grid>
             </Metro:MetroMenuTabItem>
