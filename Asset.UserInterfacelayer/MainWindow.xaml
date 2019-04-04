@@ -496,6 +496,65 @@
                                 </Metro:MetroScrollViewer>
                             </Grid>
                         </Metro:MetroTabItem>
+                        <Metro:MetroTabItem x:Name="tabpPrintCard" Header="打印标识卡" >
+                            <Grid>
+                                <Metro:MetroScrollViewer>
+                                    <StackPanel>
+                                        <ItemsControl x:Name="myItemsControl">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Border  BorderBrush="Black" BorderThickness="1">
+                                                        <StackPanel Width="300" Height="150">
+                                                            <TextBlock Text="武汉工商学院" HorizontalAlignment="Center" FontSize="16" Foreground="#FF005DFF"/>
+                                                            <StackPanel Orientation="Horizontal">
+                                                                <TextBlock Text="资产编码" HorizontalAlignment="Center" Margin="0,0,5,0"/>
+                                                                <TextBlock Text="{Binding AssetsCoding}"   HorizontalAlignment="Center"/>
+                                                            </StackPanel>
+                                                            <StackPanel Orientation="Horizontal">
+                                                                <TextBlock Text="资产名称"   HorizontalAlignment="Center" Margin="0,0,5,0"/>
+                                                                <TextBlock Text="{Binding AssetName}"   HorizontalAlignment="Center"/>
+                                                            </StackPanel>
+                                                            <StackPanel Orientation="Horizontal">
+                                                                <TextBlock Text="型号规格"   HorizontalAlignment="Center" Margin="0,0,5,0"/>
+                                                                <TextBlock Text="{Binding SpecificationsModel}"   HorizontalAlignment="Center"/>
+                                                            </StackPanel>
+                                                            <StackPanel Orientation="Horizontal">
+                                                                <TextBlock Text="生产厂家"   HorizontalAlignment="Center" Margin="0,0,5,0"/>
+                                                                <TextBlock Text="{Binding Manufacturer}"   HorizontalAlignment="Center"/>
+                                                            </StackPanel>
+                                                            <StackPanel Orientation="Horizontal">
+                                                                <TextBlock Text="购置日期"   HorizontalAlignment="Center" Margin="0,0,5,0"/>
+                                                                <TextBlock Text="{Binding Show_PurchaseDate}"   HorizontalAlignment="Center"/>
+                                                            </StackPanel>
+                                                            <StackPanel Orientation="Horizontal">
+                                                                <TextBlock Text="备注信息"   HorizontalAlignment="Center" Margin="0,0,5,0"/>
+                                                                <TextBlock Text="{Binding AssetsBackup}"   HorizontalAlignment="Center"/>
+                                                            </StackPanel>
+                                                            <StackPanel Orientation="Horizontal">
+                                                                <TextBlock Text="保管人员"   HorizontalAlignment="Center" Margin="0,0,5,0"/>
+                                                                <TextBlock Text="{Binding Contactor}"   HorizontalAlignment="Center"/>
+                                                            </StackPanel>
+                                                        </StackPanel>
+                                                    </Border>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <WrapPanel />
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
+
+                                            <ItemsControl.ItemContainerStyle>
+                                                <Style>
+                                                    <Setter Property="Control.Margin" Value="5"/>
+                                                </Style>
+                                            </ItemsControl.ItemContainerStyle>
+                                        </ItemsControl>
+                                    </StackPanel>
+                                </Metro:MetroScrollViewer>
+                            </Grid>
+                        </Metro:MetroTabItem>
                         <Metro:MetroTabItem x:Name="tabpModifyAsset" Header="修改资产">
                             <Grid>
                                 <Metro:MetroScrollViewer>
@@ -1086,25 +1145,6 @@
                                                                             </Style>
                                                                         </Button.Style>
                                                                     </Button>
-                                                                    <Button Content="打印" Margin="10,0,5,0" >
-                                                                        <Button.Template>
-                                                                            <ControlTemplate TargetType="{x:Type Button}">
-                                                                                <TextBlock TextDecorations="Underline"><InlineUIContainer>  
-                                                                                        <ContentPresenter />
-                                                                                    </InlineUIContainer></TextBlock>
-                                                                            </ControlTemplate>
-                                                                        </Button.Template>
-                                                                        <Button.Style>
-                                                                            <Style TargetType="{x:Type Button}">
-                                                                                <Setter Property="Foreground" Value="Blue" />
-                                                                                <Style.Triggers>
-                                                                                    <Trigger Property="IsMouseOver" Value="true">
-                                                                                        <Setter Property="Foreground" Value="Red" />
-                                                                                    </Trigger>
-                                                                                </Style.Triggers>
-                                                                            </Style>
-                                                                        </Button.Style>
-                                                                    </Button>
                                                                 </StackPanel>
                                                             </DataTemplate>
                                                         </DataGridTemplateColumn.CellTemplate>
@@ -1148,11 +1188,11 @@
                                         <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal">
                                             <ComboBox x:Name="cbxVolumeChangesDivisionID" VerticalAlignment="Center" IsEditable="True" Width="100" HorizontalAlignment="Left" Margin="5,0,5,0" Text="请选择事业部" SelectionChanged="CbxVolumeChangesDivisionID_SelectionChanged"/>
                                             <ComboBox x:Name="cbxVolumeChangesDepartmentID" VerticalAlignment="Center" IsEditable="True" Width="100" HorizontalAlignment="Left" Margin="5,0,5,0" Text="请选择部门" SelectionChanged="CbxVolumeChangesDepartmentID_SelectionChanged"/>
-                                            <Metro:MetroTextBlock VerticalAlignment="Center" Text="请选择部门" HorizontalAlignment="Left" Margin="10,0,0,0" Foreground="Red" Visibility="Collapsed"/>
+                                            <Metro:MetroTextBlock x:Name="mtbDivisionAndDepartment" VerticalAlignment="Center" Text="请选择部门" HorizontalAlignment="Left" Margin="10,0,0,0" Foreground="Red" Visibility="Collapsed"/>
                                         </StackPanel>
                                         <StackPanel Grid.Column="1" Grid.Row="2" Orientation="Horizontal">
                                             <ComboBox x:Name="cbxVolumeChangesUserAccount" VerticalAlignment="Center" IsEditable="True" Width="50" HorizontalAlignment="Left" Margin="5,0,5,0" Text="请选择保管人员"/>
-                                            <Metro:MetroTextBlock VerticalAlignment="Center" Text="请选择保管人员" HorizontalAlignment="Left" Margin="10,0,0,0" Foreground="Red" Visibility="Collapsed" />
+                                            <Metro:MetroTextBlock x:Name="mtbChangesUserAccount" VerticalAlignment="Center" Text="请选择保管人员" HorizontalAlignment="Left" Margin="10,0,0,0" Foreground="Red" Visibility="Collapsed" />
                                         </StackPanel>
                                         <Metro:MetroButton x:Name="btnVolumeChangesFixedAssets" Grid.Column="1" Grid.Row="3" MetroButtonState="None" Content="确认异动" Margin="5,10,10,0" HorizontalAlignment="Left" VerticalAlignment="Top" Click="BtnVolumeChangesFixedAssets_Click"/>
 
@@ -1169,11 +1209,11 @@
                                         <StackPanel Grid.Column="3" Grid.Row="1" Orientation="Horizontal">
                                             <ComboBox x:Name="cbxCVolumeChangesDivisionID" VerticalAlignment="Center" IsEditable="True" Width="100" HorizontalAlignment="Left" Margin="5,0,5,0" Text="请选择事业部" SelectionChanged="CbxCVolumeChangesDivisionID_SelectionChanged"/>
                                             <ComboBox x:Name="cbxCVolumeChangesDepartmentID" VerticalAlignment="Center" IsEditable="True" Width="100" HorizontalAlignment="Left" Margin="5,0,5,0" Text="请选择部门" SelectionChanged="CbxCVolumeChangesDepartmentID_SelectionChanged"/>
-                                            <Metro:MetroTextBlock VerticalAlignment="Center" Text="请选择部门" HorizontalAlignment="Left" Margin="10,0,0,0" Foreground="Red" Visibility="Collapsed"/>
+                                            <Metro:MetroTextBlock x:Name="mtbCDivisionAndDepartment" VerticalAlignment="Center" Text="请选择部门" HorizontalAlignment="Left" Margin="10,0,0,0" Foreground="Red" Visibility="Collapsed"/>
                                         </StackPanel>
                                         <StackPanel Grid.Column="3" Grid.Row="2" Orientation="Horizontal">
                                             <ComboBox x:Name="cbxCVolumeChangesUserAccount" VerticalAlignment="Center" IsEditable="True" Width="50" HorizontalAlignment="Left" Margin="5,0,5,0" Text="请选择保管人员"/>
-                                            <Metro:MetroTextBlock VerticalAlignment="Center" Text="请选择保管人员" HorizontalAlignment="Left" Margin="10,0,0,0" Foreground="Red" Visibility="Collapsed" />
+                                            <Metro:MetroTextBlock x:Name="mtbCChangesUserAccount" VerticalAlignment="Center" Text="请选择保管人员" HorizontalAlignment="Left" Margin="10,0,0,0" Foreground="Red" Visibility="Collapsed" />
                                         </StackPanel>
                                     </Grid>
                                 </Metro:MetroScrollViewer>
@@ -1653,7 +1693,7 @@
                                         </StackPanel>
                                         <StackPanel Grid.Column="3" Grid.Row="6" Orientation="Horizontal">
                                             <TextBox x:Name="txtApprovedPerson6" VerticalAlignment="Top" Width="200" HorizontalAlignment="Left" Margin="5,18,5,0"/>
-                                            <Metro:MetroTextBlock VerticalAlignment="Center" Text="请输入转移人" HorizontalAlignment="Left" Margin="10,0,0,0" Foreground="Red" Visibility="Collapsed"/>
+                                            <Metro:MetroTextBlock x:Name="mtxtApprovedPerson6" VerticalAlignment="Center" Text="请输入核准人" HorizontalAlignment="Left" Margin="10,0,0,0" Foreground="Red" Visibility="Collapsed"/>
                                         </StackPanel>
                                         <StackPanel Grid.Column="3" Grid.Row="9" Orientation="Horizontal">
                                             <TextBox x:Name="txtAssetsCoding6" VerticalAlignment="Center" Width="100" HorizontalAlignment="Left" Margin="5,0,5,0" />
@@ -1832,7 +1872,7 @@
                                         <Metro:MetroTextBlock x:Name="mtxtAssetName7" Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" Text="无" HorizontalAlignment="Left" Margin="10,0,0,0" />
                                         <StackPanel  Grid.Column="1" Grid.Row="1">
                                             <Metro:MetroRichTextBox x:Name="mtxtRepairContent7" Margin="5,10,5,10" Height="60"/>
-                                            <Metro:MetroTextBlock VerticalAlignment="Center" Text="请输入故障描述" HorizontalAlignment="Left" Margin="10,0,0,0" Foreground="Red" Visibility="Collapsed"/>
+                                            <Metro:MetroTextBlock x:Name="txtRepairContent7" VerticalAlignment="Center" Text="请输入故障描述" HorizontalAlignment="Left" Margin="10,0,0,0" Foreground="Red" Visibility="Collapsed"/>
                                         </StackPanel>
                                         <Metro:MetroButton x:Name="btnEnterCheckRepairAsset" Grid.Column="1" Grid.Row="2" MetroButtonState="None" Content="确认审核资产维修" Margin="5,10,10,0" HorizontalAlignment="Left" VerticalAlignment="Top" Click="BtnEnterCheckRepairAsset_Click"/>
                                         <StackPanel Grid.Column="1" Grid.Row="4" Orientation="Horizontal">
@@ -2048,8 +2088,8 @@
                                         <Metro:MetroCanvasGrid  Grid.Column="0" Grid.Row="17" Margin="5" GridOpacity="0.5" IsApplyTheme="True" Viewport="0 0 20 20" CornerRadius="10" Height="40" VerticalAlignment="Top"/>
 
                                         <Metro:MetroTextBlock Grid.Column="0" Grid.Row="0" Text="资产名称" HorizontalAlignment="Right" Margin="0,0,10,0" VerticalAlignment="Center"/>
-                                        <Metro:MetroTextBlock Grid.Column="0" Grid.Row="1" Text="申请人" HorizontalAlignment="Right" Margin="0,0,10,0" VerticalAlignment="Center"/>
-                                        <Metro:MetroTextBlock Grid.Column="0" Grid.Row="2" Text="报废理由*" HorizontalAlignment="Right" Margin="0,18,10,0"/>
+                                        <Metro:MetroTextBlock Grid.Column="0" Grid.Row="1" Text="申请人*" HorizontalAlignment="Right" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                        <Metro:MetroTextBlock Grid.Column="0" Grid.Row="2" Text="报废理由" HorizontalAlignment="Right" Margin="0,18,10,0"/>
                                         <Metro:MetroTextBlock Grid.Column="0" Grid.Row="4" Text="资产详细" HorizontalAlignment="Right" Margin="0,0,10,0" VerticalAlignment="Center"/>
                                         <Metro:MetroTextBlock Grid.Column="0" Grid.Row="5" Text="资产类别*" HorizontalAlignment="Right" Margin="0,17,12,17" VerticalAlignment="Center"/>
                                         <Metro:MetroTextBlock Grid.Column="0" Grid.Row="6" Text="资产名称*" HorizontalAlignment="Right" Margin="0,0,10,0" VerticalAlignment="Center"/>
@@ -2069,11 +2109,10 @@
                                         <Metro:MetroTextBlock x:Name="mtxtAssetName8" Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" Text="无" HorizontalAlignment="Left" Margin="10,0,0,0" />
                                         <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal" >
                                             <TextBox x:Name="txtApplicant8" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0" MinWidth="100" />
-                                            <Metro:MetroTextBlock VerticalAlignment="Center" Text="请输入申请人" HorizontalAlignment="Left" Margin="10,0,0,0" Foreground="Red" Visibility="Collapsed"/>
+                                            <Metro:MetroTextBlock x:Name="mtxtApplicant8" VerticalAlignment="Center" Text="请输入申请人" HorizontalAlignment="Left" Margin="10,0,0,0" Foreground="Red" Visibility="Collapsed"/>
                                         </StackPanel>
                                         <StackPanel  Grid.Column="1" Grid.Row="2">
                                             <Metro:MetroRichTextBox x:Name="mtxtScrappedReason8" Margin="5,10,5,10" Height="60"/>
-                                            <Metro:MetroTextBlock VerticalAlignment="Center" Text="请输入故障描述" HorizontalAlignment="Left" Margin="10,0,0,0" Foreground="Red" Visibility="Collapsed"/>
                                         </StackPanel>
                                         <Metro:MetroButton x:Name="btnEnterCheckScrappedAsset" Grid.Column="1" Grid.Row="3" MetroButtonState="None" Content="确认审核资产报废" Margin="5,10,10,0" HorizontalAlignment="Left" VerticalAlignment="Top" Click="BtnEnterCheckScrappedAsset_Click"/>
                                         <StackPanel Grid.Column="1" Grid.Row="5" Orientation="Horizontal">
@@ -2127,7 +2166,7 @@
 
                                         <Metro:MetroTextBlock Grid.Column="2" Grid.Row="0" Text="资产编码" HorizontalAlignment="Right" Margin="0,0,10,0" VerticalAlignment="Center"/>
                                         <Metro:MetroTextBlock Grid.Column="2" Grid.Row="1" Text="减少方式" HorizontalAlignment="Right" Margin="0,0,10,0" VerticalAlignment="Center"/>
-                                        <Metro:MetroTextBlock Grid.Column="2" Grid.Row="2" Text="批准人" HorizontalAlignment="Right" Margin="0,18,10,0" VerticalAlignment="Top"/>
+                                        <Metro:MetroTextBlock Grid.Column="2" Grid.Row="2" Text="批准人*" HorizontalAlignment="Right" Margin="0,18,10,0" VerticalAlignment="Top"/>
                                         <Metro:MetroTextBlock Grid.Column="2" Grid.Row="5" Text="资产编码*" HorizontalAlignment="Right" Margin="0,0,10,0" VerticalAlignment="Center"/>
                                         <Metro:MetroTextBlock Grid.Column="2" Grid.Row="6" Text="规格型号*" HorizontalAlignment="Right" Margin="0,0,10,0" VerticalAlignment="Center"/>
                                         <Metro:MetroTextBlock Grid.Column="2" Grid.Row="7" Text="生产厂家" HorizontalAlignment="Right" Margin="0,0,10,0" VerticalAlignment="Center"/>
@@ -2155,7 +2194,7 @@
                                         </StackPanel>
                                         <StackPanel Grid.Column="3" Grid.Row="2" Orientation="Horizontal">
                                             <TextBox x:Name="txtApprovedPerson8" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5,18,5,0" Width="100"/>
-                                            <Metro:MetroTextBlock VerticalAlignment="Top" Text="请输入批准人" HorizontalAlignment="Left" Margin="10,18,0,0" Foreground="Red" Visibility="Collapsed"/>
+                                            <Metro:MetroTextBlock x:Name="mtxtApprovedPerson8" VerticalAlignment="Top" Text="请输入批准人" HorizontalAlignment="Left" Margin="10,18,0,0" Foreground="Red" Visibility="Collapsed"/>
                                         </StackPanel>
                                         <StackPanel Grid.Column="3" Grid.Row="5" Orientation="Horizontal">
                                             <TextBox x:Name="txtAssetsCoding8" VerticalAlignment="Center" Width="100" HorizontalAlignment="Left" Margin="5,0,5,0" />
@@ -2604,25 +2643,25 @@
 
                                         <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Horizontal">
                                             <ComboBox x:Name="cbxEditMajorID" IsEditable="True" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0" Width="200" />
-                                            <Metro:MetroTextBlock x:Name="mtxtDivisionName1" VerticalAlignment="Center" Text="请选择事业部" HorizontalAlignment="Left" Margin="10,0,0,0" Foreground="Red" Visibility="Collapsed"/>
+                                            <Metro:MetroTextBlock x:Name="mcbxEditMajorID" VerticalAlignment="Center" Text="请选择一级类别" HorizontalAlignment="Left" Margin="10,0,0,0" Foreground="Red" Visibility="Collapsed"/>
                                         </StackPanel>
                                         <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal">
                                             <TextBox x:Name="txtEditSubName" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0" Width="200" />
-                                            <Metro:MetroTextBlock x:Name="mtxtEditDepartmentName1" VerticalAlignment="Center" Text="请输入部门名称" HorizontalAlignment="Left" Margin="10,0,0,0" Foreground="Red" Visibility="Collapsed"/>
+                                            <Metro:MetroTextBlock x:Name="mtxtEditSubName" VerticalAlignment="Center" Text="请输入二级类别名称" HorizontalAlignment="Left" Margin="10,0,0,0" Foreground="Red" Visibility="Collapsed"/>
                                         </StackPanel>
                                         <StackPanel Grid.Column="1" Grid.Row="2" Orientation="Horizontal">
                                             <ComboBox x:Name="cbxEditUnits" IsEditable="True" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0" Width="200" />
-                                            <Metro:MetroTextBlock VerticalAlignment="Center" Text="请选择事业部" HorizontalAlignment="Left" Margin="10,0,0,0" Foreground="Red" Visibility="Collapsed"/>
+                                            <Metro:MetroTextBlock x:Name="mcbxEditUnits" VerticalAlignment="Center" Text="请选择单位" HorizontalAlignment="Left" Margin="10,0,0,0" Foreground="Red" Visibility="Collapsed"/>
                                         </StackPanel>
                                         <StackPanel Grid.Column="1" Grid.Row="3" Orientation="Horizontal">
                                             <TextBox x:Name="txtEditUsefulLife" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0" Width="200" />
                                             <Metro:MetroTextBlock VerticalAlignment="Center" Text=" 例：3" HorizontalAlignment="Left" Margin="10,0,0,0" Opacity="0.65"/>
-                                            <Metro:MetroTextBlock VerticalAlignment="Center" Text="请输入部门名称" HorizontalAlignment="Left" Margin="10,0,0,0" Foreground="Red" Visibility="Collapsed"/>
+                                            <Metro:MetroTextBlock x:Name="mtxtEditUsefulLife" VerticalAlignment="Center" Text="请输入纯数字年限" HorizontalAlignment="Left" Margin="10,0,0,0" Foreground="Red" Visibility="Collapsed"/>
                                         </StackPanel>
                                         <StackPanel Grid.Column="1" Grid.Row="4" Orientation="Horizontal">
                                             <TextBox x:Name="txtEditDepreciationRate" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0" Width="200" />
                                             <Metro:MetroTextBlock VerticalAlignment="Center" Text=" 例：0.03" HorizontalAlignment="Left" Margin="10,0,0,0" Opacity="0.65"/>
-                                            <Metro:MetroTextBlock VerticalAlignment="Center" Text="请输入部门名称" HorizontalAlignment="Left" Margin="10,0,0,0" Foreground="Red" Visibility="Collapsed"/>
+                                            <Metro:MetroTextBlock x:Name="mtxtEditDepreciationRate" VerticalAlignment="Center" Text="请按规定输入折旧率" HorizontalAlignment="Left" Margin="10,0,0,0" Foreground="Red" Visibility="Collapsed"/>
                                         </StackPanel>
                                         <Metro:MetroButton x:Name="btnEnterEditSubClass" Grid.Column="1" Grid.Row="5" MetroButtonState="None" Content="确认修改" Margin="5,10,10,0" HorizontalAlignment="Left" VerticalAlignment="Top" Click="BtnEnterEditSubClass_Click"/>
                                     </Grid>

@@ -43,6 +43,8 @@ namespace Asset
                       }
                 }
             });
+            //绑定数据
+            BindDrop();
         }
 
         //登录跳转
@@ -182,7 +184,6 @@ namespace Asset
                 txbErr.Visibility = Visibility.Visible;
                 return;
             }
-
             UserList userlist = new UserList();
             userlist.LoadData(mtbUserAccount.Text);
 
@@ -202,7 +203,6 @@ namespace Asset
                 ht.Add("Contactor", SqlStringConstructor.GetQuotedString(mtbContactor.Text));
                 ht.Add("JobPosition", SqlStringConstructor.GetQuotedString(mtbJobPosition.Text));
                 ht.Add("Tel", SqlStringConstructor.GetQuotedString(mtbTel.Text));
-
                 UserList adduserlist = new UserList();
                 adduserlist.Add(ht);
                 MessageBox.Show("用户登记成功！", "成功", MessageBoxButton.OK, MessageBoxImage.Information);

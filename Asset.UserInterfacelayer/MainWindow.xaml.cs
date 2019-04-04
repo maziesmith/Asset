@@ -132,6 +132,9 @@ namespace Asset
             InitMyUser();
         }
 
+        #region 用户登录属性
+        #endregion
+
         #region 菜单栏
         //点击用户菜单登录按钮
         private void MenuLogin_Click(object sender, RoutedEventArgs e)
@@ -185,7 +188,51 @@ namespace Asset
         //注册
         private void MenuRegistered_Click(object sender, RoutedEventArgs e)
         {
-            
+            LoginWindow win = new LoginWindow();
+            win.tabiRegistered.IsSelected = true;
+            win.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            //设置登录窗口主题
+            if (BorderBrush != null)
+            {
+                win.BorderBrush = BorderBrush;
+            }
+            if (win.ShowDialog().Value == true)
+            {
+                //登录成功
+                InitialData();
+                //构建用户菜单
+                if (ini.ExistINIFile())
+                {
+                    //如果存在配置文件就进行读取
+                    string userAccount = ini.IniReadValue("登录详细", "UserAccount");
+                    UserList userList = new UserList();
+                    userList.LoadData(userAccount);
+                    mainWindow.Title = "资产管理系统--" + "管理员：" + userAccount;
+                    //1.先隐藏用户菜单
+                    foreach (FrameworkElement fe in lists.Children)
+                    {
+
+                        if (fe is MetroExpander)
+                        {
+                            foreach (var fe1 in (fe as MetroExpander).Children)
+                            {
+                                if (fe1 is MetroExpander)
+                                {
+                                    (fe1 as MetroExpander).Visibility = Visibility.Collapsed;
+                                }
+                            }
+                        }
+                    }
+                    //2.根据权限显示
+                    foreach (string duty in userList.Duties)
+                    {
+                        if (this.FindName("treeMenu" + duty) != null)
+                        {
+                            (this.FindName("treeMenu" + duty) as ContentControl).Visibility = Visibility.Visible;
+                        }
+                    }
+                }
+            }
         }
 
         //退出登录
@@ -315,7 +362,7 @@ namespace Asset
         {
             int showDivisionID = -1;
             //获取事业部ID
-            if (cbxDivisionID.SelectedItem != null && cbxDivisionID.SelectedItem.ToString() != "")
+            if (cbxDivisionID.SelectedItem != null && cbxDivisionID.SelectedValue != null)
                 showDivisionID = Convert.ToInt32(cbxDivisionID.SelectedValue.ToString());
             //绑定部门数据到下拉列表
             DataView dv1 = Department.QueryDepartment(showDivisionID);
@@ -329,7 +376,7 @@ namespace Asset
         private void BtQuery_Click(object sender, RoutedEventArgs e)
         {
             string strSql = "";
-            int divisionID, departmentID, useSituationID;
+            int divisionID, departmentID;
             //关键字
             string keywords = Convert.ToString(txtKeyWords.Text);
 
@@ -344,7 +391,6 @@ namespace Asset
                 }
             }
             showAllUseSituationID = showAllUseSituationID.TrimEnd(',');
-            //绑定数据
             DataView dvlist = new DataView();
             if (showAllUseSituationID == "")
             {
@@ -382,6 +428,7 @@ namespace Asset
                     strSql = "select * from Web_V_FixedAssets where UseSituationID in(" + showAllUseSituationID + ") and DivisionID=" + divisionID + " and DepartmentID=" + departmentID + " and (AssetsCoding like \'%" + keywords + "%\' or AssetName like \'%" + keywords + "%\') order by FixedAssetsID desc";
                 }
             }
+            //绑定数据
             dvlist = FixedAsset.QueryFixedAssets1(strSql);
             dtgShow.ItemsSource = dvlist;
             //导出excel按钮启用
@@ -392,7 +439,7 @@ namespace Asset
         private void BtExport_Click(object sender, RoutedEventArgs e)
         {
             string strSql = "";
-            int divisionID, departmentID, useSituationID;
+            int divisionID, departmentID;
             //关键字
             string keywords = Convert.ToString(txtKeyWords.Text);
 
@@ -408,7 +455,6 @@ namespace Asset
             }
             showAllUseSituationID = showAllUseSituationID.TrimEnd(',');
 
-            //绑定数据
             DataView dvlist = new DataView();
             if (showAllUseSituationID == "")
             {
@@ -446,7 +492,7 @@ namespace Asset
                     strSql = "select * from Web_V_FixedAssets where UseSituationID in(" + showAllUseSituationID + ") and DivisionID=" + divisionID + " and DepartmentID=" + departmentID + " and (AssetsCoding like \'%" + keywords + "%\' or AssetName like \'%" + keywords + "%\') order by FixedAssetsID desc";
                 }
             }
-
+            //绑定数据
             dvlist = FixedAsset.QueryFixedAssets1(strSql);
 
             string showFileName = Guid.NewGuid().ToString() + ".xls";
@@ -530,7 +576,6 @@ namespace Asset
                     cmd.ExecuteNonQuery();
                 }
                 bRet = true;
-
             }
             catch (Exception er)
             {
@@ -546,7 +591,6 @@ namespace Asset
 
             }
             if (bRet)
-                //Response.Redirect(FileName);
                 System.Diagnostics.Process.Start(sNewFullFile);
         }
 
@@ -578,9 +622,9 @@ namespace Asset
                 DataGridRow neddrow = (DataGridRow)dtgShow.ItemContainerGenerator.ContainerFromIndex(i);
                 //获取该行的某列
                 CheckBox cb = (CheckBox)dtgShow.Columns[0].GetCellContent(neddrow);
-                if (cb.IsChecked != null || (bool)cb.IsChecked)
+                if (cb.IsChecked != null && (bool)cb.IsChecked)
                 {
-                    if (string.IsNullOrEmpty((dtgShow.Columns[1].GetCellContent(neddrow) as TextBlock).Text))
+                    if (!string.IsNullOrEmpty((dtgShow.Columns[1].GetCellContent(neddrow) as TextBlock).Text))
                     {
                         selectedItems.Add(Convert.ToInt32((dtgShow.Columns[1].GetCellContent(neddrow) as TextBlock).Text));
                     }
@@ -977,7 +1021,16 @@ namespace Asset
         //打印标识卡
         private void BtPrintMark_Click(object sender, RoutedEventArgs e)
         {
-
+            string userAccount = string.Empty;
+            if (ini.ExistINIFile())
+            {
+                //如果存在配置文件就进行读取
+                userAccount = ini.IniReadValue("登录详细", "UserAccount");
+            }
+            //绑定数据
+            DataView dvlist = PrintList.Query_V_PrintList(userAccount);
+            myItemsControl.ItemsSource = dvlist;
+            tabpPrintCard.IsSelected = true;
         }
 
         //删除单个打印项
@@ -1951,6 +2004,31 @@ namespace Asset
         //确认批量异动
         private void BtnVolumeChangesFixedAssets_Click(object sender, RoutedEventArgs e)
         {
+            //输入验证
+            mtbDivisionAndDepartment.Visibility = Visibility.Collapsed;
+            mtbChangesUserAccount.Visibility = Visibility.Collapsed;
+            mtbCDivisionAndDepartment.Visibility = Visibility.Collapsed;
+            mtbCChangesUserAccount.Visibility = Visibility.Collapsed;
+            if (cbxVolumeChangesDivisionID.SelectedValue==null|| cbxVolumeChangesDepartmentID.SelectedValue==null)//部门
+            {
+                mtbDivisionAndDepartment.Visibility = Visibility.Visible;
+                return;
+            }
+            if(cbxVolumeChangesUserAccount.SelectedValue==null)//保管人员
+            {
+                mtbChangesUserAccount.Visibility = Visibility.Visible;
+                return;
+            }
+            if(cbxCVolumeChangesDivisionID.SelectedValue==null|| cbxCVolumeChangesDepartmentID.SelectedValue==null)//异动部门
+            {
+                mtbCDivisionAndDepartment.Visibility = Visibility.Visible;
+                return;
+            }
+            if(cbxCVolumeChangesUserAccount.SelectedValue==null)//异动保管人员
+            {
+                mtbCChangesUserAccount.Visibility = Visibility.Visible;
+                return; 
+            }
             //更新固定资产表里面的信息
             Hashtable ht1 = new Hashtable();
             string where = "";
@@ -2879,29 +2957,35 @@ namespace Asset
             cbxCUserAccount6.Text = "无";
         }
 
-        //确认申请资产异动
+        //确认审核资产异动
         private void BtnEnterCheckChangeAsset_Click(object sender, RoutedEventArgs e)
         {
-            ////1.验证用户输入
-            //mtxtDepartment2.Visibility = Visibility.Collapsed;
-            //mtxtTransferPeople2.Visibility = Visibility.Collapsed;
-            //mtxtUserAccount2.Visibility = Visibility.Collapsed;
-            ////验证必要项
-            //if (cbxCDivisionID2.SelectedItem == null || cbxCDepartmentID2.SelectedItem == null)   //部门
-            //{
-            //    mtxtDepartment2.Visibility = Visibility.Visible;
-            //    return;
-            //}
-            //if (string.IsNullOrEmpty(txtTransferPeople2.Text))  //转移人
-            //{
-            //    mtxtTransferPeople2.Visibility = Visibility.Visible;
-            //    return;
-            //}
-            //if (cbxCUserAccount2.SelectedItem == null)   //保管人员
-            //{
-            //    mtxtUserAccount2.Visibility = Visibility.Visible;
-            //    return;
-            //}
+            //1.验证用户输入
+            mtxtDepartment6s.Visibility = Visibility.Collapsed;
+            mtxtUserAccount6.Visibility = Visibility.Collapsed;
+            mtxtTransferPeople6.Visibility = Visibility.Collapsed;
+            mtxtApprovedPerson6.Visibility = Visibility.Collapsed;
+            //验证必要项
+            if (cbxCDivisionID6.SelectedItem == null || cbxCDepartmentID6.SelectedItem == null)   //部门
+            {
+                mtxtDepartment6s.Visibility = Visibility.Visible;
+                return;
+            }
+            if (cbxCUserAccount6.SelectedItem == null)   //保管人员
+            {
+                mtxtUserAccount6.Visibility = Visibility.Visible;
+                return;
+            }
+            if (string.IsNullOrEmpty(txtTransferPeople6.Text))  //转移人
+            {
+                mtxtTransferPeople6.Visibility = Visibility.Visible;
+                return;
+            }
+            if(string.IsNullOrEmpty(txtApprovedPerson6.Text))
+            {
+                mtxtApprovedPerson6.Visibility = Visibility.Visible;
+                return;
+            }
             //更新资产表信息FixedAssetsID
             FixedAsset fixedAsset = new FixedAsset();
             fixedAsset.FixedAssetsID = FixedAssetsID;
@@ -3202,7 +3286,6 @@ namespace Asset
         }
 
 
-
         //选择资产一级类别
         private void CbxMajorID7_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -3251,6 +3334,11 @@ namespace Asset
         //确认审核维修
         private void BtnEnterCheckRepairAsset_Click(object sender, RoutedEventArgs e)
         {
+            txtRepairContent7.Visibility = Visibility.Collapsed;
+            if (string.IsNullOrEmpty(mtxtRepairContent7.Text))
+            {
+                txtRepairContent7.Visibility = Visibility.Visible;
+            }
             //更新资产表信息FixedAssetsID
             FixedAsset fixedAsset = new FixedAsset();
             fixedAsset.FixedAssetsID = FixedAssetsID;
@@ -3531,7 +3619,6 @@ namespace Asset
         }
 
 
-
         //选择资产一级类别
         private void CbxMajorID8_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -3578,6 +3665,16 @@ namespace Asset
         //确认审核报废
         private void BtnEnterCheckScrappedAsset_Click(object sender, RoutedEventArgs e)
         {
+            mtxtApplicant8.Visibility = Visibility.Collapsed;
+            mtxtApprovedPerson8.Visibility = Visibility.Collapsed;
+            if (string.IsNullOrEmpty(txtApplicant8.Text))//申请人
+            {
+                mtxtApplicant8.Visibility = Visibility.Visible;
+            }
+            if(string.IsNullOrEmpty(txtApprovedPerson8.Text))//批准人
+            {
+                mtxtApprovedPerson8.Visibility = Visibility.Visible;
+            }
             //更新资产表信息FixedAssetsID
             FixedAsset fixedAsset = new FixedAsset();
             fixedAsset.FixedAssetsID = FixedAssetsID;
@@ -3707,6 +3804,7 @@ namespace Asset
             if (string.IsNullOrEmpty(txtDivisionName9.Text))
             {
                 mtxtDivisionName9.Visibility = Visibility.Visible;
+                return;
             }
 
             Division divison = new Division();
@@ -4080,6 +4178,36 @@ namespace Asset
         //确认编辑
         private void BtnEnterEditSubClass_Click(object sender, RoutedEventArgs e)
         {
+            mtxtEditSubName.Visibility = Visibility.Collapsed;
+            mtxtEditUsefulLife.Visibility = Visibility.Collapsed;
+            mtxtEditDepreciationRate.Visibility = Visibility.Collapsed;
+            mcbxEditMajorID.Visibility = Visibility.Collapsed;
+            mcbxEditUnits.Visibility = Visibility.Collapsed;
+            if (string.IsNullOrEmpty(txtEditSubName.Text))//二级类别名称
+            {
+                mtxtEditSubName.Visibility = Visibility.Visible;
+                return;
+            }
+            if(string.IsNullOrEmpty(txtEditUsefulLife.Text))//使用年限
+            {
+                mtxtEditUsefulLife.Visibility = Visibility.Visible;
+                return;
+            }
+            if(string.IsNullOrEmpty(txtEditDepreciationRate.Text))//折旧率
+            {
+                mtxtEditDepreciationRate.Visibility = Visibility.Visible;
+                return;
+            }
+            if(cbxEditMajorID.SelectedValue==null)//一级类别
+            {
+                mcbxEditMajorID.Visibility = Visibility.Visible;
+                return;
+            }
+            if (cbxEditUnits.SelectedValue == null)//单位
+            {
+                mcbxEditUnits.Visibility = Visibility.Visible;
+                return;
+            }
             SubClass subClass = new SubClass();
             subClass.SubID = SubID;
 
