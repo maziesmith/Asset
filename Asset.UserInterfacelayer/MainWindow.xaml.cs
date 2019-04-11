@@ -1041,6 +1041,16 @@ namespace Asset
             tabpPrintCard.IsSelected = true;
         }
 
+        //打印当前页面
+        private void BtPrint_Click(object sender, RoutedEventArgs e)
+        {
+            PrintDialog printDialog = new PrintDialog();
+            if (printDialog.ShowDialog() == true)
+            {
+                printDialog.PrintVisual(stPrint, "123");
+            }
+        }
+
         //删除单个打印项
         private void BtDelPrintItem_Click(object sender, RoutedEventArgs e)
         {
@@ -4537,17 +4547,8 @@ namespace Asset
             MessageBox.Show("修改我的资料成功！", "成功", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
-
         #endregion
-        //打印当前页面
-        private void BtPrint_Click(object sender, RoutedEventArgs e)
-        {
-            PrintDialog printDialog = new PrintDialog();
-            if (printDialog.ShowDialog() == true)
-            {
-                printDialog.PrintVisual(stPrint, "123");
-            }
-        }
+        
     }
 
     #region dtg数据转换器
