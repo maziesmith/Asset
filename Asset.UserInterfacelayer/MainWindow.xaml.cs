@@ -18,6 +18,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Threading;
+using System.Printing;
 
 namespace Asset
 {
@@ -1027,8 +1028,15 @@ namespace Asset
                 //如果存在配置文件就进行读取
                 userAccount = ini.IniReadValue("登录详细", "UserAccount");
             }
+
             //绑定数据
             DataView dvlist = PrintList.Query_V_PrintList(userAccount);
+            //二维码
+            QRcode qr = new QRcode();
+            foreach (DataRowView printList in dvlist)
+            {
+                printList.Row["StorageSites"]= System.AppDomain.CurrentDomain.BaseDirectory+"~"+qr.Create(printList.Row["AssetsCoding"].ToString(), 2, "");
+            }
             myItemsControl.ItemsSource = dvlist;
             tabpPrintCard.IsSelected = true;
         }
@@ -4531,7 +4539,15 @@ namespace Asset
 
 
         #endregion
-
+        //打印当前页面
+        private void BtPrint_Click(object sender, RoutedEventArgs e)
+        {
+            PrintDialog printDialog = new PrintDialog();
+            if (printDialog.ShowDialog() == true)
+            {
+                printDialog.PrintVisual(stPrint, "123");
+            }
+        }
     }
 
     #region dtg数据转换器

@@ -960,3 +960,5 @@ Asset.UserInterfacelayer/bin/Debug/config.ini
 Asset.UserInterfacelayer/DB/PCRepair_Data.MDF
 Asset.UserInterfacelayer/DB/PCRepair_Log.LDF
 参考资料/
+Asset.BusinessLogicLayer/bin/Debug/ThoughtWorks.QRCode.dll
+Asset.CommonComponent/bin/Debug/
