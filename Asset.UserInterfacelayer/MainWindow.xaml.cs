@@ -72,7 +72,11 @@ namespace Asset
                     };
                 }
             }
-
+            //隐藏所有TabItem标签
+            foreach (TabItem item in tabc.Items)
+            {
+                item.Visibility = Visibility.Collapsed;
+            }
         }
 
         //关闭主窗口
