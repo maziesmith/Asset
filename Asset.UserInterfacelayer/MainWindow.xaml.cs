@@ -19,6 +19,7 @@ using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Threading;
 using System.Printing;
+using System.Text.RegularExpressions;
 
 namespace Asset
 {
@@ -893,7 +894,7 @@ namespace Asset
                 mtxtDepartment.Visibility = Visibility.Visible;
                 return;
             }
-            if (!int.TryParse(txtLimitedYear.Text, out int year))  //有限年份
+            if (Regex.IsMatch(txtOriginalValue.Text, "^[1-9]\\d*|0$", RegexOptions.IgnoreCase))  //有限年份,非负数
             {
                 mtxtLimitedYear.Visibility = Visibility.Visible;
                 return;
@@ -903,7 +904,7 @@ namespace Asset
                 mtxtNum.Visibility = Visibility.Visible;
                 return;
             }
-            if (!double.TryParse(txtOriginalValue.Text, out double ori))  //原值
+            if (Regex.IsMatch(txtOriginalValue.Text, "^(([1-9]{1}\\d*)|([0]{1}))(\\.(\\d){0,2})?$", RegexOptions.IgnoreCase))  //原值,保留两位小数
             {
                 mtxtOriginalValue.Visibility = Visibility.Visible;
                 return;
