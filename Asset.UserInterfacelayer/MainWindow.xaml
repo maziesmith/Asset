@@ -399,6 +399,7 @@
                                         </StackPanel>
                                         <TextBox x:Name="txtManufacturer" Grid.Column="3" Grid.Row="2" VerticalAlignment="Center" Width="200" HorizontalAlignment="Left" Margin="5,0,5,0"/>
                                         <ComboBox x:Name="cbxUseSituationID" Grid.Column="3" Grid.Row="3" VerticalAlignment="Center" IsEditable="True" Width="80" HorizontalAlignment="Left" Margin="5,0,5,0">
+                                            <ComboBoxItem Content=""/>
                                             <ComboBoxItem Content="使用中" IsSelected="True"/>
                                             <ComboBoxItem Content="报废"/>
                                             <ComboBoxItem Content="闲置"/>
@@ -733,6 +734,7 @@
                                         </StackPanel>
                                         <TextBox x:Name="txtManufacturer1" Grid.Column="3" Grid.Row="2" VerticalAlignment="Center" Width="200" HorizontalAlignment="Left" Margin="5,0,5,0"/>
                                         <ComboBox x:Name="cbxUseSituationID1" Grid.Column="3" Grid.Row="3" VerticalAlignment="Center" IsEditable="True" Width="80" HorizontalAlignment="Left" Margin="5,0,5,0">
+                                            <ComboBoxItem Content=""/>
                                             <ComboBoxItem Content="使用中" IsSelected="True"/>
                                             <ComboBoxItem Content="报废"/>
                                             <ComboBoxItem Content="闲置"/>
@@ -985,6 +987,7 @@
                                         <Metro:MetroTextBlock x:Name="mtxtAssetsCoding4" Grid.Column="3" Grid.Row="0" VerticalAlignment="Center" Text="无" HorizontalAlignment="Left" Margin="10,0,0,0" />
                                         <Metro:MetroTextBlock x:Name="mtxtSpecificationsModel4" Grid.Column="3" Grid.Row="1" VerticalAlignment="Center" Text="无" HorizontalAlignment="Left" Margin="10,0,0,0" />
                                         <ComboBox x:Name="cbxReduceWaysID4" Grid.Column="3" Grid.Row="2" IsEditable="True" Width="100" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0">
+                                            <ComboBoxItem Content=""/>
                                             <ComboBoxItem Content="报废" IsSelected="True"/>
                                             <ComboBoxItem Content="盘亏"/>
                                             <ComboBoxItem Content="调出"/>
@@ -1419,6 +1422,7 @@
                                         </StackPanel>
                                         <TextBox x:Name="txtManufacturer5" Grid.Column="3" Grid.Row="2" VerticalAlignment="Center" Width="200" HorizontalAlignment="Left" Margin="5,0,5,0"/>
                                         <ComboBox x:Name="cbxUseSituationID5" Grid.Column="3" Grid.Row="3" VerticalAlignment="Center" IsEditable="True" Width="80" HorizontalAlignment="Left" Margin="5,0,5,0">
+                                            <ComboBoxItem Content=""/>
                                             <ComboBoxItem Content="使用中" IsSelected="True"/>
                                             <ComboBoxItem Content="报废"/>
                                             <ComboBoxItem Content="闲置"/>
@@ -1709,6 +1713,7 @@
                                         </StackPanel>
                                         <TextBox x:Name="txtManufacturer6" Grid.Column="3" Grid.Row="11" VerticalAlignment="Center" Width="200" HorizontalAlignment="Left" Margin="5,0,5,0"/>
                                         <ComboBox x:Name="cbxUseSituationID6" Grid.Column="3" Grid.Row="12" VerticalAlignment="Center" IsEditable="True" Width="80" HorizontalAlignment="Left" Margin="5,0,5,0">
+                                            <ComboBoxItem Content=""/>
                                             <ComboBoxItem Content="使用中" IsSelected="True"/>
                                             <ComboBoxItem Content="报废"/>
                                             <ComboBoxItem Content="闲置"/>
@@ -1958,6 +1963,7 @@
                                         </StackPanel>
                                         <TextBox x:Name="txtManufacturer7" Grid.Column="3" Grid.Row="6" VerticalAlignment="Center" Width="200" HorizontalAlignment="Left" Margin="5,0,5,0"/>
                                         <ComboBox x:Name="cbxUseSituationID7" Grid.Column="3" Grid.Row="7" VerticalAlignment="Center" IsEditable="True" Width="80" HorizontalAlignment="Left" Margin="5,0,5,0">
+                                            <ComboBoxItem Content=""/>
                                             <ComboBoxItem Content="使用中" IsSelected="True"/>
                                             <ComboBoxItem Content="报废"/>
                                             <ComboBoxItem Content="闲置"/>
@@ -2188,6 +2194,7 @@
                                         <Metro:MetroTextBlock x:Name="mtxtAssetsCoding8" Grid.Column="3" Grid.Row="0" VerticalAlignment="Center" Text="无" HorizontalAlignment="Left" Margin="10,0,0,0" />
                                         <StackPanel Grid.Column="3" Grid.Row="1" Orientation="Horizontal">
                                             <ComboBox x:Name="cbxReduceWaysID8"  IsEditable="True" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="5,0,5,0" Width="100">
+                                                <ComboBoxItem Content=""/>
                                                 <ComboBoxItem Content="报废" IsSelected="True"/>
                                                 <ComboBoxItem Content="盘亏"/>
                                                 <ComboBoxItem Content="调出"/>
@@ -2210,6 +2217,7 @@
                                         </StackPanel>
                                         <TextBox x:Name="txtManufacturer8" Grid.Column="3" Grid.Row="7" VerticalAlignment="Center" Width="200" HorizontalAlignment="Left" Margin="5,0,5,0"/>
                                         <ComboBox x:Name="cbxUseSituationID8" Grid.Column="3" Grid.Row="8" VerticalAlignment="Center" IsEditable="True" Width="80" HorizontalAlignment="Left" Margin="5,0,5,0">
+                                            <ComboBoxItem Content=""/>
                                             <ComboBoxItem Content="使用中" IsSelected="True"/>
                                             <ComboBoxItem Content="报废"/>
                                             <ComboBoxItem Content="闲置"/>

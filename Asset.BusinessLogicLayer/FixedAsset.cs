@@ -827,7 +827,7 @@ namespace Asset.BusinessLogicLayer
         }
 
         /// <summary>
-        /// 按FixedAssetsID排序,读取所有固定资产信息applyStatus=?
+        /// 按FixedAssetsID排序,读取所有固定资产信息applyStatus=申请状态
         /// </summary>
         /// <return></return>
         public static DataView QueryFixedAssets(int applyStatus)

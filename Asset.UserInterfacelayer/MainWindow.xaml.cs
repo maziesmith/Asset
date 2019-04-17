@@ -894,17 +894,17 @@ namespace Asset
                 mtxtDepartment.Visibility = Visibility.Visible;
                 return;
             }
-            if (Regex.IsMatch(txtOriginalValue.Text, "^[1-9]\\d*|0$", RegexOptions.IgnoreCase))  //有限年份,非负数
+            if (!Regex.IsMatch(txtLimitedYear.Text, "^[1-9]\\d*$", RegexOptions.IgnoreCase))  //有限年份,非负数
             {
                 mtxtLimitedYear.Visibility = Visibility.Visible;
                 return;
             }
-            if (string.IsNullOrEmpty(txtAssetsCoding.Text) || !int.TryParse(txtAssetNum.Text, out int num))  //编码和数量
+            if (string.IsNullOrEmpty(txtAssetsCoding.Text) || !Regex.IsMatch(txtAssetNum.Text, "^[1-9]\\d*$", RegexOptions.IgnoreCase))  //编码和数量
             {
                 mtxtNum.Visibility = Visibility.Visible;
                 return;
             }
-            if (Regex.IsMatch(txtOriginalValue.Text, "^(([1-9]{1}\\d*)|([0]{1}))(\\.(\\d){0,2})?$", RegexOptions.IgnoreCase))  //原值,保留两位小数
+            if (!Regex.IsMatch(txtOriginalValue.Text, "^(([1-9]{1}\\d*)|([0]{1}))(\\.(\\d){0,2})?$", RegexOptions.IgnoreCase))  //原值,保留两位小数
             {
                 mtxtOriginalValue.Visibility = Visibility.Visible;
                 return;
@@ -946,7 +946,7 @@ namespace Asset
                     ht.Add("Manufacturer", SqlStringConstructor.GetQuotedString(txtManufacturer.Text));
                     ht.Add("UnitsID", SqlStringConstructor.GetQuotedString(cbxUnitsID.SelectedValue.ToString()));
                     ht.Add("UnitsName", SqlStringConstructor.GetQuotedString(cbxUnitsID.Text));
-                    ht.Add("UseSituationID", SqlStringConstructor.GetQuotedString((cbxUseSituationID.SelectedIndex + 1).ToString()));
+                    ht.Add("UseSituationID", SqlStringConstructor.GetQuotedString(cbxUseSituationID.SelectedIndex.ToString()));
                     ht.Add("DivisionID", SqlStringConstructor.GetQuotedString(cbxDivisionID0.SelectedValue.ToString()));
                     ht.Add("DivisionName", SqlStringConstructor.GetQuotedString(cbxDivisionID0.Text));
                     ht.Add("DepartmentID", SqlStringConstructor.GetQuotedString(cbxDepartmentID0.SelectedValue.ToString()));
@@ -997,6 +997,7 @@ namespace Asset
             }
             MessageBox.Show("添加固定资产成功！", "成功", MessageBoxButton.OK, MessageBoxImage.Information);
             InitialData();
+            tabpManageFixedAssets.IsSelected = true;
         }
         #endregion
 
@@ -1103,14 +1104,14 @@ namespace Asset
             cbxSubID1.SelectedValuePath = dv1.Table.Columns[0].Caption;
             cbxSubID1.DisplayMemberPath = dv1.Table.Columns[3].Caption;
             cbxSubID1.ItemsSource = dv1;
-            cbxSubID1.Text = fixedAsset.SubID.ToString();
+            cbxSubID1.SelectedValue = fixedAsset.SubID.ToString();
 
             txtSpecificationsModel1.Text = fixedAsset.SpecificationsModel;
             txtBrand1.Text = fixedAsset.Brand;
             txtManufacturer1.Text = fixedAsset.Manufacturer;
 
             cbxUnitsID1.SelectedValue = fixedAsset.UnitsID;
-            cbxUseSituationID1.SelectedValue = fixedAsset.UseSituationID;
+            cbxUseSituationID1.SelectedIndex = fixedAsset.UseSituationID;
 
             cbxDivisionID1.SelectedValue = fixedAsset.DivisionID;
 
@@ -1122,9 +1123,7 @@ namespace Asset
             cbxDepartmentID1.SelectedValuePath = dv2.Table.Columns[0].Caption;
             cbxDepartmentID1.DisplayMemberPath = dv2.Table.Columns[3].Caption;
             cbxDepartmentID1.ItemsSource = dv2;
-
             cbxDepartmentID1.SelectedValue = fixedAsset.DepartmentID;
-
 
             int departmentID = -1;
             if (cbxDepartmentID1.SelectedItem != null && cbxDepartmentID1.SelectedValue != null)
@@ -1221,9 +1220,12 @@ namespace Asset
             {
                 chkLowConsumables1.IsChecked = true;
             }
+            else
+            {
+                chkLowConsumables1.IsChecked = false;
+            }
 
             cbxApplyStatus1.Text = fixedAsset.ApplyStatus.ToString();
-
 
             //异动历史记录
             DataView dv4 = AssetsChange.QueryAssetsChanges(fixedAssetsID);
@@ -1392,7 +1394,7 @@ namespace Asset
                 mtxtDepartment1.Visibility = Visibility.Visible;
                 return;
             }
-            if (!int.TryParse(txtLimitedYear1.Text, out int year))  //有限年份
+            if (!Regex.IsMatch(txtLimitedYear1.Text, "^[1-9]\\d*$", RegexOptions.IgnoreCase))  //有限年份,非负数
             {
                 mtxtLimitedYear1.Visibility = Visibility.Visible;
                 return;
@@ -1402,7 +1404,7 @@ namespace Asset
                 mtxtNum1.Visibility = Visibility.Visible;
                 return;
             }
-            if (!double.TryParse(txtOriginalValue1.Text, out double ori))  //原值
+            if (!Regex.IsMatch(txtOriginalValue1.Text, "^(([1-9]{1}\\d*)|([0]{1}))(\\.(\\d){0,2})?$", RegexOptions.IgnoreCase))  //原值,保留两位小数
             {
                 mtxtOriginalValue1.Visibility = Visibility.Visible;
                 return;
@@ -1434,7 +1436,7 @@ namespace Asset
             ht1.Add("Manufacturer", SqlStringConstructor.GetQuotedString(txtManufacturer1.Text));
             ht1.Add("UnitsID", SqlStringConstructor.GetQuotedString(cbxUnitsID1.SelectedValue.ToString()));
             ht1.Add("UnitsName", SqlStringConstructor.GetQuotedString(cbxUnitsID1.Text));
-            ht1.Add("UseSituationID", SqlStringConstructor.GetQuotedString(cbxUseSituationID1.SelectedValue.ToString()));
+            ht1.Add("UseSituationID", SqlStringConstructor.GetQuotedString(cbxUseSituationID1.SelectedIndex.ToString()));
             ht1.Add("DivisionID", SqlStringConstructor.GetQuotedString(cbxDivisionID1.SelectedValue.ToString()));
             ht1.Add("DivisionName", SqlStringConstructor.GetQuotedString(cbxDivisionID1.Text));
             ht1.Add("DepartmentID", SqlStringConstructor.GetQuotedString(cbxDepartmentID1.SelectedValue.ToString()));
@@ -1711,7 +1713,7 @@ namespace Asset
 
             ht.Add("FixedAssetsID", SqlStringConstructor.GetQuotedString(FixedAssetsID.ToString()));
             ht.Add("Applicant", SqlStringConstructor.GetQuotedString(txtApplicant4.Text));
-            ht.Add("ReduceWaysID", SqlStringConstructor.GetQuotedString((cbxReduceWaysID4.SelectedIndex + 1).ToString()));
+            ht.Add("ReduceWaysID", SqlStringConstructor.GetQuotedString((cbxReduceWaysID4.SelectedIndex).ToString()));
             ht.Add("ReduceWays", SqlStringConstructor.GetQuotedString(cbxReduceWaysID4.Text));
             ht.Add("ScrappedReason", SqlStringConstructor.GetQuotedString(mtxtScrappedReason4.Text));
             ht.Add("ReduceDate", SqlStringConstructor.GetQuotedString(dateReduceDate4.ToString()));
@@ -2188,14 +2190,14 @@ namespace Asset
             cbxSubID5.SelectedValuePath = dv1.Table.Columns[0].Caption;
             cbxSubID5.DisplayMemberPath = dv1.Table.Columns[3].Caption;
             cbxSubID5.ItemsSource = dv1;
-            cbxSubID5.Text = fixedAsset.SubID.ToString();
+            cbxSubID5.SelectedValue = fixedAsset.SubID;
 
             txtSpecificationsModel5.Text = fixedAsset.SpecificationsModel;
             txtBrand5.Text = fixedAsset.Brand;
             txtManufacturer5.Text = fixedAsset.Manufacturer;
 
             cbxUnitsID5.SelectedValue = fixedAsset.UnitsID;
-            cbxUseSituationID5.SelectedValue = fixedAsset.UseSituationID;
+            cbxUseSituationID5.SelectedIndex = fixedAsset.UseSituationID;
 
             cbxDivisionID5.SelectedValue = fixedAsset.DivisionID;
 
@@ -2256,11 +2258,9 @@ namespace Asset
             cbxMethodID5.SelectedValue = fixedAsset.MethodID;
             txtLimitedYear5.Text = fixedAsset.LimitedYear.ToString();
 
-            txtResidualValueRate5.Text = fixedAsset.ResidualValueRate.ToString();                //残值率
-            double ShowResiduals = Math.Round(fixedAsset.OriginalValue * fixedAsset.ResidualValueRate, 2);
-            mtxtResiduals5.Text = ShowResiduals.ToString();                                       //残值
-            double ShowMonthDepreciation = Math.Round((fixedAsset.OriginalValue * (1 - fixedAsset.ResidualValueRate)) / (fixedAsset.LimitedYear * 12), 2);
-            mtxtMonthDepreciation5.Text = ShowMonthDepreciation.ToString();                       //本月折旧
+            txtResidualValueRate5.Text = fixedAsset.ResidualValueRate.ToString();//残值率
+            mtxtResiduals5.Text = Math.Round(fixedAsset.OriginalValue * fixedAsset.ResidualValueRate, 2).ToString();//残值
+            mtxtMonthDepreciation5.Text = Math.Round((fixedAsset.OriginalValue * (1 - fixedAsset.ResidualValueRate)) / (fixedAsset.LimitedYear * 12), 2).ToString(); //本月折旧
 
             if (fixedAsset.RecordedDate.ToString() != "0001-1-1 0:00:00")
             {
@@ -2303,6 +2303,10 @@ namespace Asset
             if (fixedAsset.LowConsumables == 1)
             {
                 chkLowConsumables5.IsChecked = true;
+            }
+            else
+            {
+                chkLowConsumables5.IsChecked = false;
             }
 
             cbxApplyStatus5.Text = fixedAsset.ApplyStatus.ToString();
@@ -2509,7 +2513,7 @@ namespace Asset
             ht1.Add("Manufacturer", SqlStringConstructor.GetQuotedString(txtManufacturer5.Text));
             ht1.Add("UnitsID", SqlStringConstructor.GetQuotedString(cbxUnitsID5.SelectedValue.ToString()));
             ht1.Add("UnitsName", SqlStringConstructor.GetQuotedString(cbxUnitsID5.Text));
-            ht1.Add("UseSituationID", SqlStringConstructor.GetQuotedString(cbxUseSituationID5.SelectedValue.ToString()));
+            ht1.Add("UseSituationID", SqlStringConstructor.GetQuotedString(cbxUseSituationID5.SelectedIndex.ToString()));
             ht1.Add("DivisionID", SqlStringConstructor.GetQuotedString(cbxDivisionID5.SelectedValue.ToString()));
             ht1.Add("DivisionName", SqlStringConstructor.GetQuotedString(cbxDivisionID5.Text));
             ht1.Add("DepartmentID", SqlStringConstructor.GetQuotedString(cbxDepartmentID5.SelectedValue.ToString()));
@@ -2619,7 +2623,7 @@ namespace Asset
             //单位
             cbxUnitsID6.SelectedValue = fixedAsset.UnitsID;
             //使用情况
-            cbxUseSituationID6.SelectedIndex = fixedAsset.UseSituationID + 1;
+            cbxUseSituationID6.SelectedIndex = fixedAsset.UseSituationID;
             //事业部
             cbxDivisionID6.SelectedValue = fixedAsset.DivisionID;
             //部门
@@ -2731,6 +2735,10 @@ namespace Asset
             {
                 chkLowConsumables6.IsChecked = true;
             }
+            else
+            {
+                chkLowConsumables6.IsChecked = false;
+            }
             //ApplyStatus.Text = fixedAsset.ApplyStatus.ToString();
             //异动固定资产信息初始化
             mtxtAssetsCoding6.Text = fixedAsset.AssetsCoding;
@@ -2779,7 +2787,7 @@ namespace Asset
             mtxtCBackup6.Add(assetsChange.CBackup);
 
             AssetsChangesID = assetsChange.AssetsChangesID.ToString();
-            cbxUseSituationID6.SelectedIndex = fixedAsset.UseSituationID - 1;
+            cbxUseSituationID6.SelectedIndex = fixedAsset.UseSituationID;
 
             //异动历史记录
             DataView dv6 = AssetsChange.QueryAssetsChanges(FixedAssetsID);
@@ -3020,7 +3028,7 @@ namespace Asset
             ht1.Add("DepartmentName", SqlStringConstructor.GetQuotedString(cbxCDepartmentID6.Text));
             ht1.Add("UserAccount", SqlStringConstructor.GetQuotedString(cbxCUserAccount6.SelectedValue.ToString()));
             ht1.Add("Contactor", SqlStringConstructor.GetQuotedString(cbxCUserAccount6.Text));
-            ht1.Add("UseSituationID", SqlStringConstructor.GetQuotedString(cbxUseSituationID6.SelectedIndex + 1.ToString()));
+            ht1.Add("UseSituationID", SqlStringConstructor.GetQuotedString(cbxUseSituationID6.SelectedIndex .ToString()));
             ht1.Add("ApplyStatus", 0);
             ht1.Add("AssetStatus", 1);
             ht1.Add("ApplyContactor", "null");
@@ -3102,7 +3110,7 @@ namespace Asset
             //单位
             cbxUnitsID7.SelectedValue = fixedAsset.UnitsID;
             //使用情况
-            cbxUseSituationID7.SelectedIndex = fixedAsset.UseSituationID + 1;
+            cbxUseSituationID7.SelectedIndex = fixedAsset.UseSituationID;
             //事业部
             cbxDivisionID7.SelectedValue = fixedAsset.DivisionID;
             //部门
@@ -3213,6 +3221,10 @@ namespace Asset
             if (fixedAsset.LowConsumables == 1)
             {
                 chkLowConsumables7.IsChecked = true;
+            }
+            else
+            {
+                chkLowConsumables7.IsChecked = false;
             }
             //ApplyStatus.Text = fixedAsset.ApplyStatus.ToString();
             //异动固定资产信息初始化
@@ -3436,7 +3448,7 @@ namespace Asset
             //单位
             cbxUnitsID8.SelectedValue = fixedAsset.UnitsID;
             //使用情况
-            cbxUseSituationID8.SelectedIndex = fixedAsset.UseSituationID + 1;
+            cbxUseSituationID8.SelectedIndex = fixedAsset.UseSituationID;
             //事业部
             cbxDivisionID8.SelectedValue = fixedAsset.DivisionID;
             //部门
@@ -3547,6 +3559,10 @@ namespace Asset
             {
                 chkLowConsumables8.IsChecked = true;
             }
+            else
+            {
+                chkLowConsumables8.IsChecked = false;
+            }
             //ApplyStatus.Text = fixedAsset.ApplyStatus.ToString();
             //报废固定资产信息初始化
             mtxtAssetsCoding8.Text = fixedAsset.AssetsCoding;
@@ -3557,7 +3573,7 @@ namespace Asset
             assetsScrapped.LoadData1(s_fixedAssetsID);
 
             txtApplicant8.Text = assetsScrapped.Applicant;
-            cbxReduceWaysID8.SelectedIndex = assetsScrapped.ReduceWaysID + 1;
+            cbxReduceWaysID8.SelectedIndex = assetsScrapped.ReduceWaysID;
             mtxtScrappedReason8.AddLine(assetsScrapped.ScrappedReason);
             if (assetsScrapped.ReduceDate.ToString() != "0001-1-1 0:00:00")
             {
@@ -3717,7 +3733,7 @@ namespace Asset
 
             Hashtable ht = new Hashtable();
             ht.Add("Applicant", SqlStringConstructor.GetQuotedString(txtApplicant8.Text));
-            ht.Add("ReduceWaysID", SqlStringConstructor.GetQuotedString(cbxReduceWaysID8.SelectedIndex + 1.ToString()));
+            ht.Add("ReduceWaysID", SqlStringConstructor.GetQuotedString(cbxReduceWaysID8.SelectedIndex.ToString()));
             ht.Add("ReduceWays", SqlStringConstructor.GetQuotedString(cbxReduceWaysID8.Text));
             ht.Add("ScrappedReason", SqlStringConstructor.GetQuotedString(mtxtScrappedReason8.Text));
             //ht.Add("ReduceDate", SqlStringConstructor.GetQuotedString(ReduceDate.Value.ToString()));
