@@ -1214,6 +1214,7 @@ namespace Asset
 
 
             txtStorageSites1.Text = fixedAsset.StorageSites;
+            txtAssetsBackup1.Clear();
             txtAssetsBackup1.AddLine(fixedAsset.AssetsBackup);
 
             if (fixedAsset.LowConsumables == 1)
@@ -1225,7 +1226,7 @@ namespace Asset
                 chkLowConsumables1.IsChecked = false;
             }
 
-            cbxApplyStatus1.Text = fixedAsset.ApplyStatus.ToString();
+            cbxApplyStatus1.SelectedIndex = fixedAsset.ApplyStatus;
 
             //异动历史记录
             DataView dv4 = AssetsChange.QueryAssetsChanges(fixedAssetsID);
@@ -1482,6 +1483,7 @@ namespace Asset
             fixedAsset.Update(ht1);
 
             MessageBox.Show("修改固定资产成功！", "成功", MessageBoxButton.OK, MessageBoxImage.Information);
+            tabpManageFixedAssets.IsSelected = true;
             InitialData();
         }
         #endregion
@@ -2298,6 +2300,7 @@ namespace Asset
 
 
             txtStorageSites5.Text = fixedAsset.StorageSites;
+            txtAssetsBackup5.Clear();
             txtAssetsBackup5.AddLine(fixedAsset.AssetsBackup);
 
             if (fixedAsset.LowConsumables == 1)
@@ -2309,7 +2312,7 @@ namespace Asset
                 chkLowConsumables5.IsChecked = false;
             }
 
-            cbxApplyStatus5.Text = fixedAsset.ApplyStatus.ToString();
+            cbxApplyStatus5.SelectedIndex = fixedAsset.ApplyStatus;
         }
 
         /// <summary>
@@ -2471,7 +2474,7 @@ namespace Asset
                 mtxtDepartment5.Visibility = Visibility.Visible;
                 return;
             }
-            if (!int.TryParse(txtLimitedYear5.Text, out int year))  //有限年份
+            if (!Regex.IsMatch(txtLimitedYear5.Text, "^[1-9]\\d*$", RegexOptions.IgnoreCase))  //有限年份,非负数
             {
                 mtxtLimitedYear5.Visibility = Visibility.Visible;
                 return;
@@ -2481,7 +2484,7 @@ namespace Asset
                 mtxtNum5.Visibility = Visibility.Visible;
                 return;
             }
-            if (!double.TryParse(txtOriginalValue5.Text, out double ori))  //原值
+            if (!Regex.IsMatch(txtOriginalValue5.Text, "^(([1-9]{1}\\d*)|([0]{1}))(\\.(\\d){0,2})?$", RegexOptions.IgnoreCase))  //原值,保留两位小数
             {
                 mtxtOriginalValue5.Visibility = Visibility.Visible;
                 return;
@@ -2563,6 +2566,7 @@ namespace Asset
             fixedAsset.Update(ht1);
 
             MessageBox.Show("审核新增资产成功！", "成功", MessageBoxButton.OK, MessageBoxImage.Information);
+            tabpCheckAddAssets.IsSelected = true;
             InitialData();
         }
 
@@ -2729,7 +2733,8 @@ namespace Asset
             //存放地点
             txtStorageSites6.Text = fixedAsset.StorageSites;
             //资产备注
-            txtAssetsBackup5.AddLine(fixedAsset.AssetsBackup);
+            txtAssetsBackup6.Clear();
+            txtAssetsBackup6.AddLine(fixedAsset.AssetsBackup);
             //是否低值易耗品
             if (fixedAsset.LowConsumables == 1)
             {
@@ -3216,6 +3221,7 @@ namespace Asset
             //存放地点
             txtStorageSites7.Text = fixedAsset.StorageSites;
             //资产备注
+            txtAssetsBackup7.Clear();
             txtAssetsBackup7.AddLine(fixedAsset.AssetsBackup);
             //是否低值易耗品
             if (fixedAsset.LowConsumables == 1)
@@ -3553,6 +3559,7 @@ namespace Asset
             //存放地点
             txtStorageSites8.Text = fixedAsset.StorageSites;
             //资产备注
+            txtAssetsBackup8.Clear();
             txtAssetsBackup8.AddLine(fixedAsset.AssetsBackup);
             //是否低值易耗品
             if (fixedAsset.LowConsumables == 1)

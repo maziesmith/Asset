@@ -155,7 +155,7 @@
                                                     <DataGridTextColumn Binding="{Binding SubName}" ClipboardContentBinding="{x:Null}" Header="资产小类"/>
                                                     <DataGridTextColumn Binding="{Binding PurchaseDate,StringFormat='{}{0:yyyy-MM-dd HH:mm:ss}'}" ClipboardContentBinding="{x:Null}" Header="购置日期"/>
                                                     <DataGridTextColumn Binding="{Binding RecordedDate,StringFormat='{}{0:yyyy-MM-dd HH:mm:ss}'}" ClipboardContentBinding="{x:Null}" Header="建立日期"/>
-                                                    <DataGridTextColumn Binding="{Binding SpecificationsModel}" ClipboardContentBinding="{x:Null}" Header="信号规格"/>
+                                                    <DataGridTextColumn Binding="{Binding SpecificationsModel}" ClipboardContentBinding="{x:Null}" Header="型号规格"/>
                                                     <DataGridTextColumn Binding="{Binding Manufacturer}" ClipboardContentBinding="{x:Null}" Header="生产厂家"/>
                                                     <DataGridTextColumn Binding="{Binding Brand}" ClipboardContentBinding="{x:Null}" Header="品牌"/>
                                                     <DataGridTextColumn Binding="{Binding UserAccount}" ClipboardContentBinding="{x:Null}" Header="保管员工号"/>
@@ -440,7 +440,7 @@
                                                     <DataGridTextColumn Binding="{Binding SubName}" ClipboardContentBinding="{x:Null}" Header="资产小类"/>
                                                     <DataGridTextColumn Binding="{Binding PurchaseDate, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}}" ClipboardContentBinding="{x:Null}" Header="购置日期"/>
                                                     <DataGridTextColumn Binding="{Binding RecordedDate, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}}" ClipboardContentBinding="{x:Null}" Header="建立日期"/>
-                                                    <DataGridTextColumn Binding="{Binding SpecificationsModel}" ClipboardContentBinding="{x:Null}" Header="信号规格"/>
+                                                    <DataGridTextColumn Binding="{Binding SpecificationsModel}" ClipboardContentBinding="{x:Null}" Header="型号规格"/>
                                                     <DataGridTextColumn Binding="{Binding Manufacturer}" ClipboardContentBinding="{x:Null}" Header="生产厂家"/>
                                                     <DataGridTextColumn Binding="{Binding Brand}" ClipboardContentBinding="{x:Null}" Header="品牌"/>
                                                     <DataGridTextColumn Binding="{Binding UserAccount}" ClipboardContentBinding="{x:Null}" Header="保管员工号"/>
@@ -1051,7 +1051,7 @@
                                                     <DataGridTextColumn Binding="{Binding SubName}" ClipboardContentBinding="{x:Null}" Header="资产小类"/>
                                                     <DataGridTextColumn Binding="{Binding PurchaseDate, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}}" ClipboardContentBinding="{x:Null}" Header="购置日期"/>
                                                     <DataGridTextColumn Binding="{Binding RecordedDate, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}}" ClipboardContentBinding="{x:Null}" Header="建立日期"/>
-                                                    <DataGridTextColumn Binding="{Binding SpecificationsModel}" ClipboardContentBinding="{x:Null}" Header="信号规格"/>
+                                                    <DataGridTextColumn Binding="{Binding SpecificationsModel}" ClipboardContentBinding="{x:Null}" Header="型号规格"/>
                                                     <DataGridTextColumn Binding="{Binding Manufacturer}" ClipboardContentBinding="{x:Null}" Header="生产厂家"/>
                                                     <DataGridTextColumn Binding="{Binding Brand}" ClipboardContentBinding="{x:Null}" Header="品牌"/>
                                                     <DataGridTextColumn Binding="{Binding UserAccount}" ClipboardContentBinding="{x:Null}" Header="保管员工号"/>
