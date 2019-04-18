@@ -1586,7 +1586,7 @@ namespace Asset
             ht.Add("CChangesDate", SqlStringConstructor.GetQuotedString(txtCChangesDate2.Text));
             ht.Add("TransferPeople", SqlStringConstructor.GetQuotedString(txtTransferPeople2.Text));
             ht.Add("CBackup", SqlStringConstructor.GetQuotedString(mtxtCBackup2.Text));
-
+            //异动资产表
             AssetsChange assetsChange = new AssetsChange();
             assetsChange.Add(ht);
 
@@ -1595,13 +1595,14 @@ namespace Asset
             fixedAsset.FixedAssetsID = FixedAssetsID;
 
             Hashtable ht1 = new Hashtable();
-            ht1.Add("ApplyStatus", 1);
-            ht1.Add("ApplyContactor", SqlStringConstructor.GetQuotedString(txtTransferPeople2.Text));
-            ht1.Add("ApplyDate", SqlStringConstructor.GetQuotedString(DateTime.Now.ToString()));
+            ht1.Add("ApplyStatus", 1);//申请状态
+            ht1.Add("ApplyContactor", SqlStringConstructor.GetQuotedString(txtTransferPeople2.Text));//申请人
+            ht1.Add("ApplyDate", SqlStringConstructor.GetQuotedString(DateTime.Now.ToString()));//申请时间
 
             fixedAsset.Update(ht1);
 
             MessageBox.Show("异动固定资产成功！", "成功", MessageBoxButton.OK, MessageBoxImage.Information);
+            tabpManageFixedAssets.IsSelected = true;
             InitialData();
         }
         #endregion
@@ -1661,7 +1662,7 @@ namespace Asset
             ht.Add("RepairAddress", SqlStringConstructor.GetQuotedString(ini.IniReadValue("登录详细", "Address")));
             ht.Add("RepairContent", SqlStringConstructor.GetQuotedString(mtxtRepairContent3.Text));
             ht.Add("RepairIP", SqlStringConstructor.GetQuotedString("0"));
-
+            //添加到报修表
             RepairList repairlist = new RepairList();
             repairlist.Add(ht);
 
@@ -2115,13 +2116,14 @@ namespace Asset
                 DataGridRow neddrow = (DataGridRow)dtgCheckAddAssets.ItemContainerGenerator.ContainerFromIndex(i);
                 //获取该行的某列
                 CheckBox cb = (CheckBox)dtgCheckAddAssets.Columns[0].GetCellContent(neddrow);
-                if (cb.IsChecked != null || (bool)cb.IsChecked)
+                if (cb.IsChecked != null && (bool)cb.IsChecked)
                 {
-                    if (string.IsNullOrEmpty((dtgCheckAddAssets.Columns[1].GetCellContent(neddrow) as TextBlock).Text))
+                    if (!string.IsNullOrEmpty((dtgCheckAddAssets.Columns[1].GetCellContent(neddrow) as TextBlock).Text))
                     {
                         selectedItems.Add(Convert.ToInt32((dtgCheckAddAssets.Columns[1].GetCellContent(neddrow) as TextBlock).Text));
                     }
                 }
+
             }
             return selectedItems;
         }
@@ -2129,7 +2131,7 @@ namespace Asset
         //确认审核新增资产
         private void BtEnterCheckAdd_Click(object sender, RoutedEventArgs e)
         {
-            ArrayList selectedFixedAssets = this.GetSelected();
+            ArrayList selectedFixedAssets = this.GetSelectedChkAdd();
 
             //如果用户没有选择,就单击该按钮,则给出警告
             if (selectedFixedAssets.Count == 0)
@@ -2669,7 +2671,7 @@ namespace Asset
                 cbxUseUserAccount6.SelectedValue = fixedAsset.UseUserAccount;
             }
             //增加方式
-            cbxAddWaysID6.SelectedIndex = fixedAsset.AddWaysID - 1;
+            cbxAddWaysID6.SelectedValue = fixedAsset.AddWaysID;
             //原值
             txtOriginalValue6.Text = fixedAsset.OriginalValue.ToString();
             //出厂日期
@@ -2789,6 +2791,7 @@ namespace Asset
             txtCStorageSites6.Text = assetsChange.CStorageSites;
             txtCChangesDate6.Text = assetsChange.CChangesDate.ToString();
             txtTransferPeople6.Text = assetsChange.TransferPeople;
+            mtxtCBackup6.Clear();
             mtxtCBackup6.Add(assetsChange.CBackup);
 
             AssetsChangesID = assetsChange.AssetsChangesID.ToString();
@@ -2919,7 +2922,7 @@ namespace Asset
                 int ShowFixedAssetsID = fixedAsset.FixedAssetsID + 1;
                 txtAssetsCoding6.Text = cbxMajorID6.SelectedValue.ToString() + cbxSubID6.SelectedValue.ToString() + ShowFixedAssetsID.ToString();
             }
-            else
+            else if(subID!=-1)
             {
                 txtAssetsCoding6.Text = cbxMajorID6.SelectedValue.ToString() + cbxSubID6.SelectedValue.ToString() + "10000";
             }
@@ -3138,7 +3141,6 @@ namespace Asset
             if (string.IsNullOrEmpty(fixedAsset.UserAccount))
             {
                 cbxUserAccount7.Text = "无";
-
             }
             else
             {
@@ -3156,7 +3158,7 @@ namespace Asset
                 cbxUseUserAccount7.SelectedValue = fixedAsset.UseUserAccount;
             }
             //增加方式
-            cbxAddWaysID7.SelectedIndex = fixedAsset.AddWaysID - 1;
+            cbxAddWaysID7.SelectedValue = fixedAsset.AddWaysID ;
             //原值
             txtOriginalValue7.Text = fixedAsset.OriginalValue.ToString();
             //出厂日期
@@ -3233,14 +3235,14 @@ namespace Asset
                 chkLowConsumables7.IsChecked = false;
             }
             //ApplyStatus.Text = fixedAsset.ApplyStatus.ToString();
-            //异动固定资产信息初始化
+            //维修固定资产信息初始化
             mtxtAssetsCoding7.Text = fixedAsset.AssetsCoding;
             mtxtAssetName7.Text = fixedAsset.AssetName;
 
             int r_fixedAssetsID = fixedAsset.FixedAssetsID;
             RepairList repairList = new RepairList();
             repairList.LoadData1(r_fixedAssetsID);
-
+            mtxtRepairContent7.Clear();
             mtxtRepairContent7.AddLine(repairList.RepairContent);
             txtApprovedPerson7.Text = repairList.RepairUserAccount + "(" + repairList.RepairContactor + ")";
 
@@ -3494,7 +3496,7 @@ namespace Asset
                 cbxUseUserAccount8.SelectedValue = fixedAsset.UseUserAccount;
             }
             //增加方式
-            cbxAddWaysID8.SelectedIndex = fixedAsset.AddWaysID - 1;
+            cbxAddWaysID8.SelectedValue = fixedAsset.AddWaysID ;
             //原值
             txtOriginalValue8.Text = fixedAsset.OriginalValue.ToString();
             //出厂日期
@@ -3581,6 +3583,7 @@ namespace Asset
 
             txtApplicant8.Text = assetsScrapped.Applicant;
             cbxReduceWaysID8.SelectedIndex = assetsScrapped.ReduceWaysID;
+            mtxtScrappedReason8.Clear();
             mtxtScrappedReason8.AddLine(assetsScrapped.ScrappedReason);
             if (assetsScrapped.ReduceDate.ToString() != "0001-1-1 0:00:00")
             {
@@ -3757,7 +3760,7 @@ namespace Asset
 
             assetsScrapped.Update(ht);
 
-            MessageBox.Show("审核维修资产成功！", "成功", MessageBoxButton.OK, MessageBoxImage.Information);
+            MessageBox.Show("审核报废资产成功！", "成功", MessageBoxButton.OK, MessageBoxImage.Information);
             InitialData();
         }
         #endregion
@@ -4059,12 +4062,15 @@ namespace Asset
         //删除
         private void BtDeleteMajorClass_Click(object sender, RoutedEventArgs e)
         {
-            MajorID = Convert.ToInt32(((System.Data.DataRowView)((System.Windows.FrameworkElement)sender).DataContext)["MajorID"]);
-            MajorClass majorClass = new MajorClass();
-            majorClass.LoadData(MajorID);
-            majorClass.Delete();
-            MessageBox.Show("删除资产一级类别成功！", "成功", MessageBoxButton.OK, MessageBoxImage.Information);
-            InitMajorClassData();
+            if(MessageBox.Show("确认删除资产一级类别吗？", "提示", MessageBoxButton.OKCancel, MessageBoxImage.Question)==MessageBoxResult.OK)
+            {
+                MajorID = Convert.ToInt32(((System.Data.DataRowView)((System.Windows.FrameworkElement)sender).DataContext)["MajorID"]);
+                MajorClass majorClass = new MajorClass();
+                majorClass.LoadData(MajorID);
+                majorClass.Delete();
+                MessageBox.Show("删除资产一级类别成功！", "成功", MessageBoxButton.OK, MessageBoxImage.Information);
+                InitMajorClassData();
+            }
         }
         #endregion
 
@@ -4094,9 +4100,7 @@ namespace Asset
 
             Hashtable ht = new Hashtable();
             ht.Add("MajorName", SqlStringConstructor.GetQuotedString(txtMajorName.Text));
-
             majorClass.Update(ht);
-
 
             //更新固定资产表里面的信息
             Hashtable ht1 = new Hashtable();
@@ -4107,8 +4111,9 @@ namespace Asset
             where = " Where MajorID=" + MajorID;
             FixedAsset.Update(ht1, where);
 
-
             MessageBox.Show("修改资产一级类别成功！", "成功", MessageBoxButton.OK, MessageBoxImage.Information);
+            tabpManageMajorClass.IsSelected = true;
+            InitMajorClassData();
         }
         #endregion
 
@@ -4166,6 +4171,7 @@ namespace Asset
                 subClass1.Add(ht);
 
                 MessageBox.Show("添加资产二级类别成功！", "成功", MessageBoxButton.OK, MessageBoxImage.Information);
+                InitSubClassData();
             }
         }
 
@@ -4180,10 +4186,15 @@ namespace Asset
         //删除
         private void BtDeleteSubClass_Click(object sender, RoutedEventArgs e)
         {
-            int subID = Convert.ToInt32(((System.Data.DataRowView)((System.Windows.FrameworkElement)sender).DataContext)["SubID"]);
-            SubClass subClass = new SubClass();
-            subClass.LoadData(subID);
-            subClass.Delete();
+            if (MessageBox.Show("确认删除该资产二级类别吗？", "提示", MessageBoxButton.OKCancel, MessageBoxImage.Question) == MessageBoxResult.OK)
+            {
+                int subID = Convert.ToInt32(((System.Data.DataRowView)((System.Windows.FrameworkElement)sender).DataContext)["SubID"]);
+                SubClass subClass = new SubClass();
+                subClass.LoadData(subID);
+                subClass.Delete();
+                MessageBox.Show("删除资产二级类别成功！", "成功", MessageBoxButton.OK, MessageBoxImage.Information);
+                InitSubClassData();
+            }
         }
         #endregion
 
@@ -4277,6 +4288,8 @@ namespace Asset
             FixedAsset.Update(ht1, where);
 
             MessageBox.Show("修改资产二级类别成功！", "成功", MessageBoxButton.OK, MessageBoxImage.Information);
+            tabpManageSubClass.IsSelected = true;
+            InitSubClassData();
         }
 
         
