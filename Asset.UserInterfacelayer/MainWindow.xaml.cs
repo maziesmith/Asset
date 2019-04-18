@@ -4606,6 +4606,7 @@ namespace Asset
             ht.Add("Tel", SqlStringConstructor.GetQuotedString(txtMyTel.Text));
             userlist.Update(ht);
             MessageBox.Show("修改我的资料成功！", "成功", MessageBoxButton.OK, MessageBoxImage.Information);
+            InitMyUser();
         }
 
         #endregion
