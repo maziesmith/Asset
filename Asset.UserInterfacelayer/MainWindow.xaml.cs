@@ -3796,6 +3796,7 @@ namespace Asset
                 division1.Add(ht);
 
                 MessageBox.Show("添加事业部成功！", "成功", MessageBoxButton.OK, MessageBoxImage.Information);
+                InitDivisionData();
             }
         }
 
@@ -3814,19 +3815,23 @@ namespace Asset
         //删除
         private void BtDelete_Click(object sender, RoutedEventArgs e)
         {
-            DivisionID = Convert.ToInt32(((System.Data.DataRowView)((System.Windows.FrameworkElement)sender).DataContext)["DivisionID"]);
-            FixedAsset fixedAsset = new FixedAsset();
-            fixedAsset.LoadDataDivisionID(DivisionID);
-            if (fixedAsset.Exist)
+            if (MessageBox.Show("确认删除事业部吗！", "提示", MessageBoxButton.OKCancel, MessageBoxImage.Question) == MessageBoxResult.OK)
             {
-                MessageBox.Show("该事业部下存在固定资产，不能删除！", "提示", MessageBoxButton.OK, MessageBoxImage.Stop);
-            }
-            else
-            {
-                Division division = new Division();
-                division.LoadData(DivisionID);
-                division.Delete();
-                MessageBox.Show("删除事业部成功！", "成功", MessageBoxButton.OK, MessageBoxImage.Information);
+                DivisionID = Convert.ToInt32(((System.Data.DataRowView)((System.Windows.FrameworkElement)sender).DataContext)["DivisionID"]);
+                FixedAsset fixedAsset = new FixedAsset();
+                fixedAsset.LoadDataDivisionID(DivisionID);
+                if (fixedAsset.Exist)
+                {
+                    MessageBox.Show("该事业部下存在固定资产，不能删除！", "提示", MessageBoxButton.OK, MessageBoxImage.Stop);
+                }
+                else
+                {
+                    Division division = new Division();
+                    division.LoadData(DivisionID);
+                    division.Delete();
+                    MessageBox.Show("删除事业部成功！", "成功", MessageBoxButton.OK, MessageBoxImage.Information);
+                    InitDivisionData();
+                }
             }
         }
         #endregion
@@ -3866,12 +3871,14 @@ namespace Asset
             Hashtable ht1 = new Hashtable();
             string where = "";
 
-            ht1.Add("DivisionName", SqlStringConstructor.GetQuotedString(txtDivisionName9.Text));                  //固定资产查询
+            ht1.Add("DivisionName", SqlStringConstructor.GetQuotedString(txtDivisionName9.Text));
 
             where = " Where DivisionID=" + DivisionID;
             FixedAsset.Update(ht1, where);
 
             MessageBox.Show("修改事业部成功！", "成功", MessageBoxButton.OK, MessageBoxImage.Information);
+            InitDivisionData();
+            tabpManageDivision.IsSelected = true;
         }
         #endregion
 
@@ -3925,6 +3932,7 @@ namespace Asset
                 department1.Add(ht);
 
                 MessageBox.Show("添加部门成功！", "成功", MessageBoxButton.OK, MessageBoxImage.Information);
+                InitDepartmentData();
             }
         }
         /// <summary>
@@ -3942,19 +3950,23 @@ namespace Asset
         //删除部门
         private void BtDeleteDepartment_Click(object sender, RoutedEventArgs e)
         {
-            DepartmentID = Convert.ToInt32(((System.Data.DataRowView)((System.Windows.FrameworkElement)sender).DataContext)["DepartmentID"]);
-            FixedAsset fixedAsset = new FixedAsset();
-            fixedAsset.LoadDataDepartmentID(DepartmentID);
-            if (fixedAsset.Exist)
+            if (MessageBox.Show("确定删除部门吗！", "提示", MessageBoxButton.OKCancel, MessageBoxImage.Question) == MessageBoxResult.OK)
             {
-                MessageBox.Show("发生错误，该部门下存在固定资产，无法删除！", "提示", MessageBoxButton.OK, MessageBoxImage.Stop);
-            }
-            else
-            {
-                Department department = new Department();
-                department.LoadData(DepartmentID);
-                department.Delete();
-                MessageBox.Show("删除部门成功！", "成功", MessageBoxButton.OK, MessageBoxImage.Information);
+                DepartmentID = Convert.ToInt32(((System.Data.DataRowView)((System.Windows.FrameworkElement)sender).DataContext)["DepartmentID"]);
+                FixedAsset fixedAsset = new FixedAsset();
+                fixedAsset.LoadDataDepartmentID(DepartmentID);
+                if (fixedAsset.Exist)
+                {
+                    MessageBox.Show("发生错误，该部门下存在固定资产，无法删除！", "提示", MessageBoxButton.OK, MessageBoxImage.Stop);
+                }
+                else
+                {
+                    Department department = new Department();
+                    department.LoadData(DepartmentID);
+                    department.Delete();
+                    MessageBox.Show("删除部门成功！", "成功", MessageBoxButton.OK, MessageBoxImage.Information);
+                    InitDepartmentData();
+                }
             }
         }
         #endregion
@@ -3976,8 +3988,8 @@ namespace Asset
             Department department = new Department();
             department.LoadData(departmentID);
 
-            txtEditDepartmentName.Text = department.DivisionID.ToString();
-            cbxDivisionName.Text = department.DepartmentName;
+            txtEditDepartmentName.Text = department.DepartmentName;
+            cbxDivisionName.SelectedValue = department.DivisionID;
         }
 
         //确认修改部门
@@ -3989,10 +4001,12 @@ namespace Asset
             if (string.IsNullOrEmpty(txtEditDepartmentName.Text))
             {
                 mtxtEditDepartmentName.Visibility = Visibility.Visible;
+                return;
             }
-            if (cbxDivisionName.SelectedValue != null && cbxDivisionName.SelectedItem != null)
+            if (cbxDivisionName.SelectedValue == null && cbxDivisionName.SelectedItem == null)
             {
                 mtxtDivisionName.Visibility = Visibility.Visible;
+                return;
             }
             //实例化部门
             Department department = new Department();
@@ -4014,6 +4028,8 @@ namespace Asset
             FixedAsset.Update(ht1, where);
 
             MessageBox.Show("修改部门成功！", "成功", MessageBoxButton.OK, MessageBoxImage.Information);
+            InitDepartmentData();
+            tabpManageDepartment.IsSelected = true;
         }
         #endregion
 
@@ -4338,7 +4354,7 @@ namespace Asset
             Hashtable ht = new Hashtable();
             ht.Add("IsAllowed", "0");
             userlist.Update(ht);
-            InitEditSubClassData();
+            InitManageUserData();
         }
 
         //禁用
@@ -4349,7 +4365,7 @@ namespace Asset
             Hashtable ht = new Hashtable();
             ht.Add("IsAllowed", "1");
             userlist.Update(ht);
-            InitEditSubClassData();
+            InitManageUserData();
         }
         #endregion
 
@@ -4476,6 +4492,8 @@ namespace Asset
             UserList.Update(ht, where);
 
             MessageBox.Show("设置用户权限成功！", "成功", MessageBoxButton.OK, MessageBoxImage.Information);
+            tabpManageUser.IsSelected = true;
+            InitManageUserData();
         }
         #endregion
 
@@ -4535,7 +4553,7 @@ namespace Asset
         //确认修改
         private void BtnEnterEditUser_Click(object sender, RoutedEventArgs e)
         {
-            int userListID = Convert.ToInt32("UserListID");
+            int userListID = Convert.ToInt32(UserListID);
 
             UserList userlist = new UserList();
             userlist.UserListID = userListID;
@@ -4549,6 +4567,8 @@ namespace Asset
             ht.Add("Tel", SqlStringConstructor.GetQuotedString(txtTel.Text));
             userlist.Update(ht);
             MessageBox.Show("修改会员资料成功！", "成功", MessageBoxButton.OK, MessageBoxImage.Information);
+            InitManageUserData();
+            tabpManageUser.IsSelected = true;
         }
 
         #endregion
@@ -4645,6 +4665,30 @@ namespace Asset
                     return "报废申请";
                 case "4":
                     return "新增";
+                default:
+                    return "未知";
+            }
+        }
+
+        //ConvertBack方法将显示值转换成原来的格式,因为我不需要反向转换,所以直接抛出个异常  
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    class GetIsAllowed : IValueConverter
+    {
+        //Convert方法用来将数据转换成我们想要的显示的格式  
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            int iValue = (int)value;
+            switch (iValue.ToString())
+            {
+                case "0":
+                    return "启用";
+                case "1":
+                    return "禁用";
                 default:
                     return "未知";
             }

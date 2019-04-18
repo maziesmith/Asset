@@ -14,6 +14,7 @@
     <Window.Resources>
         <local:GetUseSituation x:Key="GetUseSituation"></local:GetUseSituation>
         <local:GetApplyStatus x:Key="GetApplyStatus"></local:GetApplyStatus>
+        <local:GetIsAllowed x:Key="GetIsAllowed"></local:GetIsAllowed>
     </Window.Resources>
     <Metro:MetroWindow.Menu>
         <Metro:MetroTitleMenu>
@@ -2265,7 +2266,7 @@
                                             <DataGrid x:Name="dtgDivision" Margin="3" AutoGenerateColumns="False" AlternatingRowBackground="#F4F4F4" CanUserAddRows="False" HeadersVisibility="Column">
                                                 <DataGrid.Columns>
                                                     <DataGridTextColumn Binding="{Binding DivisionID}" ClipboardContentBinding="{x:Null}" Header="事业部ID" Width="200"/>
-                                                    <DataGridTextColumn Binding="{Binding DivisionID}" ClipboardContentBinding="{x:Null}" Header="事业部名称" Width="200"/>
+                                                    <DataGridTextColumn Binding="{Binding DivisionName}" ClipboardContentBinding="{x:Null}" Header="事业部名称" Width="200"/>
                                                     <DataGridTextColumn Binding="{Binding AddTime}" ClipboardContentBinding="{x:Null}" Header="增加时间" Width="200"/>
                                                     <DataGridTemplateColumn Header="操作"  Width="200">
                                                         <DataGridTemplateColumn.CellTemplate>
@@ -2362,7 +2363,7 @@
                                             <DataGrid x:Name="dtgDepartment" Margin="3" AutoGenerateColumns="False" AlternatingRowBackground="#F4F4F4" CanUserAddRows="False" HeadersVisibility="Column">
                                                 <DataGrid.Columns>
                                                     <DataGridTextColumn Binding="{Binding DepartmentID}" ClipboardContentBinding="{x:Null}" Header="部门ID" Width="200"/>
-                                                    <DataGridTextColumn Binding="{Binding DepartmentID}" ClipboardContentBinding="{x:Null}" Header="部门名称" Width="200"/>
+                                                    <DataGridTextColumn Binding="{Binding DepartmentName}" ClipboardContentBinding="{x:Null}" Header="部门名称" Width="200"/>
                                                     <DataGridTextColumn Binding="{Binding DivisionName}" ClipboardContentBinding="{x:Null}" Header="所属事业部" Width="200"/>
                                                     <DataGridTextColumn Binding="{Binding AddTime}" ClipboardContentBinding="{x:Null}" Header="增加时间" Width="200"/>
                                                     <DataGridTemplateColumn Header="操作"  Width="200">
@@ -2709,7 +2710,7 @@
                                                             <DataGridTextColumn Binding="{Binding Contactor}" ClipboardContentBinding="{x:Null}" Header="联系人"/>
                                                             <DataGridTextColumn Binding="{Binding JobPosition}" ClipboardContentBinding="{x:Null}" Header="职称"/>
                                                             <DataGridTextColumn Binding="{Binding Tel}" ClipboardContentBinding="{x:Null}" Header="联系电话"/>
-                                                            <DataGridTextColumn Binding="{Binding lblIsAllowed}" ClipboardContentBinding="{x:Null}" Header="状态"/>
+                                                            <DataGridTextColumn Binding="{Binding IsAllowed,Converter={StaticResource GetIsAllowed}}" ClipboardContentBinding="{x:Null}" Header="状态"/>
                                                             <DataGridTemplateColumn Header="操作" >
                                                                 <DataGridTemplateColumn.CellTemplate>
                                                                     <DataTemplate>
