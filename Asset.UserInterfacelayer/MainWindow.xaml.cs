@@ -213,7 +213,7 @@ namespace Asset
                     string userAccount = ini.IniReadValue("登录详细", "UserAccount");
                     UserList userList = new UserList();
                     userList.LoadData(userAccount);
-                    mainWindow.Title = "资产管理系统--" + "管理员：" + userAccount;
+                    mainWindow.Title = "资产管理系统--" + "用户：" + userAccount;
                     //1.先隐藏用户菜单
                     foreach (FrameworkElement fe in lists.Children)
                     {
@@ -245,6 +245,8 @@ namespace Asset
         private void MenuExitLogin_Click(object sender, RoutedEventArgs e)
         {
             dtgShow.ItemsSource = null;
+            //删除用户配置
+            File.Delete(System.AppDomain.CurrentDomain.SetupInformation.ApplicationBase + @"\config.ini");
         }
 
         #endregion
@@ -997,7 +999,6 @@ namespace Asset
             }
             MessageBox.Show("添加固定资产成功！", "成功", MessageBoxButton.OK, MessageBoxImage.Information);
             InitialData();
-            tabpManageFixedAssets.IsSelected = true;
         }
         #endregion
 
@@ -1483,7 +1484,6 @@ namespace Asset
             fixedAsset.Update(ht1);
 
             MessageBox.Show("修改固定资产成功！", "成功", MessageBoxButton.OK, MessageBoxImage.Information);
-            tabpManageFixedAssets.IsSelected = true;
             InitialData();
         }
         #endregion
@@ -1602,7 +1602,6 @@ namespace Asset
             fixedAsset.Update(ht1);
 
             MessageBox.Show("异动固定资产成功！", "成功", MessageBoxButton.OK, MessageBoxImage.Information);
-            tabpManageFixedAssets.IsSelected = true;
             InitialData();
         }
         #endregion
