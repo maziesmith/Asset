@@ -2553,14 +2553,14 @@
                                 <Metro:MetroScrollViewer>
                                     <StackPanel>
                                         <StackPanel Orientation="Horizontal">
-                                            <Metro:MetroTextBlock Text="所属资产一级类别" Opacity="0.65" VerticalAlignment="Center" Margin="30,0,10,0"/>
-                                            <ComboBox x:Name="cbxMajor" VerticalAlignment="Center" IsEditable="True" Width="100" HorizontalAlignment="Left" Margin="0,0,20,0" Text="请选择一级类别"/>
-                                            <Metro:MetroTextBox x:Name="txtSubClassName" Text="" Title="资产二级类别名称" InputHint="请输入事业部名称" Margin="0,0,20,0" VerticalAlignment="Center" Width="400"/>
+                                            <Metro:MetroTextBlock Text="所属资产一级类别" Opacity="0.65" VerticalAlignment="Center" Margin="20,0,5,0"/>
+                                            <ComboBox x:Name="cbxMajor" VerticalAlignment="Center" IsEditable="True" Width="120" HorizontalAlignment="Left" Margin="0,0,10,0" Text="请选择一级类别"/>
+                                            <Metro:MetroTextBox x:Name="txtSubClassName" Text="" Title="资产二级类别名称" InputHint="请输入事业部名称" Margin="0,0,10,0" VerticalAlignment="Center" Width="230"/>
                                             <Metro:MetroTextBlock Text="单位" Opacity="0.65" VerticalAlignment="Center" Margin="0,0,10,0"/>
-                                            <ComboBox x:Name="cbxUnits" VerticalAlignment="Center" IsEditable="True" Width="50" HorizontalAlignment="Left" Margin="0,0,10,0" Text="请选择单位"/>
-                                            <Metro:MetroTextBox x:Name="txtUsefulLife" Text="" Title="使用年限" InputHint="请输入事业部名称" Margin="0,0,20,0" VerticalAlignment="Center" Width="150"/>
-                                            <Metro:MetroTextBox x:Name="txtDepreciationRate" Text="" Title="折旧率" InputHint="请输入事业部名称" Margin="0,0,20,0" VerticalAlignment="Center" Width="150"/>
-                                            <Metro:MetroButton x:Name="btEnterAddSunClass" MetroButtonState="None" Content="确认添加" Margin="0,0,10,0" Click="BtEnterAddSunClass_Click"/>
+                                            <ComboBox x:Name="cbxUnits" VerticalAlignment="Center" IsEditable="True" Width="50" HorizontalAlignment="Left" Margin="0,0,0,0" Text="请选择单位"/>
+                                            <Metro:MetroTextBox x:Name="txtUsefulLife" Text="" Title="使用年限" InputHint="请输入事业部名称" Margin="0,0,0,0" VerticalAlignment="Center" Width="200"/>
+                                            <Metro:MetroTextBox x:Name="txtDepreciationRate" Text="" Title="折旧率" InputHint="请输入事业部名称" Margin="0,0,10,0" VerticalAlignment="Center" Width="200"/>
+                                            <Metro:MetroButton x:Name="btEnterAddSunClass" MetroButtonState="None" Content="确认添加" Margin="0,0,0,0" Click="BtEnterAddSunClass_Click"/>
                                         </StackPanel>
                                         <StackPanel>
                                             <DataGrid x:Name="dtgSubClass" Margin="3" AutoGenerateColumns="False" AlternatingRowBackground="#F4F4F4" CanUserAddRows="False" HeadersVisibility="Column">
