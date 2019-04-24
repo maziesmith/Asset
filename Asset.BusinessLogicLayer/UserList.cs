@@ -211,13 +211,10 @@ namespace Asset.BusinessLogicLayer
         public void LoadData(string userAccount)
         {
             Database db = new Database();		//实例化一个Database类
-
             string sql = "";
             sql = "Select * From UserLists where IsAllowed=0 and UserAccount = "
                 + SqlStringConstructor.GetQuotedString(userAccount);
-
             DataRow dr = db.GetDataRow(sql);	//利用Database类的GetDataRow方法查询用户数据
-
             //根据查询得到的数据，对成员赋值
             if (dr != null)
             {
@@ -234,7 +231,6 @@ namespace Asset.BusinessLogicLayer
                 this._address = GetSafeData.ValidateDataRow_S(dr, "Address");
                 this._userLevel = GetSafeData.ValidateDataRow_N(dr, "UserLevel");
                 this._isMaintenance = GetSafeData.ValidateDataRow_N(dr, "IsMaintenance");
-
                 //获取权限集合
                 string colName = "";
                 for (int i = 0; i < dr.ItemArray.Length; i++)
@@ -245,7 +241,6 @@ namespace Asset.BusinessLogicLayer
                         this._duties.Add(dr.Table.Columns[i].ColumnName.Substring(8));	//去掉前缀“HasDuty_”
                     }
                 }
-
                 this._exist = true;
             }
             else

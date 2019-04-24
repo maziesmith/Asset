@@ -1035,7 +1035,6 @@ namespace Asset
                 //如果存在配置文件就进行读取
                 userAccount = ini.IniReadValue("登录详细", "UserAccount");
             }
-
             //绑定数据
             DataView dvlist = PrintList.Query_V_PrintList(userAccount);
             //二维码
