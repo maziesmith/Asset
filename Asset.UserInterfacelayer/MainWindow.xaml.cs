@@ -165,6 +165,8 @@ namespace Asset
                     userList.LoadData(userAccount);
                     mainWindow.Title = "资产管理系统--" + "管理员：" + userAccount;
                     //1.先隐藏用户菜单
+                    treeMenuManageUser.Visibility = Visibility.Collapsed;
+                    treeMenuModifyProfile.Visibility = Visibility.Collapsed;
                     foreach (FrameworkElement fe in lists.Children)
                     {
 
@@ -880,6 +882,7 @@ namespace Asset
             mtxtNum.Visibility = Visibility.Collapsed;
             mtxtOriginalValue.Visibility = Visibility.Collapsed;
             mtxtSpecificationsModel.Visibility = Visibility.Collapsed;
+            mtxtUserAccount.Visibility = Visibility.Collapsed;
             //验证必要项
             if (cbxMajorID.SelectedItem == null || cbxSubID.SelectedItem == null)    //类别
             {
@@ -914,6 +917,11 @@ namespace Asset
             if (string.IsNullOrEmpty(txtSpecificationsModel.Text))
             {
                 mtxtSpecificationsModel.Visibility = Visibility.Visible;
+                return;
+            }
+            if(cbxUserAccount.SelectedValue==null)
+            {
+                mtxtUserAccount.Visibility = Visibility.Visible;
                 return;
             }
 

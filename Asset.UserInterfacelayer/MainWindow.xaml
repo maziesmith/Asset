@@ -103,6 +103,7 @@
                         </Border>
                     </Metro:MetroScrollViewer>
                     <Metro:MetroTabControl x:Name="tabc" Grid.Column="1">
+                        <Metro:MetroTabItem/>
                         <Metro:MetroTabItem x:Name="tabpManageFixedAssets" Header="管理资产">
                             <Grid>
                                 <Metro:MetroScrollViewer>
@@ -408,7 +409,7 @@
                                         </ComboBox>
                                         <StackPanel Grid.Column="3" Grid.Row="4" Orientation="Horizontal">
                                             <ComboBox x:Name="cbxUserAccount" VerticalAlignment="Center" IsEditable="True" Width="50" HorizontalAlignment="Left" Margin="5,0,5,0"/>
-                                            <Metro:MetroTextBlock VerticalAlignment="Center" Text="若无人员可选，请先注册账号。" HorizontalAlignment="Left" Margin="10,0,0,0" Foreground="Red" />
+                                            <Metro:MetroTextBlock x:Name="mtxtUserAccount" VerticalAlignment="Center" Text="若无人员可选，请先注册账号。" HorizontalAlignment="Left" Margin="10,0,0,0" Foreground="Red" Visibility="Collapsed"/>
                                         </StackPanel>
                                         <StackPanel Grid.Column="3" Grid.Row="5" Orientation="Horizontal">
                                             <TextBox x:Name="txtOriginalValue" VerticalAlignment="Center" Width="100" HorizontalAlignment="Left" Margin="5,0,5,0"/>
